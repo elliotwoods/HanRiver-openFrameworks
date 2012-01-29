@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxPFMImage.h"
 #include "ofxGrabCam.h"
 
 class testApp : public ofBaseApp{
@@ -22,10 +21,12 @@ public:
 	void gotMessage(ofMessage msg);
 	
 	void loadImage();
-
+	void saveCompressed();
+	
 	ofxGrabCam camera;
 
-	ofxPFMImage img;
+	ofImage input;
+	ofImage output;
 	float maxValue;
 	ofVec3f mean;
 	
