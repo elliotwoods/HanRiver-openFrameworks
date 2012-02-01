@@ -35,6 +35,7 @@ void testApp::draw(){
 	ofDrawBitmapString("[f] = toggle fullscreen", 10, y+=15);
 	ofDrawBitmapString("[s] = screenshot.png", 10, y+=15);
 	ofDrawBitmapString("[e] = export as compressed space XYZ hdr", 10, y+=15);
+	ofDrawBitmapString("[m] = set mean to 0", 10, y+=15);
 	ofDrawBitmapString("[SPACE] = load PFM for points", 10, y+=15);
 	
 	
@@ -57,10 +58,12 @@ void testApp::keyPressed(int key){
 	if (key == 's') {
 		ofImage screenshot;
 		screenshot.grabScreen(0,0,ofGetWidth(),ofGetHeight());
-		screenshot.saveImage("screenshot.png");
+		screenshot.saveImage(ofSystemLoadDialog("Save screenshot...").fileName);
 	}
 	if (key =='e')
 		saveCompressed();
+	if (key =='m')
+		centralise();
 }
 
 //--------------------------------------------------------------
@@ -169,8 +172,22 @@ void testApp::saveCompressed() {
 
 		output.allocate(width, height, OF_IMAGE_COLOR);
 		memcpy(output.getPixels(), &results[0], sizeof(ofVec3f) * count);
-		output.saveImage("compressed.hdr");
+		output.saveImage(ofSystemLoadDialog("Save hdr...").fileName);
 		//
 		////
 	}
+}
+
+//--------------------------------------------------------------
+void testApp::centralise() {
+	ofVec3f *vImage = (ofVec3f*) input.getPixels();
+	ofVec3f *vMesh = mesh.getVerticesPointer();
+	
+	for (int i=0; i<input.getPixelsRef().size(); i++, vImage++, vMesh++) {
+		*vImage -= mean;
+		*vMesh -= mean;
+	}
+	
+	input.update();
+	mean -= mean;
 }

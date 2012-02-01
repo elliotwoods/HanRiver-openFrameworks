@@ -20,16 +20,17 @@ public:
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
 	
-	void loadImage();
-	void saveCompressed();
-	void centralise();
+	void generate();
+	void adjust(int dx, int dy);
+	void save();
+	
+	ofVec3f volume;
+	ofVec3f mean;
+	int count;
 	
 	ofxGrabCam camera;
 
-	ofImage input;
-	ofImage output;
-	float maxValue;
-	ofVec3f mean;
+	ofImage img;
 	
 	ofMesh mesh;
 };
