@@ -21,13 +21,8 @@ class testApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		
-		void loadImage();
-		
-		ofxGrabCam camera;
+		void convertImage();
 
-		ofxPFMImage img;
-		float maxValue;
-		ofVec3f mean;
-		
-		ofMesh mesh;
+		string filename1, filename2;
+		ofImage img;
 };
