@@ -26,8 +26,10 @@ public:
 	
 	ofxGrabCam camera;
 
-	ofImage input;
-	ofImage output;
+	float offset;
+
+	ofFloatImage input;
+	ofFloatImage output;
 	float maxValue;
 	ofVec3f mean;
 	
