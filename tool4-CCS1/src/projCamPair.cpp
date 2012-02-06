@@ -16,10 +16,14 @@ projCamPair::projCamPair(){
   CaptureCamera  = ofProjector();
   ncorrespond = 0;
   pointMesh.setMode(OF_PRIMITIVE_POINTS); 
+	projectorIndex = 1; // default to the first channel
 }
 
 projCamPair::projCamPair(const ofMatrix4x4& pProjView, int projW, int projH, 
-                         const ofMatrix4x4 & cProjView, int cameraW, int cameraH){    
+                         const ofMatrix4x4 & cProjView, int cameraW, int cameraH,
+												 int projectorIndexIn){    
+
+	projectorIndex = projectorIndexIn;
   
   CaptureProjector = ofProjector(pProjView, projW, projH);
   CaptureCamera = ofProjector(cProjView, cameraW, cameraH);
@@ -108,34 +112,64 @@ void projCamPair::procCorrespond(){
 	* this is presumably the channel value which is non-negative, in the event of multiple
 	* non-negative channel values we'll push the pixel to a 'confusingList'
 	*/
+
+  /**
+   * actually, apparently for each projector, we keep the image map in a different
+   * channel, so if we're p1 it'd be channel1, p2 it'll be channel 2 etc
+   * this is weird, what if they're more projectors than channels? such is the way of
+   * the world 
+   */
 	float v1, v2, v3;
 	int pointIndex = -1;
 	// start with just the first 5;
 	for(int i = 0; i < 1  ; i++){
 		v1 = nonEmptyPixels[i].v1;
-		v2 = nonEmptyPixels[i].v2;
+ 		v2 = nonEmptyPixels[i].v2;
 		v3 = nonEmptyPixels[i].v3;
-		if(v1 > 0 && v2 <= 0 && v3 <=0){
-			pointIndex = (int)v1;
-		} else if( v2 >= 0 && v1 <=0 && v3 <=0){
-			pointIndex = (int)v2;
-		} else if( v3 >= 0 && v1 <=0 && v2 <=0){
-			pointIndex = (int)v3;
-		} else {
-			pointIndex = -1;
-	}
+    pointIndex = -1;
+		// if(v1 > 0 && v2 <= 0 && v3 <=0){
+		// 	pointIndex = (int)v1;
+		// } else if( v2 >= 0 && v1 <=0 && v3 <=0){
+		// 	pointIndex = (int)v2;
+		// } else if( v3 >= 0 && v1 <=0 && v2 <=0){
+		// 	pointIndex = (int)v3;
+		// } else {
+		// 	pointIndex = -1;
+		// }
+
+    switch(projectorIndex){
+      case 1:
+        if(v1 > 0){
+          pointIndex = (int)v1;
+        }
+        break;
+      case 2:
+        if(v2 > 0){
+          pointIndex = (int)v2;          
+        }
+        break;
+      case 3:
+        if(v3 > 0){
+          pointIndex = (int)v3;
+        }
+        break;
+      default:
+        pointIndex = -1;
+        break;
+    }
+
     
-	if(pointIndex != -1){
-		processPixel(nonEmptyPixels[i].index, pointIndex);
-	} else {
-		tempPix = new corresPixel;
-		tempPix->index = nonEmptyPixels[i].index;
-		tempPix->v1 = v1;
-		tempPix->v2 = v2;
-		tempPix->v3 = v3;
-		confusingPixels.push_back(*tempPix);
-		delete tempPix;
-	}            
+		if(pointIndex != -1){
+			processPixel(nonEmptyPixels[i].index, pointIndex);
+		} else {
+			tempPix = new corresPixel;
+			tempPix->index = nonEmptyPixels[i].index;
+			tempPix->v1 = v1;
+			tempPix->v2 = v2;
+			tempPix->v3 = v3;
+			confusingPixels.push_back(*tempPix);
+			delete tempPix;
+		}            
 	}
 	ofLogError() << "N_confusing pixels: " << confusingPixels.size();
 	ofLogError() << "N_worked pixels: " << pointMesh.getNumVertices();
@@ -162,7 +196,6 @@ void projCamPair::processPixel(int cameraPixelIndex, int projectorPixelIndex){
   
 	ofRay intersector = projectorRay.intersect(cameraRay);
 
-    
 	this->projRayTest = projectorRay;
 	this->camRayTest = cameraRay;
 	this->interRay = intersector;

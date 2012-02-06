@@ -2,6 +2,11 @@
 
 /**
  * ccs, copied in fns from elliots project: test0-16bitImageLoad
+ * \todo - readme
+ *       - proper config options
+ *       - variable number of proj + cam
+ *       - make the correspondances actually work
+ *       - connect to openPCL
  */
 
 //--------------------------------------------------------------
@@ -101,7 +106,9 @@ projCamPair* testApp::setupProjCamPair(int index){
 	ofMatrix4x4 temp = cmat;
 	//temp.rotate(-90,0,0,1);
   
-	return(new projCamPair(pmat, projW, projH, temp,  camW, camH));
+	// ccs
+	// index sets the chanel index of the pixelMap that the projector corresponds to
+	return(new projCamPair(pmat, projW, projH, temp,  camW, camH, index));
 }
 
 void loadMatrix(ofMatrix4x4 *mat, string filepath){    

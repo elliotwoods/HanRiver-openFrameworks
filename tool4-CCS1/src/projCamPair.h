@@ -36,7 +36,7 @@ class projCamPair{
 public:
   projCamPair();
   projCamPair(const ofMatrix4x4& pProjView, int projW, int projH, 
-              const ofMatrix4x4& cProjView, int cameraW, int cameraH);  
+              const ofMatrix4x4& cProjView, int cameraW, int cameraH, int projectorIndexIn);  
   void draw(); // draws the cam / proj and any points in the mesh we have
   
   void setPixels(ofFloatImage *pix);
@@ -74,8 +74,14 @@ public:
   ofProjector CaptureCamera; 
   int ncorrespond; // number of 'echos' that actually workedx
   ofFloatImage imgPixels; // raw pixels we process into a depth map  
-  ofFloatImage xyzCubes; // the xyz locations (indexed by iprojector)
+  ofFloatImage xyzCubes; // the xyz locations (indexed by camera pixel)
   ofMesh pointMesh;
+
+	/**
+	 * which channel of imgPixels should we associate with 
+	 * the projector
+	 */
+	int projectorIndex;
   
   ofRay projRayTest;
   ofRay camRayTest;
