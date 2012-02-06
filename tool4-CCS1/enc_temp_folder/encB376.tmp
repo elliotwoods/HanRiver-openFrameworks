@@ -89,17 +89,9 @@ projCamPair* testApp::setupProjCamPair(int index){
 	string pMat1 = ofFilePath::removeExt(ofSystemLoadDialog("Load projector matrix").getPath());
   
 	//strip out the last number
-	#ifndef TARGET_OSX	
-	//strip out the last number from the filename strings
 	cMat1.pop_back();
 	pMat1.pop_back();
-	#else
-	cMat1=cMat1.substr(0, cMat1.length()-1);
-	pMat1=pMat1.substr(0, pMat1.length()-1);
-	ofLogError() << "cmat path: " << cMat1;
-	ofLogError() << "pmat path: " << pMat1;
-	#endif
-		
+  
 	filename << pMat1 << index << ".mat";
 	loadMatrix(&pmat, filename.str());
 	filename.clear(); // reset err flags
@@ -146,20 +138,20 @@ void loadMatrix(ofMatrix4x4 *mat, string filepath){
  * @arg nsplit: how many images are glued together (in the vertical direction)
  */
 ofFloatImage* testApp::selectImageSection(int index, int nsplit){
-	// how to we check that the image is full;
-	if(imgPixels.getWidth() < 1){
-		ofLogError() << "spilt failed on empty image";
-		throw(0);
-	} else {
-		int width = imgPixels.getWidth();
-		int height = imgPixels.getHeight()  / nsplit;
-		int channels = imgPixels.getPixelsRef().getNumChannels();
+// how to we check that the image is full;
+if(imgPixels.getWidth() < 1){
+ofLogError() << "spilt failed on empty image";
+throw(0);
+} else {
+int width = imgPixels.getWidth();
+int height = imgPixels.getHeight()  / nsplit;
+int channels = imgPixels.getPixelsRef().getNumChannels();
       
-		int offsetX = 0; 
-		int offsetY = index * height;
+int offsetX = 0; 
+int offsetY = index * height;
     
-		ofLogError() << "splitting out image: " << index;
-		ofLogError() << "width: " << width << " height: " << height << " channels: " << channels;    
+ofLogError() << "splitting out image: " << index;
+ofLogError() << "width: " << width << " height: " << height << " channels: " << channels;    
     
 //    int count = 0;
 //    int index = 0;
@@ -177,20 +169,22 @@ ofFloatImage* testApp::selectImageSection(int index, int nsplit){
 //      index++;
 //    }
 //    
-		ofFloatImage *img = new ofFloatImage();
-		img->cropFrom(imgPixels, offsetX, offsetY, width, height);
-		return(img);
-	}
+    
+    ofFloatImage *img = new ofFloatImage();
+    img->cropFrom(imgPixels, offsetX, offsetY, width, height);
+    return(img);
+  }
 }
 
 void testApp::loadPixelPoints(string fileName){
 //  ofFileDialogResult res = ofSystemLoadDialog("Select image");
 //  string fileName = res.filePath;
-	if (!(imgPixels.loadImage(fileName)))
+  if (!(imgPixels.loadImage(fileName)))
 		ofLogError() << "Failed to load image";
-	else {
-		ofLog() << "Loaded pixel points: " << fileName;
-	}
+  else {
+    ofLog() << "Loaded pixel points: " << fileName;
+  }
+  
 }
 
 void testApp::loadImageCubes(){
