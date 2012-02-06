@@ -89,9 +89,16 @@ projCamPair* testApp::setupProjCamPair(int index){
 	string pMat1 = ofFilePath::removeExt(ofSystemLoadDialog("Load projector matrix").getPath());
   
 	//strip out the last number
+	#ifndef TARGET_OSX	
 	cMat1.pop_back();
 	pMat1.pop_back();
-  
+	#else
+	cMat1=cMat1.substr(0, cMat1.length()-1);
+	pMat1=pMat1.substr(0, pMat1.length()-1);
+	ofLogError() << "cmat path: " << cMat1;
+	ofLogError() << "pmat path: " << pMat1;
+	#endif
+		
 	filename << pMat1 << index << ".mat";
 	loadMatrix(&pmat, filename.str());
 	filename.clear(); // reset err flags

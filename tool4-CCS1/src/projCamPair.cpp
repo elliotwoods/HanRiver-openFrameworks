@@ -121,8 +121,10 @@ void projCamPair::procCorrespond(){
    */
 	float v1, v2, v3;
 	int pointIndex = -1;
+	int nProcessed = 0; // how many pixels we actually processed
+	int nTestProcess = 1; // how many rays should we process before we break?
 	// start with just the first 5;
-	for(int i = 0; i < 1  ; i++){
+	for(int i = 0; i < nonEmptyPixels.size()  ; i++){
 		v1 = nonEmptyPixels[i].v1;
  		v2 = nonEmptyPixels[i].v2;
 		v3 = nonEmptyPixels[i].v3;
@@ -161,6 +163,10 @@ void projCamPair::procCorrespond(){
     
 		if(pointIndex != -1){
 			processPixel(nonEmptyPixels[i].index, pointIndex);
+			nProcessed++;
+			if(nProcessed > nTestProcess){
+				break;
+			}
 		} else {
 			tempPix = new corresPixel;
 			tempPix->index = nonEmptyPixels[i].index;
