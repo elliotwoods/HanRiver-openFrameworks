@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\testApp.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxPFM\src\ofxPFMImage.cpp">
+      <Filter>addons\ofxPFMImage\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxGrabCam\src\ofxGrabCam.cpp">
+      <Filter>addons\ofxGrabCam\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxRay\src\ofGeometric.cpp">
+      <Filter>addons\ofxRay</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxRay\src\ofPlane.cpp">
+      <Filter>addons\ofxRay</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxRay\src\ofProjector.cpp">
+      <Filter>addons\ofxRay</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxRay\src\ofRay.cpp">
+      <Filter>addons\ofxRay</Filter>
+    </ClCompile>
+    <ClCompile Include="src\projCamPair.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\testApp.h" />
+    <ClInclude Include="..\..\..\addons\ofxPFM\src\ofxPFMImage.h">
+      <Filter>addons\ofxPFMImage\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGrabCam\src\ofxGrabCam.h">
+      <Filter>addons\ofxGrabCam\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxRay\src\ofGeometric.h">
+      <Filter>addons\ofxRay</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxRay\src\ofPlane.h">
+      <Filter>addons\ofxRay</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxRay\src\ofProjector.h">
+      <Filter>addons\ofxRay</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxRay\src\ofRay.h">
+      <Filter>addons\ofxRay</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxRay\src\ofxRay.h">
+      <Filter>addons\ofxRay</Filter>
+    </ClInclude>
+    <ClInclude Include="src\projCamPair.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="addons">
+      <UniqueIdentifier>{1c52f653-215c-4234-bad9-79227a6d7ec4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxPFMImage">
+      <UniqueIdentifier>{e250a247-af2b-4a29-bca4-ed0fe2a14c6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxPFMImage\src">
+      <UniqueIdentifier>{7c83feae-a897-4767-a8b6-e11b8808de44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxGrabCam">
+      <UniqueIdentifier>{3d0c5973-373a-4351-84aa-f07300a870cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxGrabCam\src">
+      <UniqueIdentifier>{877b25df-4a01-4fe0-8a7d-d7b6c399e82a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxRay">
+      <UniqueIdentifier>{e0584ee0-580e-49a2-9d28-b21adb605256}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
