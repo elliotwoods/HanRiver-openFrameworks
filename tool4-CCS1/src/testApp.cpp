@@ -31,7 +31,7 @@ void testApp::setup(){
 	#ifndef DEBUGCCS
 	loadPixelPoints(ofSystemLoadDialog("iProjector in camera").getPath()); // load the pixels
 	#else 
-	string fileDefault = "~/Projects/kimchi-chips/downloaded-data/data-4/camera-iProjector.pfm";
+	string fileDefault = "/Users/chris/Projects/kimchi-chips/downloaded-data/data-4/camera-iProjector.pfm";
 	loadPixelPoints(fileDefault);
 	#endif
 	pair1->setPixels(selectImageSection(0, 4));
@@ -108,8 +108,8 @@ projCamPair* testApp::setupProjCamPair(int indexFile, int indexProjImage){
 	ofLogNotice() << "Load projector matrix";
 	string pMat1 = ofFilePath::removeExt(ofSystemLoadDialog("Load projector matrix").getPath());
 	#else
-	string cMat1 = "~/Projects/kimchi-chips/downloaded-data/data-4/camera";
-	string pMat1 = "~/Projects/kimchi-chips/downloaded-data/data-4/projector";
+	string cMat1 = "/Users/chris/Projects/kimchi-chips/downloaded-data/data-4/camera1";
+	string pMat1 = "/Users/chris/Projects/kimchi-chips/downloaded-data/data-4/projector1";
 	#endif
 	
   
@@ -226,7 +226,7 @@ void testApp::loadImageCubes(){
   string fileName = res.filePath;
   #else 
 	// hard coded
-	string fileName = "~/Projects/kimchi-chips/downloaded-data/data-4/camera-WorldXYZ.pfm";
+	string fileName = "/Users/chris/Projects/kimchi-chips/downloaded-data/data-4/camera-WorldXYZ.pfm";
 	#endif
 
   if (!(imgCubes.loadImage(fileName)))
