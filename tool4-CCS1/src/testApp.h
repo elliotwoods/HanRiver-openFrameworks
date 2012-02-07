@@ -5,6 +5,8 @@
 #include "ofxRay.h"
 #include "projCamPair.h"
 
+#define DEBUGCCS
+
 
 class testApp : public ofBaseApp{
 
@@ -27,7 +29,7 @@ public:
 
 	ofFloatImage* selectImageSection(int index, int nsplit);
 
-	projCamPair* setupProjCamPair(int index);
+	projCamPair* setupProjCamPair(int indexFile, int indexProjImage);
   
 	void dumpPoints(string filename, const ofFloatImage& image); // ccs added this to output the data we read as ascii
   

@@ -1,5 +1,9 @@
 #include "testApp.h"
 
+
+
+
+
 /**
  * ccs, copied in fns from elliots project: test0-16bitImageLoad
  * \todo - readme
@@ -17,13 +21,19 @@ void testApp::setup(){
 	ofBackground(50,50,50);
 	ofSetLogLevel(OF_LOG_NOTICE);
 	meshCubes.setMode(OF_PRIMITIVE_POINTS);
-	pair1 = setupProjCamPair(1);
+
+	pair1 = setupProjCamPair(1, 1); // init the first pair
 	//pair2 = setupProjCamPair(2);  
 	//pair3 = setupProjCamPair(3);
 	//pair4 = setupProjCamPair(4);
 	loadImageCubes();
 	ofLogNotice() << "iProjector in camera";
+	#ifndef DEBUGCCS
 	loadPixelPoints(ofSystemLoadDialog("iProjector in camera").getPath()); // load the pixels
+	#else 
+	string fileDefault = "~/Projects/kimchi-chips/downloaded-data/data-4/camera-iProjector.pfm";
+	loadPixelPoints(fileDefault);
+	#endif
 	pair1->setPixels(selectImageSection(0, 4));
 	pair1->xyzCubes = imgCubes;
 	pair1->procCorrespond();
@@ -74,7 +84,16 @@ void testApp::keyPressed(int key){
 }
 
 
-projCamPair* testApp::setupProjCamPair(int index){
+/**
+ * \bug dialogue box comes up, asks which files you want, BUT 
+ * if you select say camera3.mat and give indexFile=1 then 
+ * camera1.mat will be opened. This could be somewhat confusing
+ * 
+ * 
+ * @arg indexFile: which set of camera / projector files to use
+ * @arg indesProj: which actual channel in the pixelImage to use
+ */
+projCamPair* testApp::setupProjCamPair(int indexFile, int indexProjImage){
 	int projW = 1024;
 	int projH = 768;
 	int camW = 2560; // high res!
@@ -83,10 +102,16 @@ projCamPair* testApp::setupProjCamPair(int index){
 	ofMatrix4x4 cmat;
 	// hardcoded for testing only
 	stringstream filename;
+	#ifndef DEBUGCCS
 	ofLogNotice() << "Load camera matrix";
 	string cMat1 = ofFilePath::removeExt(ofSystemLoadDialog("Load camera matrix").getPath());
 	ofLogNotice() << "Load projector matrix";
 	string pMat1 = ofFilePath::removeExt(ofSystemLoadDialog("Load projector matrix").getPath());
+	#else
+	string cMat1 = "~/Projects/kimchi-chips/downloaded-data/data-4/camera";
+	string pMat1 = "~/Projects/kimchi-chips/downloaded-data/data-4/projector";
+	#endif
+	
   
 	//strip out the last number
 	#ifndef TARGET_OSX	
@@ -99,24 +124,24 @@ projCamPair* testApp::setupProjCamPair(int index){
 	ofLogError() << "cmat path: " << cMat1;
 	ofLogError() << "pmat path: " << pMat1;
 	#endif
-		
-	filename << pMat1 << index << ".mat";
+
+	filename << pMat1 << indexFile << ".mat";
 	loadMatrix(&pmat, filename.str());
 	filename.clear(); // reset err flags
 	filename.str(""); // reset sstream contents 
-	filename << cMat1 << index << ".mat"; 
+	filename << cMat1 << indexFile << ".mat"; 
 	loadMatrix(&cmat, filename.str());
   
 	/**
 	* this is a fix, the projector matrix is currently rotated by 90*
-	* rotated compared to the cam, this willÊundo this
+	* rotated compared to the cam, this will undo this
 	*/
 	ofMatrix4x4 temp = cmat;
 	//temp.rotate(-90,0,0,1);
   
 	// ccs
 	// index sets the chanel index of the pixelMap that the projector corresponds to
-	return(new projCamPair(pmat, projW, projH, temp,  camW, camH, index));
+	return(new projCamPair(pmat, projW, projH, temp,  camW, camH, indexProjImage));
 }
 
 void loadMatrix(ofMatrix4x4 *mat, string filepath){    
@@ -196,8 +221,13 @@ void testApp::loadPixelPoints(string fileName){
 void testApp::loadImageCubes(){
   float fudge = 5.0; // because for some reason the xyz file is offset by 5...?
   ofLogNotice() << "Select XYZ in camera space";
+	#ifndef DEBUGCCS
   ofFileDialogResult res = ofSystemLoadDialog("Select XYZ in camera space");
   string fileName = res.filePath;
+  #else 
+	// hard coded
+	string fileName = "~/Projects/kimchi-chips/downloaded-data/data-4/camera-WorldXYZ.pfm";
+	#endif
 
   if (!(imgCubes.loadImage(fileName)))
 		ofLogError() << "Failed to load image";
