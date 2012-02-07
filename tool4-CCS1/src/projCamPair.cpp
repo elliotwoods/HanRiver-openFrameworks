@@ -51,7 +51,9 @@ void projCamPair::draw(){
 	CaptureCamera.draw();
   
 	if(pointMesh.getNumVertices()){
+		glPointSize(10);
 		pointMesh.drawVertices();
+		glPointSize(1);
 	}
 
 	projRayTest.draw();
@@ -67,10 +69,71 @@ struct corresPixel{ // a nonempty pixel in the correspondance image
 };
 
 /**
+ * if we have the image as the clipping plane of the 
+ * camera, not the projector indices we have a different issue
+ */
+void projCamPair::procCorrespondClipPlane()
+{
+	ofLogNotice() << "begin clip-plane processing";
+	//ofFloatPixels *pix = (ofFloatPixels*)imgPixels.getPixels();
+
+	float* pixVal = (float*) imgPixels.getPixels();
+	//ofLogError() << "npix per channell: " << imgPixels.getPixelsRef().getNumChannels();
+	std::vector<corresPixel> nonEmptyPixels;
+	nonEmptyPixels.reserve(10000); // probably need at least this many...
+
+	corresPixel *tempPix;
+	int count = 0;
+	int npix = imgPixels.getWidth() * imgPixels.getHeight(); // size of the image
+	ofLogNotice() << "clip-plane npix: " << npix;
+
+	float pval1, pval2, pval3;
+	while(count < npix ){
+		pval1 = *pixVal++;
+		pval2 = *pixVal++;
+		pval3 = *pixVal++;
+		if(pval1 != 0 || pval2 != 0 || pval3 !=0){
+			tempPix = new corresPixel;
+			tempPix->index = count;
+			tempPix->v1 = pval1;
+			tempPix->v2 = pval2;
+			tempPix->v3 = pval3;
+			nonEmptyPixels.push_back(*tempPix);      
+			//ofLogNotice() << "index: " << count << "pixel: " << pval1 << " "  << pval2 << " " << pval3;
+			delete tempPix;
+		}
+		count++;
+	}
+	ofLogNotice() << "N_useful pixels: " << nonEmptyPixels.size();
+	
+	for(int i = 0; i < 5; i++)
+		ofLogError() << nonEmptyPixels[i].index << "  " << nonEmptyPixels[i].v1 << " " << nonEmptyPixels[i].v2 << " " << nonEmptyPixels[i].v3;
+
+	int ntestRays = 1;
+	float vx, vy, vz;
+	/** loop over nonempty pixels, 
+	 * cast rays for the first nTestRays pixels
+	 */
+	for(int i = 0; i < ntestRays; ++i){
+		vx = nonEmptyPixels[i].v1;
+ 		vy = nonEmptyPixels[i].v2;
+		vz = nonEmptyPixels[i].v3;
+
+		ofLogNotice() << "cindex: " << nonEmptyPixels[i].index << " " << vx << " " << vy << " " << vz;
+		processPixelClipPlane(nonEmptyPixels[i].index, vx, vy, vz);
+		
+	}
+
+
+}
+
+
+/**
  * start by finding the non empty pixels in the correspondance image
  * these are saved into the vector nonEmptyPixels
  */
-void projCamPair::procCorrespond(){
+void projCamPair::procCorrespond()
+{
 	ofFloatPixels *pix = (ofFloatPixels*)imgPixels.getPixels();
 	float* pixVal = (float*) imgPixels.getPixels();
 	ofLogError() << "npix per channell: " << imgPixels.getPixelsRef().getNumChannels();
@@ -105,7 +168,6 @@ void projCamPair::procCorrespond(){
   
 	for(int i = 0; i < 5; i++)
 		ofLogError() << nonEmptyPixels[i].index << "  " << nonEmptyPixels[i].v1 << " " << nonEmptyPixels[i].v2 << " " << nonEmptyPixels[i].v3;
-	
   
 	/**
 	* process the apparently valid pixels, for each pixel we will try and extract an index
@@ -123,6 +185,7 @@ void projCamPair::procCorrespond(){
 	int pointIndex = -1;
 	int nProcessed = 0; // how many pixels we actually processed
 	int nTestProcess = 1; // how many rays should we process before we break?
+	int nNegative = 0;
 	// start with just the first 5;
 	for(int i = 0; i < nonEmptyPixels.size()  ; i++){
 		v1 = nonEmptyPixels[i].v1;
@@ -139,11 +202,16 @@ void projCamPair::procCorrespond(){
 		// 	pointIndex = -1;
 		// }
 
+
     switch(projectorIndex){
       case 1:
         if(v1 > 0){
           pointIndex = (int)v1;
-        }
+        } else if(v1 < 0){
+					cerr << "# negative value (i-cam): " << nonEmptyPixels[i].index << "val: " << v1 << endl;
+				} else if(v1 == 0){
+					pointIndex = 0;
+				}
         break;
       case 2:
         if(v2 > 0){
@@ -160,14 +228,19 @@ void projCamPair::procCorrespond(){
         break;
     }
 
+		if(v1 < 0 || v2 < 0 || v3 < 0){
+			nNegative++;
+			pointIndex = -1; // flag negative pix for output
+		}
+
     
-		if(pointIndex != -1){
+		if(pointIndex > 0){
 			processPixel(nonEmptyPixels[i].index, pointIndex);
 			nProcessed++;
-			if(nProcessed > nTestProcess){
+			if(nProcessed >= nTestProcess){
 				break;
 			}
-		} else {
+		} else if(pointIndex < 0) {
 			tempPix = new corresPixel;
 			tempPix->index = nonEmptyPixels[i].index;
 			tempPix->v1 = v1;
@@ -177,9 +250,10 @@ void projCamPair::procCorrespond(){
 			delete tempPix;
 		}            
 	}
+	ofLogError() << "N_negative pixels: " << nNegative;
 	ofLogError() << "N_confusing pixels: " << confusingPixels.size();
-	ofLogError() << "N_worked pixels: " << pointMesh.getNumVertices();
-	//exit(1);
+	
+	ofLogError() << "N_worked pixels: " << nProcessed;
 }
 
 /**
@@ -190,7 +264,8 @@ void projCamPair::procCorrespond(){
   * if this is a good intersection add it as a 3d point in 
   * into pointMesh
   */
-void projCamPair::processPixel(int cameraPixelIndex, int projectorPixelIndex){
+void projCamPair::processPixel(int cameraPixelIndex, int projectorPixelIndex)
+{
 	ofVec3f interSecnLocn;
   
 	ofRay projectorRay = CaptureProjector.castPixelIndex(projectorPixelIndex);
@@ -209,6 +284,7 @@ void projCamPair::processPixel(int cameraPixelIndex, int projectorPixelIndex){
 	ofVec3f* cubeLocns = (ofVec3f*)this->xyzCubes.getPixels(); // locn in the cubes map
 	ofVec3f posRay = cubeLocns[cameraPixelIndex] - ofVec3f(5.0,5.0,5.0);
   
+	
 	this->pointMesh.addVertex(posRay);
   
 	ofLogError() << "posnRay: " << posRay;
@@ -220,6 +296,66 @@ void projCamPair::processPixel(int cameraPixelIndex, int projectorPixelIndex){
 	} 
 }
 
+
+
+/**  
+ * test ray reconstruction, 
+ * 
+ * here we pass in x,y locations in the projector-clip plane for a correspondance 
+ * along with the index in the camera map
+ * 
+ * ok so the projector ray looks good, now what's up with the camera ray?
+ * 
+ * @arg cameraIndex -> location of pixel in the camera plane
+ * @arg vx, vy, x-y location in the projector clip plane
+ * @arg vz -> weisnicht-wo
+ */
+void projCamPair::processPixelClipPlane(int cameraIndex, float vx , float vy, float vz)
+{
+	ofLogNotice() << "## PROJECTOR RAY: " << vx << " " << vy;
+	ofRay projectorRay = CaptureProjector.castCoordinate(vx, vy);
+	//ofRay projectorRay = CaptureProjector.castPixelIndex(0);
+	
+
+	ofLogNotice() << "## CAMERA RAY "; 
+	//ofRay cameraRay = CaptureCamera.castPixelIndex(0);
+  
+	ofRay cameraRay = CaptureCamera.castPixelIndex(cameraIndex); 
+	//ofRay cameraRay = CaptureCamera.castCoordinate(vx, vy-0.1);
+	
+	
+	
+	ofRay intersector = projectorRay.intersect(cameraRay);
+
+	this->projRayTest = projectorRay;
+	this->camRayTest = cameraRay;
+	this->interRay = intersector;
+
+	ofVec3f* cubeLocns = (ofVec3f*)this->xyzCubes.getPixels(); // locn in the cubes map
+	ofVec3f posTrue = cubeLocns[cameraIndex] - ofVec3f(5.0,5.0,5.0);
+  
+	ofLogError() << "posnClip: " << vx << vy << vz;
+	ofMatrix4x4 temp = CaptureProjector.viewProjMatrix.getInverse();
+	ofVec4f tf = ofVec3f(vx, vy, vz)* temp;
+	ofLogError() << "posnClipPostMult: " << tf;
+	tf = temp*ofVec3f(vx, vy, vz);
+	ofLogError() << "posnClipPreMult: " << tf;
+
+	
+	ofVec3f interSecnLocn;
+	
+	this->pointMesh.addVertex(posTrue);
+
+	ofLogError() << "posnTrue: " << posTrue;
+	ofLogError() << "interSectingRay: " << interRay.s << interRay.t << "length: " << interRay.getLength();
+
+	if(projectorRay.intersectionPoint(cameraRay, &interSecnLocn)){
+		ofLogError() << "intersection: (" << cameraIndex << "), clip-plane(" << vx << "," << vy << "): " << interSecnLocn.x << " " << interSecnLocn.y << " " << interSecnLocn.z;
+		this->pointMesh.addVertex(interSecnLocn);
+	} 
+
+	 
+}
 //void projCamPair::loadPixels(string filename){    
 //  if (!(imgPixels.loadPFMImage(filename)))
 //		ofLogError() << "projCamPair: Failed to load image";

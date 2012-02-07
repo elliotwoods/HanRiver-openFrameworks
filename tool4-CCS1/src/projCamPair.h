@@ -11,7 +11,6 @@
 #include "ofxRay.h"
 #include <iostream>
 
-
 #ifndef testImgLoad_projCamPair_h
 #define testImgLoad_projCamPair_h
 
@@ -62,9 +61,13 @@ public:
    * if they don't add the info to a failed list and go onto the next one
    */
   void procCorrespond();
+
+	void procCorrespondClipPlane();
   
   void processPixel(int pixelOwnIndex, int pixelValue);
   
+	void processPixelClipPlane(int cameraIndex, float vx, float vy, float vz); 
+
   /**
    * we read the camera data, each correspondance pixel is
    * a pixel that we should turn on in the projector
@@ -77,6 +80,7 @@ public:
   ofFloatImage xyzCubes; // the xyz locations (indexed by camera pixel)
   ofMesh pointMesh;
 
+	
 	/**
 	 * which channel of imgPixels should we associate with 
 	 * the projector
