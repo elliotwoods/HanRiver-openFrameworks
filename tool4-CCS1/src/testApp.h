@@ -26,6 +26,7 @@ public:
 	void gotMessage(ofMessage msg);
 	void loadImageCubes();
 	void loadPixelPoints(string fileName);
+	void toggleDrawImg();
 
 	ofFloatImage* selectImageSection(int index, int nsplit);
 
@@ -35,17 +36,26 @@ public:
   
 	ofxGrabCam camera;
   
-	ofFloatImage imgCubes;
-	ofFloatImage imgPixels; // elliots raw data is 4 images
+	ofFloatImage imgCubes; // the raw cube xyz pixels
+
+	/** 
+	 * pixels are float format, 
+	 * each channel corresponds to one projector that 
+	 * cast the pixels
+	 */
+	ofFloatImage imgPixels; 
+
 	float maxValue;
 	ofVec3f mean;
   
 	ofMesh meshCubes;
-    
-	projCamPair *pair1; // will need to free this somewhere...
+
+	projCamPair *pair1; 
 	projCamPair *pair2; 
 	projCamPair *pair3; 
 	projCamPair *pair4;
+	
+	int drawIndex;
 };
 
 void loadMatrix(ofMatrix4x4 *m, string filepath);

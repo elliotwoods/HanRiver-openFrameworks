@@ -2,8 +2,6 @@
 
 
 
-
-
 /**
  * ccs, copied in fns from elliots project: test0-16bitImageLoad
  * \todo - readme
@@ -16,7 +14,7 @@
 //--------------------------------------------------------------
 void testApp::setup(){
 	pair1 = pair2 = pair3 = pair4 = 0x0;
-
+	drawIndex = 1;
 	maxValue = 0;
 	ofBackground(50,50,50);
 	ofSetLogLevel(OF_LOG_NOTICE);
@@ -26,17 +24,23 @@ void testApp::setup(){
 	//pair2 = setupProjCamPair(2);  
 	//pair3 = setupProjCamPair(3);
 	//pair4 = setupProjCamPair(4);
-	loadImageCubes();
+
+	loadImageCubes(); 
 	ofLogNotice() << "iProjector in camera";
 	#ifndef DEBUGCCS
 	loadPixelPoints(ofSystemLoadDialog("iProjector in camera").getPath()); // load the pixels
 	#else 
-	string fileDefault = "/Users/chris/Projects/kimchi-chips/downloaded-data/data-4/camera-iProjector.pfm";
+	// string fileDefault = "/Users/chris/Projects/kimchi-chips/downloaded-data/data-4/camera-iProjector.pfm";
+
+	// ccs
+	// load the clip-plane positions file into the pixel image insted
+	string fileDefault = "/Users/chris/Projects/kimchi-chips/downloaded-data/data-5/camera-Projector1XYZ.hdr";
+	//string fileDefault = "/Users/chris/Projects/kimchi-chips/downloaded-data/data-5/camera-Projector1XYZ.pfm";
 	loadPixelPoints(fileDefault);
 	#endif
 	pair1->setPixels(selectImageSection(0, 4));
 	pair1->xyzCubes = imgCubes;
-	pair1->procCorrespond();
+	pair1->procCorrespondClipPlane();
 
 }
 
@@ -47,12 +51,31 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
+	
+#ifdef DRAWIMAGES
+	// check that the images work?
+	if(drawIndex == 1){
+		ofFloatImage imgTest = pair1->imgPixels;
+		imgTest.crop(0, 1024, 1200, 1024);
+		imgTest.draw(0, 0, 1200, 1024);
+	} else {
+		ofFloatImage imgTest = imgPixels;
+		imgTest.crop(0, 1024, 1200, 1024);
+		imgTest.draw(0, 0, 1200, 1024);
+	}
+#endif
+		
 	camera.begin();
 	ofPushStyle();
 	ofSetColor(250,150,150);
-	ofDrawGrid();
+	ofDrawGrid(10, 5, true);
 	ofPopStyle();
-	meshCubes.drawVertices();
+	#ifndef DEBUGCCS
+	// don't draw these all the time, this kills the laptop
+	//meshCubes.drawVertices();
+	#endif 
+	//meshCubes.drawVertices();
+
 	if(pair1 != 0x0)
 		pair1->draw();
 	if(pair2 != 0x0)
@@ -69,12 +92,19 @@ void testApp::draw(){
 	ofDrawBitmapString("Vertex count: " + ofToString(meshCubes.getNumVertices()), 10, y+=15);
 }
 
+void testApp::toggleDrawImg(){
+	ofLogNotice() << "toggle!" ;
+	drawIndex = -1*drawIndex;
+}
+
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
 	if (key == 'u')
 		loadImageCubes();
 	//  if (key == 'p')
 	//		loadPixelPoints();
+	if (key == 't')
+		toggleDrawImg();
 	if (key == 'c')
 		camera.toggleCursorDraw();
 	if (key =='f')
@@ -141,7 +171,7 @@ projCamPair* testApp::setupProjCamPair(int indexFile, int indexProjImage){
   
 	// ccs
 	// index sets the chanel index of the pixelMap that the projector corresponds to
-	return(new projCamPair(pmat, projW, projH, temp,  camW, camH, indexProjImage));
+	return(new projCamPair(pmat, projW, projH, cmat,  camW, camH, indexProjImage));
 }
 
 void loadMatrix(ofMatrix4x4 *mat, string filepath){    
@@ -226,7 +256,10 @@ void testApp::loadImageCubes(){
   string fileName = res.filePath;
   #else 
 	// hard coded
-	string fileName = "/Users/chris/Projects/kimchi-chips/downloaded-data/data-4/camera-WorldXYZ.pfm";
+	// this one is the actual projector view
+	string fileName = "/Users/chris/Projects/kimchi-chips/downloaded-data/data-5/camera-WorldXYZ.hdr";
+	//string fileName = "/Users/chris/Projects/kimchi-chips/downloaded-data/data-5/camera-Projector1XYZ.pfm";
+	//fudge = 0.0; // no fudge here please
 	#endif
 
   if (!(imgCubes.loadImage(fileName)))
