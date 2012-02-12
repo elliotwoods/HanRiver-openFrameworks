@@ -10,31 +10,30 @@
 
 
 projCamPair::projCamPair(){
-  // init with default for projector class, this will set
-  // random poses and locations i guess...
-  CaptureProjector = ofProjector();
-  CaptureCamera  = ofProjector();
-  ncorrespond = 0;
-  pointMesh.setMode(OF_PRIMITIVE_POINTS); 
+	// init with default for projector class, this will set
+	// random poses and locations i guess...
+	CaptureProjector = ofProjector();
+	CaptureCamera  = ofProjector();
+	ncorrespond = 0;
+	pointMesh.setMode(OF_PRIMITIVE_POINTS); 
 	projectorIndex = 1; // default to the first channel
 }
 
 projCamPair::projCamPair(const ofMatrix4x4& pProjView, int projW, int projH, 
-                         const ofMatrix4x4 & cProjView, int cameraW, int cameraH,
-												 int projectorIndexIn){    
-
+							const ofMatrix4x4 & cProjView, int cameraW, int cameraH,
+							int projectorIndexIn){
 	projectorIndex = projectorIndexIn;
   
-  CaptureProjector = ofProjector(pProjView, projW, projH);
-  CaptureCamera = ofProjector(cProjView, cameraW, cameraH);
+	CaptureProjector = ofProjector(pProjView, projW, projH);
+	CaptureCamera = ofProjector(cProjView, cameraW, cameraH);
     
-  // we should pick colors for both, otherwise may not draw right
-  CaptureProjector.color = ofColor(0,0,255);
-  CaptureCamera.color= ofColor(255,0,0);  
+	// we should pick colors for both, otherwise may not draw right
+	CaptureProjector.color = ofColor(0,0,255);
+	CaptureCamera.color= ofColor(255,0,0);  
     
-  ofLogError() << "projCamPair: "<< (int)this << "init with: cam(" << cameraW << " x " << cameraH << ") proj (" << projW << " x " << projH << ")";
-  ncorrespond = 0;
-  pointMesh.setMode(OF_PRIMITIVE_POINTS); 
+	ofLogError() << "projCamPair: "<< (int)this << "init with: cam(" << cameraW << " x " << cameraH << ") proj (" << projW << " x " << projH << ")";
+	ncorrespond = 0;
+	pointMesh.setMode(OF_PRIMITIVE_POINTS); 
 }
 
 void projCamPair::setPixels(ofFloatImage *pix){
@@ -126,7 +125,7 @@ void projCamPair::procCorrespond(){
 		v1 = nonEmptyPixels[i].v1;
  		v2 = nonEmptyPixels[i].v2;
 		v3 = nonEmptyPixels[i].v3;
-    pointIndex = -1;
+		pointIndex = -1;
 		// if(v1 > 0 && v2 <= 0 && v3 <=0){
 		// 	pointIndex = (int)v1;
 		// } else if( v2 >= 0 && v1 <=0 && v3 <=0){
@@ -137,28 +136,27 @@ void projCamPair::procCorrespond(){
 		// 	pointIndex = -1;
 		// }
 
-    switch(projectorIndex){
-      case 1:
-        if(v1 > 0){
-          pointIndex = (int)v1;
-        }
-        break;
-      case 2:
-        if(v2 > 0){
-          pointIndex = (int)v2;          
-        }
-        break;
-      case 3:
-        if(v3 > 0){
-          pointIndex = (int)v3;
-        }
-        break;
-      default:
-        pointIndex = -1;
-        break;
-    }
+		switch(projectorIndex){
+		  case 1:
+			if(v1 > 0){
+			  pointIndex = (int)v1;
+			}
+			break;
+		  case 2:
+			if(v2 > 0){
+			  pointIndex = (int)v2;          
+			}
+			break;
+		  case 3:
+			if(v3 > 0){
+			  pointIndex = (int)v3;
+			}
+			break;
+		  default:
+			pointIndex = -1;
+			break;
+		}
 
-    
 		if(pointIndex != -1){
 			processPixel(nonEmptyPixels[i].index, pointIndex);
 		} else {

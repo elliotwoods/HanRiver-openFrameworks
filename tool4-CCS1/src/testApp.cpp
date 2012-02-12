@@ -27,7 +27,6 @@ void testApp::setup(){
 	pair1->setPixels(selectImageSection(0, 4));
 	pair1->xyzCubes = imgCubes;
 	pair1->procCorrespond();
-
 }
 
 //--------------------------------------------------------------

@@ -22,6 +22,7 @@
       <Filter>addons\ofxRay</Filter>
     </ClCompile>
     <ClCompile Include="src\projCamPair.cpp" />
+    <ClCompile Include="SimpleConfig.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\testApp.h" />
@@ -47,6 +48,7 @@
       <Filter>addons\ofxRay</Filter>
     </ClInclude>
     <ClInclude Include="src\projCamPair.h" />
+    <ClInclude Include="SimpleConfig.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="addons">

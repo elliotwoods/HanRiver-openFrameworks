@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\testApp.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGraycode\src\Dataset.cpp">
+      <Filter>addons\ofxGraycode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxGraycode\src\ofxGraycode.cpp">
+      <Filter>addons\ofxGraycode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxGraycode\src\Payload.cpp">
+      <Filter>addons\ofxGraycode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscBundle.cpp">
+      <Filter>addons\ofxOsc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscMessage.cpp">
+      <Filter>addons\ofxOsc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscReceiver.cpp">
+      <Filter>addons\ofxOsc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscSender.cpp">
+      <Filter>addons\ofxOsc</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\testApp.h" />
+    <ClInclude Include="..\..\..\addons\ofxGraycode\src\Dataset.h">
+      <Filter>addons\ofxGraycode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGraycode\src\ofxGraycode.h">
+      <Filter>addons\ofxGraycode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGraycode\src\Payload.h">
+      <Filter>addons\ofxGraycode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGraycode\src\Types.h">
+      <Filter>addons\ofxGraycode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOsc.h">
+      <Filter>addons\ofxOsc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscArg.h">
+      <Filter>addons\ofxOsc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscBundle.h">
+      <Filter>addons\ofxOsc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscMessage.h">
+      <Filter>addons\ofxOsc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscReceiver.h">
+      <Filter>addons\ofxOsc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscSender.h">
+      <Filter>addons\ofxOsc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\win32pstdint.h">
+      <Filter>addons\ofxOsc</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="addons">
+      <UniqueIdentifier>{1c52f653-215c-4234-bad9-79227a6d7ec4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxGraycode">
+      <UniqueIdentifier>{20efbc74-ea99-4968-b4cb-23975d4b1eda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxOsc">
+      <UniqueIdentifier>{3c62de0f-5715-4944-b762-910cb9f23924}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
