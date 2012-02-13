@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\testApp.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxKeyboardSettings\src\ofxKeyboardSettings.cpp">
+      <Filter>addons\ofxKeyboardSettings\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxUeye\src\ofxUeye.cpp">
+      <Filter>addons\ofxUeye\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxUeye\src\ofxUeyeSettings.cpp">
+      <Filter>addons\ofxUeye\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxml.cpp">
+      <Filter>addons\ofxXmlSettings\libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlerror.cpp">
+      <Filter>addons\ofxXmlSettings\libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlparser.cpp">
+      <Filter>addons\ofxXmlSettings\libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.cpp">
+      <Filter>addons\ofxXmlSettings\src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{201d8c0e-7382-4db2-b0a5-f6a6244352c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons">
+      <UniqueIdentifier>{388576bd-1a81-4daf-a1f9-8b2ae26b409c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxUeye">
+      <UniqueIdentifier>{56281c58-551f-4c66-9273-b1aa483487fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxUeye\src">
+      <UniqueIdentifier>{0d09f80f-6a33-41e1-8d7e-b69178ae152d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxKeyboardSettings">
+      <UniqueIdentifier>{7cc08f17-00f4-4e60-8937-b63c785747ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxKeyboardSettings\src">
+      <UniqueIdentifier>{56f8962f-5c4c-4164-9349-15ece23df166}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxXmlSettings">
+      <UniqueIdentifier>{ef9cd2d7-bbaf-4129-af54-79b44756da3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxXmlSettings\src">
+      <UniqueIdentifier>{68199a0f-178a-416c-b5bb-b0037623b3ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxXmlSettings\libs">
+      <UniqueIdentifier>{2580e1c7-6214-4e38-ad91-5ca25642107e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\testApp.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxKeyboardSettings\src\ofxKeyboardSettings.h">
+      <Filter>addons\ofxKeyboardSettings\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxUeye\src\ofxUeye.h">
+      <Filter>addons\ofxUeye\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxUeye\src\ofxUeyeEvents.h">
+      <Filter>addons\ofxUeye\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxUeye\src\ofxUeyeSettings.h">
+      <Filter>addons\ofxUeye\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxUeye\src\uEye.h">
+      <Filter>addons\ofxUeye\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxXmlSettings\libs\tinyxml.h">
+      <Filter>addons\ofxXmlSettings\libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.h">
+      <Filter>addons\ofxXmlSettings\src</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\..\..\addons\ofxUeye\lib\uEye_api.lib">
+      <Filter>addons\ofxUeye</Filter>
+    </Library>
+    <Library Include="..\..\..\addons\ofxUeye\lib\uEye_api_64.lib">
+      <Filter>addons\ofxUeye</Filter>
+    </Library>
+  </ItemGroup>
+</Project>
