@@ -2,66 +2,55 @@
 
 //--------------------------------------------------------------
 void testApp::setup(){
-	
-	camWidth 		= 1280;	// try to grab at this size. 
-	camHeight 		= 720;
-	
-	vidGrabber.setVerbose(true);
-	vidGrabber.initGrabber(camWidth,camHeight);
-
-	ofSetWindowShape(vidGrabber.getWidth(), vidGrabber.getHeight());
+	ofSetFullscreen(true);
+	ofBackground(100,100,100);
 	sharpness = 0;
 
 	history = vector<float>(100, 0.0f);
 	position = history.begin();
 
 	ofEnableSmoothing();
+
+	camera.init(1);
+	showPreview = false;
 }
 
 
 //--------------------------------------------------------------
 void testApp::update(){
+	camera.update();
+	Mat input = toCv(camera);
+	cv::pyrDown(input, input);
+	cv::Sobel(input, treated, 3, 2, 2, 3);
+	ofxCv::copy(treated, preview);
+	cv::absdiff(treated, cv::Scalar(0.0f), treated);
+	cv::Scalar sum = cv::sum(treated);
+	this->sharpness = sqrt(sum[0]  / (camera.getWidth() * camera.getHeight())) * 10;
 	
-	ofBackground(100,100,100);
-	
-	vidGrabber.grabFrame();
-	
-	if (vidGrabber.isFrameNew()){
-		Mat input = toCv(vidGrabber);
-		if (vidGrabber.getPixelsRef().getNumChannels() > 1) {
-			//presume rgb
-			cv::cvtColor(input, treated, CV_RGB2GRAY);
-			cv::Sobel(input, treated, 3, 2, 2);
-		} else
-			cv::Sobel(input, treated, 3, 2, 2);
-		
-		cv::pyrDown(input, input);
-		cv::Sobel(input, treated, 3, 2, 2, 3);
-		cv::absdiff(treated, cv::Scalar(0.0f), treated);
-		cv::Scalar sum = cv::sum(treated);
-		this->sharpness = sqrt(sum[0]  / (vidGrabber.getWidth() * vidGrabber.getHeight()));
+	preview.update();
 
-		if (++position == history.end())
-			position = history.begin();
+	if (++position == history.end())
+		position = history.begin();
 
-		*position = this->sharpness;
-	}
-
+	*position = this->sharpness;
 }
 
 //--------------------------------------------------------------
 void testApp::draw(){
 
 	ofSetColor(255);
-	vidGrabber.draw(0,0);
+	if (showPreview)
+		preview.draw(0,0, ofGetWidth(), ofGetHeight());
+	else
+		camera.draw(0,0, ofGetWidth(), ofGetHeight());
 
 	ofPushMatrix();
-	ofScale(5.0f, 5.0f, 5.0f);
-	string text = "sharpness = " + ofToString(sharpness);
+	ofScale(30.0f, 30.0f, 30.0f);
+	string text = ofToString(sharpness, 1);
 	ofSetColor(40);
-	ofRect(10,10,text.length() * 8 + 10, 20);
+	ofRect(5,15,text.length() * 8 + 10, 20);
 	ofSetColor(255);
-	ofDrawBitmapString(text, 10 + 5, 25);
+	ofDrawBitmapString(text, 10, 30);
 	ofPopMatrix();
 
 	ofPushStyle();
@@ -94,11 +83,8 @@ void testApp::draw(){
 
 //--------------------------------------------------------------
 void testApp::keyPressed  (int key){ 
-
-	if (key == 'v')
-		vidGrabber.videoSettings();
-	
-	
+	if (key=='p')
+		showPreview ^= true;
 }
 
 //--------------------------------------------------------------
