@@ -7,6 +7,7 @@
 #include "ThreadedCapture.h"
 
 #define SELECTION_HEIGHT 50
+#define MIN_CAPTURES 3
 
 using namespace ofxCv;
 using namespace cv;
@@ -28,6 +29,8 @@ public:
 	//select mode
 	////
 	//
+	void scanCameras();
+	void selectCamera(int iSelection);
 	int iSelection;
 	vector<ofxUeyeDevice> devices;
 	//
@@ -37,14 +40,19 @@ public:
 	//run mode
 	////
 	//
+	void addFrame();
+	//
+	bool active;
+	ofxUeyeDevice device;
 	ThreadedCapture camera;
-	Mat lastFrame;
+	Mat thisFrame, lastFrame;
 	Calibration calibration;
 	//
 	float frameDifference;
 	float calmFrameDifferenceThreshold;
 	float calmDurationThreshold;
 	float lastMovement;
+	bool waitingForMovement;
 	//
 	////
 };

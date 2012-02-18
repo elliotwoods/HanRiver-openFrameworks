@@ -1,7 +1,7 @@
 #include "ThreadedCapture.h"
 
 ThreadedCapture::ThreadedCapture() {
-	this->isReady = false;
+	this->ready = false;
 	this->frameNew = false;
 	this->hasNewFrame = false;
 }
@@ -52,6 +52,14 @@ int ThreadedCapture::getHeight() {
 	return this->camera.getHeight();
 }
 
+ofxUeye& ThreadedCapture::getCamera() {
+	return this->camera;
+}
+
+bool ThreadedCapture::isReady() const{
+	return this->ready;
+}
+
 bool ThreadedCapture::isFrameNew() const {
 	return this->frameNew;
 }
@@ -59,7 +67,7 @@ bool ThreadedCapture::isFrameNew() const {
 void ThreadedCapture::threadedFunction() {
 	camera.init(device);
 	camera.setPixelClock(PIXELCLOCK);
-	this->isReady = true;
+	this->ready = true;
 	while (this->isThreadRunning()) {
 		camera.update();
 		lock();
@@ -67,6 +75,8 @@ void ThreadedCapture::threadedFunction() {
 		this->hasNewFrame = true;
 		unlock();
 	}
-	this->isReady = false;
+	lock();
+	this->ready = false;
 	camera.close();
+	unlock();
 }

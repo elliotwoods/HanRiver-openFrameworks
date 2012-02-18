@@ -17,14 +17,16 @@ public:
 	unsigned char * getPixels(); ///<remember to lock if you use this!
 	int getWidth();
 	int getHeight();
+	ofxUeye& getCamera();
 
+	bool isReady() const;
 	bool isFrameNew() const;
 protected:
 	void threadedFunction();
 	ofxUeye camera;
 	ofxUeyeDevice device;
 	ofImage secondBuffer;
-	bool isReady;
+	bool ready;
 	bool frameNew;
 	bool hasNewFrame;
 };
