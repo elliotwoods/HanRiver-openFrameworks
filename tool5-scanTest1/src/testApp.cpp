@@ -25,8 +25,8 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
-	int width = payload.getWidth() / 2;
-	int height = payload.getHeight() / 2;
+	int width = ofGetWidth() / 2;
+	int height = ofGetHeight();
 
 	video.draw(0, 0, width, height);
 	if (decoder.hasData() && previewFrame == -2)

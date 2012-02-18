@@ -24,7 +24,7 @@
     <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscSender.cpp">
       <Filter>addons\ofxOsc</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxUye\src\ofxUeye.cpp">
+    <ClCompile Include="..\..\..\addons\ofxUeye\src\ofxUeye.cpp">
       <Filter>addons\ofxUeye</Filter>
     </ClCompile>
   </ItemGroup>
@@ -63,7 +63,7 @@
     <ClInclude Include="..\..\..\addons\ofxOsc\src\win32pstdint.h">
       <Filter>addons\ofxOsc</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxUye\src\ofxUeye.h">
+    <ClInclude Include="..\..\..\addons\ofxUeye\src\ofxUeye.h">
       <Filter>addons\ofxUeye</Filter>
     </ClInclude>
   </ItemGroup>
@@ -82,10 +82,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="..\..\..\addons\ofxUye\libs\ueye\lib\win32\uEye_api.lib">
-      <Filter>addons\ofxUeye</Filter>
-    </Library>
-    <Library Include="..\..\..\addons\ofxUye\libs\ueye\lib\win32\uEye_api_64.lib">
+    <Library Include="..\..\..\addons\ofxUeye\libs\ueye\lib\win32\uEye_api.lib">
       <Filter>addons\ofxUeye</Filter>
     </Library>
   </ItemGroup>

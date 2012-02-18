@@ -34,4 +34,7 @@ class testApp : public ofBaseApp{
 		vector<float>::iterator position;
 		ofImage preview;
 		bool showPreview;
+		float magnification;
+
+		
 };

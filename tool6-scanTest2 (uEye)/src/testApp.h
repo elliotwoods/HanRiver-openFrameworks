@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxGrabCam.h"
+#include "ofxUeye.h"
 #include "ofxGraycode.h"
 #include "ofxOsc.h"
 
@@ -31,7 +31,7 @@ public:
 	void moveThreshold(int distance);
 
 	PayloadGraycode payload;
-	ofVideoGrabber video;
+	ofxUeye video;
 	Decoder decoder;
 
 	int previewFrame;

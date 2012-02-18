@@ -12,7 +12,11 @@ void testApp::setup(){
 	ofEnableSmoothing();
 
 	camera.init(1);
+	camera.setPixelClock(96);
 	showPreview = false;
+	ofSetCircleResolution(40);
+
+	magnification = 1.0f;
 }
 
 
@@ -20,7 +24,6 @@ void testApp::setup(){
 void testApp::update(){
 	camera.update();
 	Mat input = toCv(camera);
-	cv::pyrDown(input, input);
 	cv::Sobel(input, treated, 3, 2, 2, 3);
 	ofxCv::copy(treated, preview);
 	cv::absdiff(treated, cv::Scalar(0.0f), treated);
@@ -28,6 +31,7 @@ void testApp::update(){
 	this->sharpness = sqrt(sum[0]  / (camera.getWidth() * camera.getHeight())) * 10;
 	
 	preview.update();
+	preview.getTextureReference().setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
 
 	if (++position == history.end())
 		position = history.begin();
@@ -39,10 +43,18 @@ void testApp::update(){
 void testApp::draw(){
 
 	ofSetColor(255);
+	float factor = (magnification - 1.0f);
+	ofVec2f offset((float)ofGetMouseX() / ofGetWidth(), (float)ofGetMouseY() / ofGetHeight());
+	offset *= ofVec2f(camera.getWidth() * factor,
+						camera.getHeight() * factor);
+	ofPushMatrix();
+	ofTranslate(-offset);
+	ofScale(magnification, magnification);
 	if (showPreview)
-		preview.draw(0,0, ofGetWidth(), ofGetHeight());
+		preview.draw(0, 0);
 	else
-		camera.draw(0,0, ofGetWidth(), ofGetHeight());
+		camera.draw(0, 0);
+	ofPopMatrix();
 
 	ofPushMatrix();
 	ofScale(30.0f, 30.0f, 30.0f);
@@ -53,6 +65,17 @@ void testApp::draw(){
 	ofDrawBitmapString(text, 10, 30);
 	ofPopMatrix();
 
+	float max = 0;
+	float min = 1000000.0f;
+	for (int i=0; i<history.size(); i++) {
+		if (history[i] > max)
+			max = history[i];
+		if (history[i] < min)
+			min = history[i];
+	}
+	if (min == max)
+		min--;
+
 	ofPushStyle();
 	ofNoFill();
 	ofBeginShape();
@@ -60,7 +83,7 @@ void testApp::draw(){
 	ofSetColor(200,100,100);
 	for (int i=0; i<history.size(); i++) {
 		float x = (float)i / (float)history.size() * ofGetWidth();
-		float y = ofGetHeight() - history[i] * ofGetHeight() / 20.0f;
+		float y = ofGetHeight() - (history[i] - min) * ofGetHeight() / (max - min);
 		ofVertex(x, y);
 		if (history.begin() + i == position) {
 			ofPushStyle();
@@ -104,7 +127,9 @@ void testApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
-	
+	magnification *= 2.0f;
+	if (magnification > 16.0f)
+		magnification = 0.5f;
 }
 
 //--------------------------------------------------------------

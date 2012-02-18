@@ -7,7 +7,8 @@ void testApp::setup(){
 	payload.init(1280, 800);
 
 	ofSetWindowShape(payload.getWidth(), payload.getHeight() / 2);
-	video.initGrabber(2592, 1944, true);
+	
+	video.init(1, IS_SET_CM_BAYER);
 	decoder.init(payload);
 
 	rx.setup(SERVER_PORT);
@@ -25,8 +26,8 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
-	int width = payload.getWidth() / 2;
-	int height = payload.getHeight() / 2;
+	int width = ofGetWidth() / 2;
+	int height = ofGetHeight();
 
 	video.draw(0, 0, width, height);
 	if (decoder.hasData() && previewFrame == -2)
@@ -50,10 +51,6 @@ void testApp::keyPressed(int key){
 		decoder.loadDataSet();
 	if (key=='s')
 		decoder.saveDataSet();
-
-	if (key=='v')
-		video.videoSettings();
-
 }
 
 //--------------------------------------------------------------
@@ -102,6 +99,7 @@ void testApp::processInput(){
 	rx.getNextMessage(&msg);
 
 	if (msg.getAddress() == "/capture") {
+		video.update();
 		decoder << video;
 		ofLogNotice() << "capture frame " << decoder.getFrame();
 	}
@@ -109,22 +107,30 @@ void testApp::processInput(){
 	if (msg.getAddress() == "/clear") {
 		ofLogNotice() << "clear frames";
 		decoder.reset();
+		video.update();
+		decoder << video;
+		ofLogNotice() << "capture frame " << decoder.getFrame();
 	}
 }
 
 //--------------------------------------------------------------
 void testApp::moveFrame(int distance){ 
-	previewFrame = ofClamp(previewFrame + distance, -2, decoder.getCaptures().size()-1);
+	previewFrame = ofClamp(previewFrame + distance, -3, decoder.getCaptures().size()-1);
 
 	ofLogNotice() << "Preview frame #" << previewFrame;
 	if (previewFrame >= 0 && previewFrame < decoder.getCaptures().size())
 		capturePreview = ofImage(decoder.getCaptures()[previewFrame]);
 	if (previewFrame == -1)
+		capturePreview = decoder.getCameraInProjector();
+	if (previewFrame == -2)
 		capturePreview = ofImage(decoder.getMean());
 }
 
 //--------------------------------------------------------------
 void testApp::moveThreshold(int distance){ 
+	if (ofGetKeyPressed(OF_KEY_SHIFT))
+		distance *= 5;
 	decoder.setThreshold(ofClamp((int)decoder.getThreshold() + distance, 0, 255));
 	ofLogNotice() << "Threshold set at " << (int)decoder.getThreshold();
+	moveFrame(0);
 }

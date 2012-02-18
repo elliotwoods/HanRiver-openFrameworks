@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha27.1.dtd" >
    <PATCH nodename="C:\openFrameworks\openFrameworks\apps\KC.Installations.HanRiver.PreProduction.OpenFrameworks\tool5-scanTest1\sendGraycodeFromVVVV.v4p" filename="C:\openFrameworks\openFrameworks\addons\ofxGraycode\Example-DecodeGraycodeOSC\sendGraycodeFromVVVV.v4p" systemname="sendGraycodeFromVVVV">
-   <BOUNDS height="12210" left="10590" top="12435" type="Window" width="7050">
+   <BOUNDS height="12210" left="8325" top="14805" type="Window" width="7050">
    </BOUNDS>
    <NODE componentmode="FullScreen" id="3" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="100" left="1230" top="4020" type="Node" width="100">
@@ -406,12 +406,12 @@
    </LINK>
    <LINK dstnodeid="1" dstpinname="Height" srcnodeid="25" srcpinname="Y Output Value">
    </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="26" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="4440" top="4920" width="1590" height="270">
+   <NODE componentmode="InABox" id="26" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="4440" top="4920" type="Node" width="1590">
    </BOUNDS>
-   <BOUNDS type="Box" left="4440" top="4920" width="2025" height="2055">
+   <BOUNDS height="2055" left="4440" top="4920" type="Box" width="2025">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|//projector settings&cr;&lf;sharpness-&gt;1&cr;&lf;brightness-&gt;0&cr;&lf;contrast-&gt;0&cr;&lf;format-&gt;native|" encoded="0">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|//projector settings&cr;&lf;sharpness-&gt;1&cr;&lf;brightness-&gt;0&cr;&lf;contrast-&gt;0&cr;&lf;format-&gt;native|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
