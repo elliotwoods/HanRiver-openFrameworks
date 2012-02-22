@@ -7,6 +7,8 @@
 using namespace ofxCv;
 using namespace cv;
 
+#define SELECTION_HEIGHT 50
+
 class testApp : public ofBaseApp{
 	
 	public:
@@ -25,6 +27,20 @@ class testApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);		
 		
+	////
+	//select mode
+	////
+	//
+	bool selecting;
+	void drawSelect();
+	void scanCameras();
+	void selectCamera(int iSelection);
+	int iSelection;
+	ofxUeyeDevice device;
+	vector<ofxUeyeDevice> devices;
+	//
+	////
+
 		ofxUeye camera;
 
 		float sharpness;
@@ -35,6 +51,4 @@ class testApp : public ofBaseApp{
 		ofImage preview;
 		bool showPreview;
 		float magnification;
-
-		
 };

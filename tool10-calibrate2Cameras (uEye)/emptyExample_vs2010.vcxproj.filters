@@ -1,0 +1,289 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\CameraHead.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\testApp.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxCVgui\src\histograms\Histogram.cpp">
+      <Filter>ofxCvGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCVgui\src\include\GUIAssets.cpp">
+      <Filter>ofxCvGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCVgui\src\include\GUIDesigner.cpp">
+      <Filter>ofxCvGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCVgui\src\include\GUIGlobal.cpp">
+      <Filter>ofxCvGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCVgui\src\ofxCVgui.cpp">
+      <Filter>ofxCvGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCVgui\src\screens\Groups\scrGroupBase.cpp">
+      <Filter>ofxCvGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCVgui\src\screens\Groups\scrGroupGrid.cpp">
+      <Filter>ofxCvGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCVgui\src\screens\Groups\scrGroupTabbed.cpp">
+      <Filter>ofxCvGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCVgui\src\screens\scrBase.cpp">
+      <Filter>ofxCvGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCVgui\src\screens\scrDraw2D.cpp">
+      <Filter>ofxCvGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCVgui\src\screens\scrDraw3D.cpp">
+      <Filter>ofxCvGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCVgui\src\screens\scrFileSelect.cpp">
+      <Filter>ofxCvGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCVgui\src\screens\scrHistograms.cpp">
+      <Filter>ofxCvGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCVgui\src\screens\scrVbo.cpp">
+      <Filter>ofxCvGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCVgui\src\screens\scrViewport.cpp">
+      <Filter>ofxCvGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCVgui\src\screens\scrWidgets.cpp">
+      <Filter>ofxCvGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCVgui\src\widgets\wdgBase.cpp">
+      <Filter>ofxCvGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCVgui\src\widgets\wdgButton.cpp">
+      <Filter>ofxCvGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCVgui\src\widgets\wdgColour.cpp">
+      <Filter>ofxCvGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCVgui\src\widgets\wdgCounter.cpp">
+      <Filter>ofxCvGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCVgui\src\widgets\wdgFPS.cpp">
+      <Filter>ofxCvGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCVgui\src\widgets\wdgHistogram.cpp">
+      <Filter>ofxCvGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCVgui\src\widgets\wdgSlider.cpp">
+      <Filter>ofxCvGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCVgui\src\widgets\wdgTransform.cpp">
+      <Filter>ofxCvGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCVgui\src\widgets\wdgXYZ.cpp">
+      <Filter>ofxCvGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCv\libs\ofxCv\src\Calibration.cpp">
+      <Filter>ofxCv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCv\libs\ofxCv\src\ContourFinder.cpp">
+      <Filter>ofxCv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCv\libs\ofxCv\src\Distance.cpp">
+      <Filter>ofxCv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCv\libs\ofxCv\src\Helpers.cpp">
+      <Filter>ofxCv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCv\libs\ofxCv\src\Tracker.cpp">
+      <Filter>ofxCv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCv\libs\ofxCv\src\Utilities.cpp">
+      <Filter>ofxCv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCv\libs\ofxCv\src\Wrappers.cpp">
+      <Filter>ofxCv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxGrabCam\src\ofxGrabCam.cpp">
+      <Filter>ofxGrabCam</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxGrabCam\src\of3dMouseEventArgs.cpp">
+      <Filter>ofxGrabCam</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxRay\src\ofGeometric.cpp">
+      <Filter>ofxRay</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxRay\src\ofPlane.cpp">
+      <Filter>ofxRay</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxRay\src\ofProjector.cpp">
+      <Filter>ofxRay</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxRay\src\ofRay.cpp">
+      <Filter>ofxRay</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxUeye\src\ofxUeye.cpp">
+      <Filter>ofxUeye</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\CameraHead.h" />
+    <ClInclude Include="src\testApp.h" />
+    <ClInclude Include="..\..\..\addons\ofxCVgui\src\histograms\Histogram.h">
+      <Filter>ofxCvGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCVgui\src\include\GUIAssets.h">
+      <Filter>ofxCvGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCVgui\src\include\GUIConstants.h">
+      <Filter>ofxCvGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCVgui\src\include\GUIDesigner.h">
+      <Filter>ofxCvGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCVgui\src\include\GUIGlobal.h">
+      <Filter>ofxCvGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCVgui\src\ofxCVgui.h">
+      <Filter>ofxCvGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCVgui\src\screens\Groups\scrGroupBase.h">
+      <Filter>ofxCvGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCVgui\src\screens\Groups\scrGroupGrid.h">
+      <Filter>ofxCvGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCVgui\src\screens\Groups\scrGroupSwap.h">
+      <Filter>ofxCvGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCVgui\src\screens\Groups\scrGroupTabbed.h">
+      <Filter>ofxCvGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCVgui\src\screens\scrBase.h">
+      <Filter>ofxCvGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCVgui\src\screens\scrDraw2D.h">
+      <Filter>ofxCvGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCVgui\src\screens\scrDraw3D.h">
+      <Filter>ofxCvGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCVgui\src\screens\screens.h">
+      <Filter>ofxCvGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCVgui\src\screens\scrFileSelect.h">
+      <Filter>ofxCvGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCVgui\src\screens\scrHistograms.h">
+      <Filter>ofxCvGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCVgui\src\screens\scrVbo.h">
+      <Filter>ofxCvGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCVgui\src\screens\scrViewport.h">
+      <Filter>ofxCvGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCVgui\src\screens\scrWidgets.h">
+      <Filter>ofxCvGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCVgui\src\widgets\wdgBase.h">
+      <Filter>ofxCvGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCVgui\src\widgets\wdgButton.h">
+      <Filter>ofxCvGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCVgui\src\widgets\wdgColour.h">
+      <Filter>ofxCvGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCVgui\src\widgets\wdgCounter.h">
+      <Filter>ofxCvGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCVgui\src\widgets\wdgFPS.h">
+      <Filter>ofxCvGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCVgui\src\widgets\wdgHistogram.h">
+      <Filter>ofxCvGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCVgui\src\widgets\wdgSlider.h">
+      <Filter>ofxCvGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCVgui\src\widgets\wdgTransform.h">
+      <Filter>ofxCvGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCVgui\src\widgets\wdgXYZ.h">
+      <Filter>ofxCvGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCVgui\src\widgets\widgets.h">
+      <Filter>ofxCvGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCv\libs\ofxCv\include\ofxCv\Calibration.h">
+      <Filter>ofxCv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCv\libs\ofxCv\include\ofxCv\ContourFinder.h">
+      <Filter>ofxCv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCv\libs\ofxCv\include\ofxCv\Distance.h">
+      <Filter>ofxCv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCv\libs\ofxCv\include\ofxCv\Helpers.h">
+      <Filter>ofxCv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCv\libs\ofxCv\include\ofxCv\Tracker.h">
+      <Filter>ofxCv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCv\libs\ofxCv\include\ofxCv\Utilities.h">
+      <Filter>ofxCv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCv\libs\ofxCv\include\ofxCv\Wrappers.h">
+      <Filter>ofxCv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCv\src\ofxCv.h">
+      <Filter>ofxCv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGrabCam\src\ofxGrabCam.h">
+      <Filter>ofxGrabCam</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGrabCam\src\of3dMouseEventArgs.h">
+      <Filter>ofxGrabCam</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxRay\src\ofGeometric.h">
+      <Filter>ofxRay</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxRay\src\ofPlane.h">
+      <Filter>ofxRay</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxRay\src\ofProjector.h">
+      <Filter>ofxRay</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxRay\src\ofRay.h">
+      <Filter>ofxRay</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxRay\src\ofxRay.h">
+      <Filter>ofxRay</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxUeye\src\ofxUeye.h">
+      <Filter>ofxUeye</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="ofxCvGUI">
+      <UniqueIdentifier>{06791e8a-4cdc-4b01-bc6e-d0fa6d7e2a1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ofxCv">
+      <UniqueIdentifier>{89d26ccb-8138-410d-a466-06aa3fe47a00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ofxGrabCam">
+      <UniqueIdentifier>{b50def6a-be58-4e0f-afbb-e6d017c79ad4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ofxRay">
+      <UniqueIdentifier>{b8b1afa8-1904-474d-8ddf-58a88d94d91e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ofxUeye">
+      <UniqueIdentifier>{c5a82918-9ec1-421c-ab68-ba2526229222}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\..\..\addons\ofxUeye\libs\ueye\lib\win32\uEye_api.lib">
+      <Filter>ofxUeye</Filter>
+    </Library>
+    <Library Include="..\..\..\addons\ofxUeye\libs\ueye\lib\win32\uEye_api_64.lib">
+      <Filter>ofxUeye</Filter>
+    </Library>
+  </ItemGroup>
+</Project>
