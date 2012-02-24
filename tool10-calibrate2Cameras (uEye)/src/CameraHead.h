@@ -6,11 +6,6 @@
 //  Copyright 2011 Kimchi and Chips. All rights reserved.
 //
 
-//#define CAM_RES_X 1280
-//#define CAM_RES_Y 720
-#define CAM_RES_X 1920
-#define CAM_RES_Y 1080
-
 #define MIN_CALIBS 3
 
 #include "ofMain.h"
@@ -19,7 +14,7 @@
 #include "ofxCVgui.h"
 
 #include "ofxRay.h"
-#include "ofxUeye.h"
+#include "ofxUeyeThreaded.h"
 
 using namespace cv;
 using namespace ofxCv;
@@ -30,7 +25,7 @@ public:
 	CameraHead();
 	~CameraHead();
 	
-	void	init(int iDevice);
+	void	init(int iCamera);
 	void	close(ofEventArgs& e);
 	
 	void	update();
@@ -68,13 +63,11 @@ protected:
 	void	threadedFunction();
 	void	threadedAdd();
 	
-	ofImage		greyBetweenBuffer;
-	ofImage		greyThreadedInternal;
+	ofPixels threadBuffer;
 	
-	float		width, height;
-	ofVideoGrabber		video;
+	ofxUeyeThreaded		camera;
+	ofImage				videoPreview;
 	ofImage				videoUndistorted;
-	ofImage				liveRGB;
 	
 	ofMesh				frustum;
 	

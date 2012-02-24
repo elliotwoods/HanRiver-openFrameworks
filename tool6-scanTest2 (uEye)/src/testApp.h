@@ -4,6 +4,7 @@
 #include "ofxUeye.h"
 #include "ofxGraycode.h"
 #include "ofxOsc.h"
+#include "ofxUeyePreset_5480SL.h"
 
 #define SERVER_PORT 5588
 
@@ -37,4 +38,5 @@ public:
 	int previewFrame;
 	ofImage capturePreview;
 	ofxOscReceiver rx;
+	int fullScreen;
 };

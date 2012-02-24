@@ -156,6 +156,7 @@ if not exist "$(ProjectDir)\bin\data" mkdir  "$(ProjectDir)\bin\data"
     <ClCompile Include="..\..\..\addons\ofxRay\src\ofProjector.cpp" />
     <ClCompile Include="..\..\..\addons\ofxRay\src\ofRay.cpp" />
     <ClCompile Include="..\..\..\addons\ofxUeye\src\ofxUeye.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUeye\src\ofxUeyeThreaded.cpp" />
     <ClCompile Include="src\CameraHead.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\testApp.cpp" />
@@ -206,6 +207,7 @@ if not exist "$(ProjectDir)\bin\data" mkdir  "$(ProjectDir)\bin\data"
     <ClInclude Include="..\..\..\addons\ofxRay\src\ofRay.h" />
     <ClInclude Include="..\..\..\addons\ofxRay\src\ofxRay.h" />
     <ClInclude Include="..\..\..\addons\ofxUeye\src\ofxUeye.h" />
+    <ClInclude Include="..\..\..\addons\ofxUeye\src\ofxUeyeThreaded.h" />
     <ClInclude Include="src\CameraHead.h" />
     <ClInclude Include="src\testApp.h" />
   </ItemGroup>

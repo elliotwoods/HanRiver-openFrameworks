@@ -23,12 +23,12 @@ public:
 
 	void drawSelect();
 
-	bool selecting;
 
 	////
 	//select mode
 	////
 	//
+	bool selecting;
 	void scanCameras();
 	void selectCamera(int iSelection);
 	int iSelection;

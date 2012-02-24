@@ -10,7 +10,7 @@
 #include "CameraHead.h"
 
 CameraHead::CameraHead() :
-cameraRawScreen("Raw", video),
+cameraRawScreen("Raw", camera),
 cameraUndistortedScreen("Unidisorted", videoUndistorted),
 cameraScreen("Camera"),
 calibrationScreen("Calibration", calib),
@@ -38,24 +38,19 @@ viewScale(1.85f) // TODO : find where this comes from. this value is for a 640x3
 }
 
 CameraHead::~CameraHead() {
+	camera.close();
 	ofEventArgs e;
 	close(e);
 }
 
-void CameraHead::init(int iDevice) {
-	video.setDeviceID(iDevice);
-	video.initGrabber(CAM_RES_X, CAM_RES_Y);
-	imitate(videoUndistorted, video);
+void CameraHead::init(int iCamera) {
+	camera.init(iCamera, true);
+	videoUndistorted = camera.getPixelsRef();
+	float width = camera.getWidth();
+	float height = camera.getHeight();
 	
-	width = video.getWidth();
-	height = video.getHeight();
-	
-	liveRGB.allocate(width, height, OF_IMAGE_COLOR);
-	greyBetweenBuffer.allocate(width, height, OF_IMAGE_GRAYSCALE);
-	greyThreadedInternal.allocate(width, height, OF_IMAGE_GRAYSCALE);
-	
-	calib.setPatternSize(5,4);
-	calib.setSquareSize(5.67);
+	calib.setPatternSize(9,6);
+	calib.setSquareSize(3.95);
 	
 	frustum.setMode(OF_PRIMITIVE_LINE_STRIP);
 	
@@ -86,28 +81,18 @@ void CameraHead::close(ofEventArgs& e) {
 }
 
 void CameraHead::update () {	
-	video.update();
-	liveRGB.setFromPixels(video.getPixelsRef());
+	camera.update();
 	
-	//copy to mid buffer
-	lock();
-	unsigned char *in = liveRGB.getPixels();
-	unsigned char *out = greyBetweenBuffer.getPixels();
-
-	for (int i=0; i<width*height; ++i)
-	{
-		*out = *in/3 + *(in+1)/3 + *(in+2)/3;
-		
-		in+=3;
-		++out;
+	if (camera.isFrameNew()) {
+		//copy to mid buffer
+		lock();
+		//undistort
+		if (calib.isReady() && cameraScreen.iSelection==1) {
+			calib.undistort(toCv(camera.getPixelsRef()), toCv(videoUndistorted));
+			videoUndistorted.update();
+		}
+		unlock();
 	}
-	//undistort
-	if (calib.isReady() && cameraScreen.iSelection==1)
-	{
-		calib.undistort(toCv(video), toCv(videoUndistorted));
-		videoUndistorted.update();
-	}
-	unlock();
 }
 
 void CameraHead::drawCorners(ofRectangle &viewport) {
@@ -120,8 +105,8 @@ void CameraHead::drawCorners(ofRectangle &viewport) {
 		float x, y;
 		for (int i=0; i<imagePoints.size(); ++i)
 		{
-			x = imagePoints[i].x / width * viewport.width + viewport.x;
-			y = imagePoints[i].y / height * viewport.height + viewport.y;
+			x = imagePoints[i].x / camera.getWidth() * viewport.width + viewport.x;
+			y = imagePoints[i].y / camera.getHeight() * viewport.height + viewport.y;
 
 			ofCircle(x, y, 5);
 		}
@@ -144,7 +129,7 @@ void CameraHead::drawFrustum(ofNode& n) {
 	frustum.draw();	
 	ofPopMatrix();
 	
-	ray.draw(5);
+	ray.draw();
 }
 
 void CameraHead::drawOnUndistorted(ofRectangle &r) {
@@ -173,7 +158,7 @@ void CameraHead::drawOnUndistorted(ofRectangle &r) {
 }
 
 void CameraHead::settings() {
-	video.videoSettings();
+	ofLogError() << "video.videoSettings() is unsupported for ofxUEye";
 }
 
 void CameraHead::load(int i) {
@@ -195,32 +180,26 @@ void CameraHead::add() {
 }
 
 void CameraHead::threadedFunction() {
-	
-	while (isThreadRunning())
-	{
-		lock();
-		memcpy(greyThreadedInternal.getPixels(), greyBetweenBuffer.getPixels(), width*height);
-		unlock();
-		
-		if (doAdd)
-			threadedAdd();
-		else {
-			vector<Point2f> points;
-			bool found = calib.findBoard(toCv(greyThreadedInternal), points);
+	while (isThreadRunning()) {
+		camera.copyPixelsTo(threadBuffer);
+		vector<Point2f> points;
+		bool found = cv::findChessboardCorners(toCv(threadBuffer), calib.getPatternSize(), points, CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_FAST_CHECK);
 			
-			if (found){
-				lock();
-				imagePoints = points;
-				unlock();
-			}
+		if (found){
+			lock();
+			imagePoints = points;
+			unlock();
+			if (doAdd)
+				threadedAdd();
 		}
-	}	
+		ofSleepMillis(1);
+	}
 }
 
 void CameraHead::threadedAdd() {
 	if (lockCorners.tryLock())
 	{
-		calib.add(toCv(greyThreadedInternal));
+		calib.add(toCv(threadBuffer));
 		doAdd = false;
 		
 		if (calibCount() >= MIN_CALIBS)
@@ -291,8 +270,8 @@ void CameraHead::updateCursor(ofVec2f& p) {
 		{
 			ofVec3f c;
 			ofRectangle scr = cameraUndistortedScreen.getLiveBounds();
-			c.x = p.x * width;
-			c.y = p.y * height;
+			c.x = p.x * camera.getWidth();
+			c.y = p.y * camera.getHeight();
 			c.z = 100.0f;
 			ray.t = c * matPInverse;
 				

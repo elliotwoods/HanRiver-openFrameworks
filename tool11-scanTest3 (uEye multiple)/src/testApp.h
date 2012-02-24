@@ -1,14 +1,16 @@
 #pragma once
 
-#define TIMER_PERIOD 5.0f
-
 #include "ofMain.h"
+#include "ofxOsc.h"
+#include "ofxCvGui.h"
 
-#include "ofxCVgui.h"
-
+#define SERVER_PORT 5588
+#include "ofxGraycode.h"
 #include "CameraHead.h"
 
-class testApp : public ofBaseApp{
+using namespace ofxGraycode;
+
+class testApp : public ofBaseApp {
 
 public:
 	void setup();
@@ -24,28 +26,13 @@ public:
 	void windowResized(int w, int h);
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
-	
-	CameraHead		camera[2];
-	
-	
-	ofRay intersecter;
-	ofMatrix4x4		matPosRotFromXtoOther[2];
-	
-	void capture();
 
-	void calcTransforms();
-	void updateIntersects(ofRay &r);
-	
-	void clear();
-	void load();
-	void save();
-	
-	void draw3DCam(ofNode &n);
-	
-private:
-	scrGroupGrid	mainScreen;
-	ofxCVgui		gui;
-	
-	bool		timerOn;
-	float		lastCaptureTime;
+	void processInput();
+	void moveThreshold(int distance);
+
+	ofxCvGui::Builder gui;
+
+	ofxOscReceiver rx;
+	PayloadGraycode payload;
+	vector<CameraHead> cameras;
 };

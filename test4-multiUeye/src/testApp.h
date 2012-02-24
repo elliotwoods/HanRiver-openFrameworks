@@ -1,13 +1,10 @@
 #pragma once
 
-#define TIMER_PERIOD 5.0f
-
 #include "ofMain.h"
+#include "ofxUeyeThreaded.h"
+#include "ofxCvGui.h"
 
-#include "ofxCVgui.h"
-
-#include "CameraHead.h"
-
+#define NCAMERAS 2
 class testApp : public ofBaseApp{
 
 public:
@@ -24,28 +21,7 @@ public:
 	void windowResized(int w, int h);
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
-	
-	CameraHead		camera[2];
-	
-	
-	ofRay intersecter;
-	ofMatrix4x4		matPosRotFromXtoOther[2];
-	
-	void capture();
 
-	void calcTransforms();
-	void updateIntersects(ofRay &r);
-	
-	void clear();
-	void load();
-	void save();
-	
-	void draw3DCam(ofNode &n);
-	
-private:
-	scrGroupGrid	mainScreen;
-	ofxCVgui		gui;
-	
-	bool		timerOn;
-	float		lastCaptureTime;
+	ofxCvGui::Builder gui;
+	vector<ofPtr<ofxUeyeThreaded>> cameras;
 };

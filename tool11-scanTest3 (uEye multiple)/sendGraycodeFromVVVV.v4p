@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha27.1.dtd" >
    <PATCH nodename="C:\openFrameworks\openFrameworks\apps\KC.Installations.HanRiver.PreProduction.OpenFrameworks\tool6-scanTest2 (uEye)\sendGraycodeFromVVVV.v4p" filename="C:\openFrameworks\openFrameworks\addons\ofxGraycode\Example-DecodeGraycodeOSC\sendGraycodeFromVVVV.v4p" systemname="sendGraycodeFromVVVV">
-   <BOUNDS height="12210" left="14355" top="4515" type="Window" width="7050">
+   <BOUNDS height="12210" left="10005" top="4710" type="Window" width="7050">
    </BOUNDS>
    <NODE componentmode="FullScreen" id="3" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="100" left="1230" top="4275" type="Node" width="100">

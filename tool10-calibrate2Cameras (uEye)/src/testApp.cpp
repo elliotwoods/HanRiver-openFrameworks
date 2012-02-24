@@ -6,14 +6,9 @@ void testApp::setup(){
 	ofBackground(80,80,80);
 	ofSetVerticalSync(true);
 	ofEnableSmoothing();
-	//glEnable(GL_DEPTH_TEST);
-	
-	ofSetLogLevel(OF_LOG_NOTICE);
-	ofVideoGrabber g;
-	g.listDevices();
-	camera[0].init(0);
-	camera[0].init(2);
-	ofSetLogLevel(OF_LOG_NOTICE);
+
+	camera[0].init(1);
+	camera[1].init(2);
 	
 	intersecter.color = ofColor(255,255,0);
 	
@@ -60,12 +55,12 @@ void testApp::draw(){
 	
 }
 
-void testApp::updateIntersects(Ray &r) {
+void testApp::updateIntersects(ofRay &r) {
 	
-	Ray r1, r2;
+	ofRay r1, r2;
 	r1 = camera[0].ray;
 	r2 = camera[1].ray;
-	r2.transform(matPosRotFromXtoOther[1]);
+	r2 *= matPosRotFromXtoOther[1];
 	
 	intersecter = r1.intersect(r2);
 	
