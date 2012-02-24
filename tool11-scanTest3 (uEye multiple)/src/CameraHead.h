@@ -11,13 +11,10 @@ public:
 	CameraHead();
 	CameraHead(int cameraID, const Payload& payload);
 	void init(int cameraID, const Payload& payload);
-
 	void update();
-
 	int getID();
 	ofxUeyeThreaded& getCamera();
 	Decoder& getDecoder();
-
 protected:
 	ofPtr<ofxUeyeThreaded> camera;
 	Decoder decoder;

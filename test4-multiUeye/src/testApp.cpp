@@ -4,18 +4,20 @@
 void testApp::setup(){
 	gui.init();
 
+	vector<ofxUeyeDevice> devices = ofxUeye::listDevices();
+
 	ofSetLogLevel(OF_LOG_NOTICE);
-	for (int i=0; i<NCAMERAS; i++) {
+	for (int i=0; i<devices.size(); i++) {
 		ofPtr<ofxUeyeThreaded> camera(new ofxUeyeThreaded());
 		cameras.push_back(camera);
-		cameras.back()->init(i+1, true);
-		gui.add(*cameras[i], "Camera " + ofToString(i));
+		cameras.back()->init(devices[i]);
+		gui.add(*cameras[i], "Camera " + ofToString(cameras[i]->getCamera().getCameraID()));
 	}
 }
 
 //--------------------------------------------------------------
 void testApp::update(){
-	for (int i=0; i<NCAMERAS; i++)
+	for (int i=0; i<cameras.size(); i++)
 		cameras[i]->update();
 }
 

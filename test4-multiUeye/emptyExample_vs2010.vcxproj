@@ -118,7 +118,6 @@ if not exist "$(ProjectDir)\bin\data" mkdir  "$(ProjectDir)\bin\data"
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\addons\ofxUeye\src\ofxUEye.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxUeye\src\ofxUeyePreset_5480SL.cpp" />
     <ClCompile Include="..\..\..\addons\ofxUeye\src\ofxUeyeThreaded.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\testApp.cpp" />

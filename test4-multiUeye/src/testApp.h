@@ -4,7 +4,6 @@
 #include "ofxUeyeThreaded.h"
 #include "ofxCvGui.h"
 
-#define NCAMERAS 2
 class testApp : public ofBaseApp{
 
 public:

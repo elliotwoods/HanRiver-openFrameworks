@@ -9,8 +9,8 @@ void testApp::setup(){
 	gui.init();
 	for (int i=0; i<cameras.size(); i++) {
 		gui.add(cameras[i].getCamera(), "Camera " + ofToString(cameras[i].getID()));
-		gui.add(cameras[i].getDecoder(), "Camera " + ofToString(cameras[i].getID()) + " captures");
-		gui.add(cameras[i].getDecoder(), "Decoder" + ofToString(cameras[i].getID()));
+		gui.add(cameras[i].getDecoder(), "Camera " + ofToString(cameras[i].getID()) + " capture set");
+		gui.add(cameras[i].getDecoder(), "Decoder " + ofToString(cameras[i].getID()));
 	}
 
 	rx.setup(SERVER_PORT);

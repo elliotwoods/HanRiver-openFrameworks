@@ -6,9 +6,6 @@
     <ClCompile Include="..\..\..\addons\ofxUeye\src\ofxUEye.cpp">
       <Filter>ofxUeye</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxUeye\src\ofxUeyePreset_5480SL.cpp">
-      <Filter>ofxUeye</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\addons\ofxUeye\src\ofxUeyeThreaded.cpp">
       <Filter>ofxUeye</Filter>
     </ClCompile>
