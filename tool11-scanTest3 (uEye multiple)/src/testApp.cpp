@@ -1,16 +1,22 @@
 #include "testApp.h"
 
 //--------------------------------------------------------------
+testApp::~testApp() {
+	cameras.clear();
+}
+
+//--------------------------------------------------------------
 void testApp::setup(){
+	ofSetLogLevel(OF_LOG_NOTICE);
 	payload.init(1280, 800);
-	cameras.push_back(CameraHead(1, this->payload));
-	cameras.push_back(CameraHead(2, this->payload));
+	cameras.push_back(ofPtr<CameraHead>(new CameraHead(1, this->payload)));
+	cameras.push_back(ofPtr<CameraHead>(new CameraHead(2, this->payload)));
 
 	gui.init();
 	for (int i=0; i<cameras.size(); i++) {
-		gui.add(cameras[i].getCamera(), "Camera " + ofToString(cameras[i].getID()));
-		gui.add(cameras[i].getDecoder(), "Camera " + ofToString(cameras[i].getID()) + " capture set");
-		gui.add(cameras[i].getDecoder(), "Decoder " + ofToString(cameras[i].getID()));
+		gui.add(cameras[i]->getCamera(), "Camera " + ofToString(cameras[i]->getID()));
+		gui.add(cameras[i]->getDecoder().getCaptures(), "Camera " + ofToString(cameras[i]->getID()) + " capture set");
+		gui.add(cameras[i]->getDecoder(), "Decoder " + ofToString(cameras[i]->getID()));
 	}
 
 	rx.setup(SERVER_PORT);
@@ -19,7 +25,7 @@ void testApp::setup(){
 //--------------------------------------------------------------
 void testApp::update(){
 	for (int i=0; i<cameras.size(); i++)
-		cameras[i].update();
+		cameras[i]->update();
 
 	while (rx.hasWaitingMessages()) 
 		processInput();
@@ -90,23 +96,22 @@ void testApp::processInput(){
 	
 	ofxOscMessage msg;
 	rx.getNextMessage(&msg);
-	/*
+	
 	if (msg.getAddress() == "/capture") {
-		video.update();
-		ofLogNotice() << "capture frame " << decoder.getFrame();
-		video.update(); //flush frame. bad!
-		decoder << video;
+		ofLogNotice() << "capture frame ";
+#pragma omp parallel for schedule (guided)
+		for (int i=0; i<cameras.size(); i++)
+			cameras[i]->capture();
 	}
 
 	if (msg.getAddress() == "/clear") {
 		ofLogNotice() << "clear frames";
-		decoder.reset();
-		video.update();
-		ofLogNotice() << "capture frame " << decoder.getFrame();
-		video.update(); //flush frame. bad!
-		decoder << video;
+#pragma omp parallel for schedule (guided)
+		for (int i=0; i<cameras.size(); i++) {
+			cameras[i]->clear();
+			cameras[i]->capture(); //capture first frame
+		}
 	}
-	*/
 }
 
 //--------------------------------------------------------------

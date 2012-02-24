@@ -13,6 +13,7 @@ using namespace ofxGraycode;
 class testApp : public ofBaseApp {
 
 public:
+	~testApp();
 	void setup();
 	void update();
 	void draw();
@@ -34,5 +35,5 @@ public:
 
 	ofxOscReceiver rx;
 	PayloadGraycode payload;
-	vector<CameraHead> cameras;
+	vector<ofPtr<CameraHead> > cameras;
 };

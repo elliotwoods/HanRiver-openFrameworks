@@ -210,8 +210,7 @@ void testApp::selectCamera(int iSelection) {
 		this->device = devices[iSelection];
 		camera.init(this->device);
 		selecting = false;
-		camera.setExposure(50.0f);
-		camera.setGain(0.0f);
+		ofxUeyePreset_5480SL().apply(camera);
 	}
 }
 

@@ -9,14 +9,19 @@ using namespace ofxGraycode;
 class CameraHead {
 public:
 	CameraHead();
+	~CameraHead();
 	CameraHead(int cameraID, const Payload& payload);
 	void init(int cameraID, const Payload& payload);
 	void update();
 	int getID();
 	ofxUeyeThreaded& getCamera();
 	Decoder& getDecoder();
+
+	void capture();
+	void clear();
+
 protected:
-	ofPtr<ofxUeyeThreaded> camera;
+	ofxUeyeThreaded camera;
 	Decoder decoder;
 	const Payload* payload;
 };

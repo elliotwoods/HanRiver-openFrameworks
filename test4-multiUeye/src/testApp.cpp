@@ -10,7 +10,7 @@ void testApp::setup(){
 	for (int i=0; i<devices.size(); i++) {
 		ofPtr<ofxUeyeThreaded> camera(new ofxUeyeThreaded());
 		cameras.push_back(camera);
-		cameras.back()->init(devices[i]);
+		cameras.back()->init(i);
 		gui.add(*cameras[i], "Camera " + ofToString(cameras[i]->getCamera().getCameraID()));
 	}
 }

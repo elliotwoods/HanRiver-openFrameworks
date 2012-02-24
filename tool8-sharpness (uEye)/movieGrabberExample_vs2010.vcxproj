@@ -130,6 +130,7 @@ if not exist "$(ProjectDir)\bin\data" mkdir  "$(ProjectDir)\bin\data"
   <ItemGroup>
     <ClInclude Include="..\..\..\addons\ofxCv\src\ofxCv.h" />
     <ClInclude Include="..\..\..\addons\ofxUeye\src\ofxUeye.h" />
+    <ClInclude Include="..\..\..\addons\ofxUeye\src\ofxUeyePreset_5480SL.h" />
     <ClInclude Include="src\testApp.h" />
   </ItemGroup>
   <ItemGroup>

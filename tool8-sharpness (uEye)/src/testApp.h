@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "ofxCv.h"
 #include "ofxUeye.h"
+#include "ofxUeyePreset_5480SL.h"
 
 using namespace ofxCv;
 using namespace cv;
