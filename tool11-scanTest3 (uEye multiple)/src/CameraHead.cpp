@@ -45,20 +45,16 @@ Decoder& CameraHead::getDecoder() {
 
 //-----------
 void CameraHead::capture() {
-	camera.update(); //set fresh to false
-	camera.update(); //read new isFrameNew
-	while (!camera.isFrameNew()) {
-		camera.update();
-		ofSleepMillis(1);
-	}
-
-	ofPixels buffer;
-	camera.copyPixelsTo(buffer); //this function locks the thread during copy
-	decoder << buffer;
+#pragma omp critical(ofLog)
+	ofLogNotice() << "Camera " << this->getID() << " capturing frame " << decoder.getFrame();
+	ofSleepMillis(10); //delay for projector
+	decoder << camera.getFreshFrameCopy(); //take copy
 }
 
 //-----------
 void CameraHead::clear() {
+#pragma omp critical(ofLog)
+	ofLogNotice() << "Camera " << this->getID() << " resetting decoder";
 	decoder.reset();
 }
 

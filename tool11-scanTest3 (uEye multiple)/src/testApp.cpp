@@ -95,21 +95,19 @@ void testApp::dragEvent(ofDragInfo dragInfo){
 void testApp::processInput(){ 
 	
 	ofxOscMessage msg;
-	rx.getNextMessage(&msg);
+	while (rx.hasWaitingMessages()) {
+		rx.getNextMessage(&msg);
 	
-	if (msg.getAddress() == "/capture") {
-		ofLogNotice() << "capture frame ";
-#pragma omp parallel for schedule (guided)
-		for (int i=0; i<cameras.size(); i++)
-			cameras[i]->capture();
-	}
+		if (msg.getAddress() == "/capture") {
+	#pragma omp parallel for
+			for (int i=0; i<cameras.size(); i++)
+				cameras[i]->capture();
+		}
 
-	if (msg.getAddress() == "/clear") {
-		ofLogNotice() << "clear frames";
-#pragma omp parallel for schedule (guided)
-		for (int i=0; i<cameras.size(); i++) {
-			cameras[i]->clear();
-			cameras[i]->capture(); //capture first frame
+		if (msg.getAddress() == "/clear") {
+	#pragma omp parallel for
+			for (int i=0; i<cameras.size(); i++)
+				cameras[i]->clear();
 		}
 	}
 }
