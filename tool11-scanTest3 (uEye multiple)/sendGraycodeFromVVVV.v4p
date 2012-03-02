@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha27.1.dtd" >
    <PATCH nodename="C:\openFrameworks\openFrameworks\apps\KC.Installations.HanRiver.PreProduction.OpenFrameworks\tool11-scanTest3 (uEye multiple)\sendGraycodeFromVVVV.v4p" filename="C:\openFrameworks\openFrameworks\addons\ofxGraycode\Example-DecodeGraycodeOSC\sendGraycodeFromVVVV.v4p" systemname="sendGraycodeFromVVVV">
-   <BOUNDS height="15330" left="-11490" top="1590" type="Window" width="10020">
+   <BOUNDS height="15330" left="13020" top="2070" type="Window" width="10020">
    </BOUNDS>
    <NODE componentmode="FullScreen" id="3" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="100" left="1230" top="5625" type="Node" width="100">
@@ -183,7 +183,7 @@
    </PIN>
    <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
    </PIN>
-   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|480 x 640|">
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
    </PIN>
    <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
@@ -464,18 +464,18 @@
    </LINK>
    <LINK dstnodeid="3" dstpinname="Layers" srcnodeid="20" srcpinname="Layer">
    </LINK>
-   <NODE systemname="FrameDelay (Animation)" nodename="FrameDelay (Animation)" componentmode="Hidden" id="31">
-   <BOUNDS type="Node" left="705" top="6510" width="100" height="100">
+   <NODE componentmode="Hidden" id="31" nodename="FrameDelay (Animation)" systemname="FrameDelay (Animation)">
+   <BOUNDS height="100" left="705" top="6510" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Output 1" visible="1">
    </PIN>
    <PIN pinname="Input 1" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="31" srcpinname="Output 1" dstnodeid="5" dstpinname="Do Send">
+   <LINK dstnodeid="5" dstpinname="Do Send" srcnodeid="31" srcpinname="Output 1">
    </LINK>
-   <NODE systemname="OR (Boolean)" nodename="OR (Boolean)" componentmode="Hidden" id="32">
-   <BOUNDS type="Node" left="720" top="3525" width="100" height="100">
+   <NODE componentmode="Hidden" id="32" nodename="OR (Boolean)" systemname="OR (Boolean)">
+   <BOUNDS height="100" left="720" top="3525" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -484,24 +484,36 @@
    <PIN pinname="Input 2" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="15" dstpinname="Reset" linkstyle="VHV" hiddenwhenlocked="1">
+   <LINK dstnodeid="15" dstpinname="Reset" hiddenwhenlocked="1" linkstyle="VHV" srcnodeid="12" srcpinname="Y Output Value">
    <LINKPOINT x="2205" y="4223">
    </LINKPOINT>
    <LINKPOINT x="1095" y="4673">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="32" srcpinname="Output" dstnodeid="31" dstpinname="Input 1">
+   <LINK dstnodeid="31" dstpinname="Input 1" srcnodeid="32" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="32" dstpinname="Input 1" linkstyle="Bezier">
+   <LINK dstnodeid="32" dstpinname="Input 1" linkstyle="Bezier" srcnodeid="11" srcpinname="Y Output Value">
    <LINKPOINT x="1245" y="2063">
    </LINKPOINT>
    <LINKPOINT x="750" y="2063">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="32" dstpinname="Input 2" linkstyle="Bezier">
+   <LINK dstnodeid="32" dstpinname="Input 2" linkstyle="Bezier" srcnodeid="12" srcpinname="Y Output Value">
    <LINKPOINT x="2190" y="2063">
    </LINKPOINT>
    <LINKPOINT x="1110" y="2063">
    </LINKPOINT>
+   </LINK>
+   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="FullScreen" id="33">
+   <BOUNDS type="Node" left="4185" top="8265" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4185" top="8265" width="2400" height="1800">
+   </BOUNDS>
+   <BOUNDS type="Window" left="-12270" top="2400" width="6240" height="5010">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="20" srcpinname="Layer" dstnodeid="33" dstpinname="Layers">
    </LINK>
    </PATCH>

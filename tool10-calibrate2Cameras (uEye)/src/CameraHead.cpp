@@ -175,7 +175,7 @@ void CameraHead::save(int i) {
 
 void CameraHead::add() {
 	lock();
-	doAdd = true;
+	threadedAdd();
 	unlock();
 }
 

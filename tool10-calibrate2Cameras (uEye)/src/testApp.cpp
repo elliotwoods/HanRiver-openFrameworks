@@ -98,14 +98,16 @@ void testApp::keyPressed(int key){
 }
 
 void testApp::capture() {
-	//first check if we've got an asymetry from last time
-	int minCalibs = min(camera[0].calibCount(), camera[1].calibCount());
 	
-	for(int i=0; i<2; ++i)
-		camera[i].shrink(minCalibs);
-	
+#pragma omp parallel for
 	for(int i=0; i<2; ++i)
 		camera[i].add();
+
+
+	//first check if we've got an asymmetry (one has captured but the other hasn't)
+	int minCalibs = min(camera[0].calibCount(), camera[1].calibCount());
+	for(int i=0; i<2; ++i)
+		camera[i].shrink(minCalibs);
 }
 
 void testApp::calcTransforms() {
@@ -113,13 +115,20 @@ void testApp::calcTransforms() {
 	{
 		Mat tra, rot;
 		
-		if (!camera[0].calib.getTransformation(camera[1].calib, rot, tra))
+		if (camera[0].calib.imagePoints.size() != camera[1].calib.imagePoints.size())
 			return;
+
+		try {
+			if (!camera[0].calib.getTransformation(camera[1].calib, rot, tra))
+				return;
 		
-		matPosRotFromXtoOther[0] = makeMatrix(rot, tra);
+			matPosRotFromXtoOther[0] = makeMatrix(rot, tra);
 		
-		camera[1].calib.getTransformation(camera[0].calib, rot, tra);
-		matPosRotFromXtoOther[1] = makeMatrix(rot, tra);
+			camera[1].calib.getTransformation(camera[0].calib, rot, tra);
+			matPosRotFromXtoOther[1] = makeMatrix(rot, tra);
+		} catch (...) {
+			ofLogError() << "mismatch or something in calcTransforms";
+		}
 	}
 }
 
