@@ -5,7 +5,7 @@ CameraHead::CameraHead(const ofxUeyeDevice& device) {
 	if (!this->camera.init(device, IS_CM_MONO8)) {
 		ofLogError() << "Cannot initialise camera " << device.toString();
 		system("pause");
-		std:exit(0);
+		std::exit(0);
 	}
 	ofxUeyePreset_5480Chessboard().apply(this->camera);
 	

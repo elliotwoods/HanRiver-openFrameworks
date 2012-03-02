@@ -3,7 +3,7 @@
 #include "ofMain.h"
 #include "ofxCv.h"
 #include "ofxUeye.h"
-#include "ofxUeyePreset_5480SL.h"
+#include "ofxUeyePreset_5480ChessBoard.h"
 
 using namespace ofxCv;
 using namespace cv;
@@ -45,11 +45,13 @@ class testApp : public ofBaseApp{
 		ofxUeye camera;
 
 		float sharpness;
-		Mat treated;
+		Mat blurred, result;
 
 		vector<float> history;
 		vector<float>::iterator position;
 		ofImage preview;
 		bool showPreview;
 		float magnification;
+
+		ofSoundPlayer pop;
 };

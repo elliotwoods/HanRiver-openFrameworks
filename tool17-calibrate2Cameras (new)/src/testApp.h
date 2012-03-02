@@ -9,6 +9,7 @@
 
 #define SELECTION_HEIGHT 50
 #define MIN_CAPTURES 3
+#define ADD_FREQUENCY 3.0f
 
 using namespace ofxCv;
 using namespace cv;
@@ -27,4 +28,5 @@ public:
 	vector<ofPtr<CameraHead> > cameras;
 
 	ofSoundPlayer pop;
+	float lastAdd;
 };

@@ -96,7 +96,7 @@ void CameraHead::capture() {
 
 #pragma omp critical(ofLog)
 	ofLogNotice() << "Camera " << this->getCameraID() << " capturing frame " << this->getDecoder().getFrame();
-	ofSleepMillis(10); //delay for projector
+	ofSleepMillis(20); //delay for projector
 	this->getDecoder() << camera.getFreshFrameCopy(); //take copy
 	this->camera.setThreadPaused(this->getDecoder().getFrame() != 0 && this->getDecoder().getFrame() < this->getDecoder().getFrameCount());
 }
@@ -125,15 +125,15 @@ void CameraHead::moveThreshold(int distance) {
 void CameraHead::load() {
 	map<int, Decoder>::iterator it;
 	for (it = decoders.begin(); it != decoders.end(); it++)
-		it->second.loadDataSet("c" + ofToString(this->getCameraID()) + "-p" + ofToString(this->projector));
+		it->second.loadDataSet("c" + ofToString(this->getCameraID()) + "-p" + ofToString(this->projector) + ".DataSet");
 }
 
 //-----------
 void CameraHead::save() {
 	map<int, Decoder>::iterator it;
 	for (it = decoders.begin(); it != decoders.end(); it++) {
-		it->second.saveDataSet("c" + ofToString(this->getCameraID()) + "-p" + ofToString(this->projector) + ".DataSet");
-		it->second.getDataSet().saveCorrespondences("c" + ofToString(this->getCameraID()) + "-p" + ofToString(this->projector) + ".correspondences");
+		it->second.saveDataSet("c" + ofToString(this->getCameraID()) + "-p" + ofToString(it->first) + ".DataSet");
+		it->second.getDataSet().saveCorrespondences("c" + ofToString(this->getCameraID()) + "-p" + ofToString(it->first) + ".correspondences");
 	}
 }
 

@@ -9,7 +9,7 @@ const int startCleaning = 10; // start cleaning outliers after this many samples
 
 //-------------
 void testApp::setup() {
-	ofSetVerticalSync(true);
+	ofSetFrameRate(60);
 
 	//cameras
 	vector<ofxUeyeDevice> devices = ofxUeye::listDevices();
@@ -30,17 +30,24 @@ void testApp::setup() {
 	//sounds
 	pop.loadSound("pop-5.wav");
 	pop.setVolume(1.0f);
+	lastAdd = ofGetElapsedTimef();
 }
 
 //-------------
 void testApp::update() {
-	if (ofGetFrameNum() % (30 * 3) == 0) {
+	if (ofGetElapsedTimef() - lastAdd > ADD_FREQUENCY) {
 		vector<ofPtr<CameraHead> >::iterator it2;
-		for (it2 = cameras.begin(); it2 != cameras.end(); it2++)
+		for (it2 = cameras.begin(); it2 != cameras.end(); it2++) {
 			if ((*it2)->isFound()) {
+				pop.setSpeed(1.0f);
 				pop.play();
-				ofSleepMillis(300);
+			} else {
+				pop.setSpeed(0.6f);
+				pop.play();
 			}
+			ofSleepMillis(300);
+		}
+		add();
 	}
 }
 
@@ -69,4 +76,5 @@ void testApp::add() {
 #pragma omp parallel for
 	for (it = cameras.begin(); it != cameras.end(); it++)
 		(*it)->add();
+	lastAdd = ofGetElapsedTimef();
 }

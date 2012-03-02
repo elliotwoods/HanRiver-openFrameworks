@@ -5,7 +5,7 @@ void testApp::setup(){
 	ofBackground(100,100,100);
 	sharpness = 0;
 
-	history = vector<float>(100, 0.0f);
+	history = vector<float>(10, 0.0f);
 	position = history.begin();
 
 	ofEnableSmoothing();
@@ -19,6 +19,9 @@ void testApp::setup(){
 	this->scanCameras();
 	if (this->devices.size() == 1)
 		selectCamera(0);
+
+	pop.loadSound("Pop-5.wav");
+	pop.setVolume(1.0f);
 }
 
 
@@ -29,10 +32,10 @@ void testApp::update(){
 
 	camera.update();
 	Mat input = toCv(camera);
-	cv::Sobel(input, treated, 3, 2, 2, 3);
-	ofxCv::copy(treated, preview);
-	cv::absdiff(treated, cv::Scalar(0.0f), treated);
-	cv::Scalar sum = cv::sum(treated);
+	cv::blur(input, blurred, cv::Size(5, 5));
+	cv::absdiff(input, blurred, result);
+	ofxCv::copy(result, preview);
+	cv::Scalar sum = cv::sum(result);
 	this->sharpness = sqrt(sum[0]  / (camera.getWidth() * camera.getHeight())) * 10;
 	
 	preview.update();
@@ -42,6 +45,9 @@ void testApp::update(){
 		position = history.begin();
 
 	*position = this->sharpness;
+
+	pop.setSpeed(2.0f * (*position - 5) / (10 - 5));
+	pop.play();
 }
 
 //--------------------------------------------------------------
@@ -209,8 +215,8 @@ void testApp::selectCamera(int iSelection) {
 	if (iSelection >= 0 && iSelection < devices.size()) {
 		this->device = devices[iSelection];
 		camera.init(this->device);
+		ofxUeyePreset_5480Chessboard().apply(camera);
 		selecting = false;
-		ofxUeyePreset_5480SL().apply(camera);
 	}
 }
 
