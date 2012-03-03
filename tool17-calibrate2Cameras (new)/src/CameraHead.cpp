@@ -33,14 +33,14 @@ CameraHead::~CameraHead() {
 }
 
 //------------
-void CameraHead::add() {
-	lock();
-	camera.capture();
-	makePreview(false);
-	captures.add(camera.getPixelsRef(), this->downSampled);
-	
-
-	unlock();
+void CameraHead::add(int currentCapture) {
+	//if (this->found) {
+		lock();
+		camera.capture();
+		makePreview(false);
+		captures.add(currentCapture, raw, this->downSampled);
+		unlock();
+	//}
 }
 
 //------------
@@ -56,6 +56,11 @@ const ofxUeye& CameraHead::getCamera() const {
 //------------
 const vector<ofPixels>& CameraHead::getCaptures() const {
 	return this->captures.getPreviews();
+}
+
+//------------
+CameraSolver& CameraHead::getSolver() {
+	return this->captures;
 }
 
 //------------
@@ -92,7 +97,7 @@ void CameraHead::draw(float x, float y, float width, float height) {
 		ofPopStyle();
 	}
 
-	AssetRegister.drawText(string("Reprojection error : ") + ofToString(captures.getReprojectionError()), 20, 60, "", true, 30);
+	AssetRegister.drawText(string("Reprojection error : ") + ofToString(captures.getReprojectionError(), 3) + "px", 20, 60, "", true, 30);
 }
 
 //------------
@@ -103,6 +108,11 @@ float CameraHead::getWidth() {
 //------------
 float CameraHead::getHeight() {
 	return preview.getHeight();
+}
+
+//------------
+void CameraHead::savePixels() {
+	this->captures.savePixels(this->camera.getCameraID());
 }
 
 //------------
@@ -125,7 +135,8 @@ void CameraHead::makePreview(bool lock) {
 	//lots of thread locks/unlocks to allow add() to interrupt
 	if (lock)
 		this->lock();
-	this->camera.getPixelsRef().resizeTo(downSampled);
+	raw = this->camera.getPixelsRef();
+	raw.resizeTo(downSampled);
 	ofPixels myPixels = downSampled;
 	if (lock)
 		this->unlock();

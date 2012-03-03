@@ -24,9 +24,14 @@ public:
 	void mousePressed( int x, int y, int button );
 
 	void add();
+	void solveExtrinsicsAndSave();
+
+	void savePixels();
+
 	ofxCvGui::Builder gui;
 	vector<ofPtr<CameraHead> > cameras;
-
+	map<uint32_t, ofMatrix4x4> extrinsics; //camera ID + cameraID << 16
 	ofSoundPlayer pop;
 	float lastAdd;
+	int captureCount;
 };

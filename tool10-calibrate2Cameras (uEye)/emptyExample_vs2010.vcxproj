@@ -145,10 +145,10 @@ if not exist "$(ProjectDir)\bin\data" mkdir  "$(ProjectDir)\bin\data"
     <ClCompile Include="..\..\..\addons\ofxCVgui\src\widgets\wdgXYZ.cpp" />
     <ClCompile Include="..\..\..\addons\ofxGrabCam\src\of3dMouseEventArgs.cpp" />
     <ClCompile Include="..\..\..\addons\ofxGrabCam\src\ofxGrabCam.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxRay\src\ofGeometric.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxRay\src\ofPlane.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxRay\src\ofProjector.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxRay\src\ofRay.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxRay\src\ofxRay\ofGeometric.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxRay\src\ofxRay\ofPlane.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxRay\src\ofxRay\ofProjector.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxRay\src\ofxRay\ofRay.cpp" />
     <ClCompile Include="src\CameraHead.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\testApp.cpp" />
