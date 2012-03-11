@@ -1,0 +1,5 @@
+# Ignore everything in here apart from the .gitignore file
+*
+!.gitignore
+!ofxCvGui
+!instructions.txt
