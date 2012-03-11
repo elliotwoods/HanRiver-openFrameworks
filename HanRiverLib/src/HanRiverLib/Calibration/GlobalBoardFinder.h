@@ -2,5 +2,10 @@
 #include "ofxCv.h"
 
 namespace HanRiverLib {
-	extern ofxCv::Calibration boardFinder;
+	class GlobalBoardFinder {
+	public:
+		static void init(float boardPitch, int countX, int countY);
+		static ofxCv::Calibration boardFinder;
+		static vector<cv::Point3f> objectPoints;
+	};	
 }

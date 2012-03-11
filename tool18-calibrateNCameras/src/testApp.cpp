@@ -1,15 +1,28 @@
 #include "testApp.h"
 
 //-------------
+testApp::~testApp() {
+#pragma omp parallel for
+	for (int i=0; i<cameras.size(); i++)
+		cameras[i].close();
+}
+
+//-------------
 void testApp::setup() {
-	boardFinder.setSquareSize(0.04); //meters
-	boardFinder.setPatternSize(9, 6); //black backed chessboard
+	ofSetVerticalSync(true);
+	ofSetLogLevel(OF_LOG_NOTICE);
+
+	//black backed chessboard from studio
+	GlobalBoardFinder::init(0.04, 9, 6);
 
 	gui.init();
 	gui.addInstructions();
 
 //instantiate in sequence
 	vector<ofxUeyeDevice> devices = ofxUeye::listDevices();
+	//if camera vector is changed then gui objects will change
+	//address, i.e. we'll lose pointers to gui objects
+	cameras.reserve(devices.size());
 	for (int i=0; i<devices.size(); i++) {
 		cameras.push_back(CameraHead());
 		cameraMap.insert( pair<int, CameraHead*>( devices[i].cameraID, &cameras.back() ) );
@@ -32,7 +45,7 @@ void testApp::update() {
 void testApp::draw() {
 }
 
-//-------------c
+//-------------
 void testApp::keyPressed(int key) {
 	if (key == ' ')
 		addFrame();
@@ -55,9 +68,12 @@ void testApp::mousePressed(int x, int y, int button) {
 
 //-------------
 void testApp::addFrame() {
-//#pragma omp parallel for
-	for (int i=0; i<cameras.size(); i++)
+#pragma omp parallel for
+	for (int i=0; i<cameras.size(); i++) {
+		cout << i << endl;
+		ofLogNotice() << "Capture on camera " << cameras[i].getCameraID() << " started";
 		cameras[i].capture(captureID);
+	}
 	captureID++;
 }
 

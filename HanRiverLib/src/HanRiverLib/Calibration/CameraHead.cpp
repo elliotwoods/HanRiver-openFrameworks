@@ -2,11 +2,21 @@
 
 namespace HanRiverLib {
 	//----------
+	CameraHead::~CameraHead() {
+		this->close();
+	}
+
+	//----------
 	void CameraHead::init(const ofxUeyeDevice & device) {
 		this->cameraID = device.cameraID;
 		this->camera.init(device);
 		this->hasIntrinsics = false;
 		this->newFrame = false;
+	}
+
+	//----------
+	void CameraHead::close() {
+		this->camera.close();
 	}
 
 	//----------
@@ -19,21 +29,11 @@ namespace HanRiverLib {
 
 	//----------
 	void CameraHead::solveIntrinsics() {
-		//wait for all boards to be complete
-		unsigned int waitingFor = 1;
-		map<int, ofPtr<BoardFrame> >::const_iterator boardsIt;
-		while (waitingFor > 0) {
-			for (boardsIt = boards.begin(); boardsIt != boards.end(); boardsIt++) {
-				waitingFor = 0;
-				if (!boardsIt->second->isComplete())
-					waitingFor++;
-			}
-	#pragma omp critical(ofLog)
-			ofLogNotice("CameraHead") << "Camera " << cameraID << " still waiting to find " << waitingFor << " boards out of " << boards.size();
-		}
+		this->waitForComplete();
 
 		//find which boards have imagepoints
 		successfulFinds.clear();
+		map<int, ofPtr<BoardFrame> >::const_iterator boardsIt;
 		for (boardsIt = boards.begin(); boardsIt != boards.end(); boardsIt++)
 			if (boardsIt->second->isSuccess())
 				successfulFinds.insert(boardsIt->first);
@@ -90,6 +90,11 @@ namespace HanRiverLib {
 	}
 
 	//----------
+	void CameraHead::getCalibration(Mat & cameraMatrix, Mat & distortion) const {
+		cameraMatrix = this->intrinsics.getCameraMatrix();
+		distortion = this->distortion;
+	}
+	//----------
 	void CameraHead::draw(float x, float y) {
 		this->draw(x, y, this->getWidth(), this->getHeight());
 	}
@@ -141,14 +146,90 @@ namespace HanRiverLib {
 	}
 
 	//----------
+	void CameraHead::load() {
+		//look for files which define the 
+		ifstream file;
+		file.open(ofToDataPath(this->getFilenameBase()), ios::binary);
+
+		if (!file.is_open() || file.bad()) {
+#pragma omp critical(ofLog)
+			ofLogNotice("CameraHead") << "Camera " << cameraID << " cannot load";
+			file.close();
+			return;
+		}
+
+		this->successfulFinds.clear();
+		this->boards.clear();
+		uint16_t count;
+		int find;
+		file.read((char*)&count, sizeof(count));
+		for (int i=0; i<count; i++) {
+			file.read((char*)&find, sizeof(find));
+			this->successfulFinds.insert(find);
+		}
+
+		set<int>::const_iterator it;
+		for (it = this->successfulFinds.begin(); it != this->successfulFinds.end(); it++) {
+			this->boards.insert( pair<int, ofPtr<BoardFrame> > (
+				*it,
+				new BoardFrame( this->getBoardFilename(*it) ) ) );
+		}
+
+		file.close();
+	}
+
+	//----------
+	void CameraHead::save() const {
+		this->waitForComplete();
+
+		ofstream file;
+		file.open(ofToDataPath(this->getFilenameBase()), ios::binary);
+
+		if (!file.is_open() || file.bad()) {
+#pragma omp critical(ofLog)
+			ofLogNotice("CameraHead") << "Camera " << cameraID << " cannot save";
+			file.close();
+			return;
+		}
+
+		uint16_t count = this->successfulFinds.size();
+		int find;
+		file.write((char*)&count, sizeof(count));
+		set<int>::const_iterator it;
+		for (it = this->successfulFinds.begin(); it != this->successfulFinds.end(); it++) {
+			file.write((char*)&*it, sizeof(*it));
+			boards.at(*it)->save( this->getBoardFilename(*it) );
+		}
+
+		file.close();
+	}
+
+	//----------
+	void CameraHead::waitForComplete() const {
+		//wait for all boards to be complete
+		unsigned int waitingFor = 1;
+		map<int, ofPtr<BoardFrame> >::const_iterator boardsIt;
+		while (waitingFor > 0) {
+			for (boardsIt = boards.begin(); boardsIt != boards.end(); boardsIt++) {
+				waitingFor = 0;
+				if (!boardsIt->second->isComplete())
+					waitingFor++;
+			}
+	#pragma omp critical(ofLog)
+			ofLogNotice("CameraHead") << "Camera " << cameraID << " still waiting to find " << waitingFor << " boards out of " << boards.size();
+		}
+	}
+
+	//----------
 	void CameraHead::calibrateIntrinsics(const vector<vector<Point2f> > & imagePoints) {
 		if (imagePoints.size() < 3) {
+	#pragma omp critical(ofLog)
 			ofLogError("CameraHead") << "We have insufficient captures (" << imagePoints.size() << ") to calculate intrinsics for camera " << this->cameraID;
 			this->hasIntrinsics = false;
 			return;
 		}
 
-		ofxCv::Calibration calibration = boardFinder;
+		ofxCv::Calibration calibration = GlobalBoardFinder::boardFinder;
 		calibration.imagePoints = imagePoints;
 		calibration.setImageSize(cv::Size(this->camera.getWidth(), this->camera.getHeight()));
 
@@ -156,5 +237,15 @@ namespace HanRiverLib {
 		this->intrinsics = calibration.getDistortedIntrinsics();
 		this->distortion = calibration.getDistCoeffs();
 		this->hasIntrinsics = true;
+	}
+
+	//----------
+	string CameraHead::getFilenameBase() const {
+		return string("c") + ofToString(this->getCameraID());
+	}
+
+	//----------
+	string CameraHead::getBoardFilename(int board) const {
+		return this->getFilenameBase() + "b" + ofToString(board);
 	}
 }

@@ -3,6 +3,7 @@
 //--------------------------------------------------------------
 void testApp::setup(){
 	ofBackground(100,100,100);
+	ofSetLogLevel(OF_LOG_NOTICE);
 	sharpness = 0;
 
 	history = vector<float>(10, 0.0f);
@@ -58,20 +59,24 @@ void testApp::draw(){
 	}
 
 	ofSetColor(255);
-	ofVec2f factor = 1.0f - ofVec2f(ofGetWidth() / (camera.getWidth() * magnification), ofGetHeight() / (camera.getHeight() * magnification));
-	if (factor.x < 0.0f)
-		factor = 0.0f;
-	ofVec2f offset((float)ofGetMouseX() / ofGetWidth(), (float)ofGetMouseY() / ofGetHeight());
-	ofPushMatrix();
-	ofTranslate(-1.0f * ofVec2f(camera.getWidth(), camera.getHeight()) * offset * factor);// + ofVec2f(ofGetWidth(), ofGetHeight()) );
-	ofScale(magnification, magnification);
-	
-	if (showPreview)
-		preview.draw(0, 0);
-	else
-		camera.draw(0, 0);
-	ofPopMatrix();
 
+	if (this->magnification == 1.0f) {
+		this->camera.draw(0,0, ofGetWidth(), ofGetHeight());
+	} else {
+		ofVec2f factor = 1.0f - ofVec2f(ofGetWidth() / (camera.getWidth() * magnification), ofGetHeight() / (camera.getHeight() * magnification));
+		if (factor.x < 0.0f)
+			factor = 0.0f;
+		ofVec2f offset((float)ofGetMouseX() / ofGetWidth(), (float)ofGetMouseY() / ofGetHeight());
+		ofPushMatrix();
+		ofTranslate(-1.0f * ofVec2f(camera.getWidth(), camera.getHeight()) * offset * factor);// + ofVec2f(ofGetWidth(), ofGetHeight()) );
+		ofScale(magnification, magnification);
+	
+		if (showPreview)
+			preview.draw(0, 0);
+		else
+			camera.draw(0, 0);
+		ofPopMatrix();
+	}
 	ofPushMatrix();
 	ofScale(30.0f, 30.0f, 30.0f);
 	string text = ofToString(sharpness, 1);
@@ -120,10 +125,10 @@ void testApp::draw(){
 	ofEndShape(false);
 	ofPopStyle();
 
+	ofDrawBitmapString("[r] = reselect camera", 10, 40);
 	ofDrawBitmapString("[f] = toggle fullscreen", 10,10);
 	ofDrawBitmapString("[p] = toggle preview", 10,20);
-	ofDrawBitmapString("[left click]/[right click] = zoom in/zoom out [x" + ofToString(magnification) + "]", 10,30);
-	ofDrawBitmapString("[r] = reselect camera", 10, 40);
+	ofDrawBitmapString("[left click]/[right click] = zoom in/zoom out [x" + ofToString(magnification) + "]. 1.0f is special case 'zoom to screen'", 10,30);
 	ofDrawBitmapString("[c] = set pixel clock 96", 10, 50);
 	ofDrawBitmapString("[o] = set optimal camera timing", 10, 60);
 	ofDrawBitmapString(device.toString(), 10, 90);
@@ -217,6 +222,7 @@ void testApp::selectCamera(int iSelection) {
 		camera.init(this->device);
 		ofxUeyePreset_5480Chessboard().apply(camera);
 		selecting = false;
+		this->magnification = 1.0f;
 	}
 }
 

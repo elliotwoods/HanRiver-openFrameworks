@@ -3,13 +3,19 @@
 #include <set>
 
 #include "ofxUeye.h"
+#include "ofxUeyePreset_5480ChessBoard.h"
+
 #include "BoardFrame.h"
 #include "ofMain.h"
 
 namespace HanRiverLib {
 	class CameraHead : public ofBaseDraws {
 	public:
+		~CameraHead();
+
 		void init(const ofxUeyeDevice & device);
+		void close();
+
 		void capture(int captureID);
 		void solveIntrinsics();
 	
@@ -19,6 +25,7 @@ namespace HanRiverLib {
 		const set<int> & getSuccessfulFinds() const;
 		set<int> getCommonSuccessfulFinds(const set<int> & otherSuccessfulFinds) const;
 		set<int> getCommonSuccessfulFinds(const CameraHead & other) const;
+		void getCalibration(Mat & cameraMatrix, Mat & distortion) const;
 
 		//ofBaseDraws
 		void draw(float x,float y);
@@ -26,9 +33,15 @@ namespace HanRiverLib {
 		float getHeight();
 		float getWidth();
 	
+		//image points
+		void load();
+		void save() const;
 	protected:
-		void calibrateIntrinsics(const vector<vector<Point2f> > & imagePoints);
+		void waitForComplete() const;
 
+		void calibrateIntrinsics(const vector<vector<Point2f> > & imagePoints);
+		string getFilenameBase() const;
+		string getBoardFilename(int board) const;
 		map<int, ofPtr<BoardFrame> > boards;
 		set<int> successfulFinds;
 

@@ -11,6 +11,7 @@ using namespace HanRiverLib;
 
 class testApp : public ofBaseApp {
 public:
+	~testApp();
 	void setup();
 	void update();
 	void draw();
