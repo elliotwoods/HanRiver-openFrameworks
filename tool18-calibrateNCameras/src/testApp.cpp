@@ -55,6 +55,12 @@ void testApp::keyPressed(int key) {
 		solveExtrinsics();
 	if (key == 's')
 		solveAllAndSave();
+	if (key == 'a')
+		for (int i=0; i<cameras.size(); i++)
+			cameras[i].save();
+	if (key == 'z')
+		for (int i=0; i<cameras.size(); i++)
+			cameras[i].load();
 }
 
 //-------------
@@ -71,6 +77,7 @@ void testApp::addFrame() {
 #pragma omp parallel for
 	for (int i=0; i<cameras.size(); i++) {
 		cout << i << endl;
+#pragma omp critical(ofLog)
 		ofLogNotice() << "Capture on camera " << cameras[i].getCameraID() << " started";
 		cameras[i].capture(captureID);
 	}

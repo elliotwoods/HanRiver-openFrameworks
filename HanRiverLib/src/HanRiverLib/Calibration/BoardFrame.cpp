@@ -46,7 +46,7 @@ namespace HanRiverLib {
 			this->stopThread();
 
 		ifstream file;
-		file.open(filename, ios::binary);
+		file.open(ofToDataPath(filename), ios::binary);
 
 		uint16_t pointCount;
 		file.read((char*)&pointCount, sizeof(pointCount));
@@ -64,7 +64,7 @@ namespace HanRiverLib {
 			ofSleepMillis(10);
 
 		ofstream file;
-		file.open(filename, ios::binary);
+		file.open(ofToDataPath(filename), ios::binary);
 
 		uint16_t pointCount = this->imagePoints.size();
 		file.write((char*)&pointCount, sizeof(pointCount));

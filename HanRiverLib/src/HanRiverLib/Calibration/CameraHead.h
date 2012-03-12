@@ -35,9 +35,10 @@ namespace HanRiverLib {
 	
 		//image points
 		void load();
-		void save() const;
+		void save();
 	protected:
 		void waitForComplete() const;
+		void updateSuccessfulFinds();
 
 		void calibrateIntrinsics(const vector<vector<Point2f> > & imagePoints);
 		string getFilenameBase() const;

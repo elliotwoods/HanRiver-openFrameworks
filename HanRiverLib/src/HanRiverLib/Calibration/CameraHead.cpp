@@ -30,13 +30,7 @@ namespace HanRiverLib {
 	//----------
 	void CameraHead::solveIntrinsics() {
 		this->waitForComplete();
-
-		//find which boards have imagepoints
-		successfulFinds.clear();
-		map<int, ofPtr<BoardFrame> >::const_iterator boardsIt;
-		for (boardsIt = boards.begin(); boardsIt != boards.end(); boardsIt++)
-			if (boardsIt->second->isSuccess())
-				successfulFinds.insert(boardsIt->first);
+		this->updateSuccessfulFinds();
 
 
 		//create vector<vector<Point2f>> with successes
@@ -109,7 +103,9 @@ namespace HanRiverLib {
 		preview.draw(x,y,w,h);
 
 		ofPushStyle();
-		ofSetLineWidth(2.0f);
+		ofEnableSmoothing();
+		ofSetLineWidth(1.0f);
+		ofNoFill();
 		ofColor recent(200, 100, 100);
 		ofColor stale(100, 100, 100);
 		ofColor current;
@@ -126,9 +122,10 @@ namespace HanRiverLib {
 					posInView.x = imagePoints[j].x / this->getWidth() * w + x;
 					posInView.y = imagePoints[j].y / this->getHeight() * h + y;
 					ofVertex(posInView);
-					ofCircle(posInView, 10);
+					ofCircle(posInView, 5);
 				}
 				ofEndShape();
+				ofSetColor(255);
 				ofDrawBitmapString(ofToString(i), posInView);
 			}
 		}
@@ -179,15 +176,19 @@ namespace HanRiverLib {
 	}
 
 	//----------
-	void CameraHead::save() const {
+	void CameraHead::save() {
 		this->waitForComplete();
+		this->updateSuccessfulFinds();
+
+#pragma omp critical(ofLog)
+		ofLogNotice("CameraHead") << "Saving image points for Camera " << this->cameraID;
 
 		ofstream file;
 		file.open(ofToDataPath(this->getFilenameBase()), ios::binary);
 
 		if (!file.is_open() || file.bad()) {
 #pragma omp critical(ofLog)
-			ofLogNotice("CameraHead") << "Camera " << cameraID << " cannot save";
+			ofLogNotice("CameraHead") << "Camera " << this->cameraID << " cannot save";
 			file.close();
 			return;
 		}
@@ -215,9 +216,21 @@ namespace HanRiverLib {
 				if (!boardsIt->second->isComplete())
 					waitingFor++;
 			}
-	#pragma omp critical(ofLog)
-			ofLogNotice("CameraHead") << "Camera " << cameraID << " still waiting to find " << waitingFor << " boards out of " << boards.size();
+			if (waitingFor > 0) {
+		#pragma omp critical(ofLog)
+				ofLogNotice("CameraHead") << "Camera " << cameraID << " still waiting to find boards (" << waitingFor << "  left out of " << boards.size() << ")";
+				ofSleepMillis(3000);
+			}
 		}
+	}
+
+	//----------
+	void CameraHead::updateSuccessfulFinds() {
+		successfulFinds.clear();
+		map<int, ofPtr<BoardFrame> >::const_iterator boardsIt;
+		for (boardsIt = boards.begin(); boardsIt != boards.end(); boardsIt++)
+			if (boardsIt->second->isSuccess())
+				successfulFinds.insert(boardsIt->first);
 	}
 
 	//----------
