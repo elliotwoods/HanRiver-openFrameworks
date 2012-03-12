@@ -53,11 +53,14 @@ namespace HanRiverLib {
 
 		uint16_t cameraCount;
 		uint16_t cameraID;
+		uint16_t width, height;
 		CameraHead * newCamera;
 		map<uint16_t, ofPtr<CameraHead> >::iterator it;
 		
 		ifstream file(ofToDataPath("cameraset"), ios::binary);
 		file.read( (char*) & cameraCount, sizeof(cameraCount) );
+		file.read( (char*) & width, sizeof(width) );
+		file.read( (char*) & height, sizeof(height) );
 		ofLogNotice("CameraSet") << "Loading " << cameraCount << " cameras";
 
 		for (int i=0; i<cameraCount; i++) {
@@ -69,6 +72,9 @@ namespace HanRiverLib {
 
 				cameraMap.insert(pair<uint16_t, CameraHead*>(cameraID, newCamera) );
 				cameraIndices.push_back(cameraID);
+
+				newCamera->init(cameraID, width, height);
+				newCamera->load();
 			} else {
 				it->second->load();
 			}
@@ -78,13 +84,23 @@ namespace HanRiverLib {
 
 	//----------
 	void CameraSet::save() {
+		if (this->size() == 0) {
+			ofLogError("CameraSet") << "Save : cannot save as there are 0 cameras";
+			return;
+		}
 		ofstream file(ofToDataPath("cameraset"), ios::binary);
 		uint16_t cameraCount = this->cameraIndices.size();
 		uint16_t cameraID;
+
+		uint16_t width = this->getFirstCamera().getWidth();
+		uint16_t height = this->getFirstCamera().getHeight();
+
 		file.write( (char*) & cameraCount, sizeof(cameraCount) );
+		file.write( (char*) & width, sizeof(width) );
+		file.write( (char*) & height, sizeof(height) );
 		for (int i=0; i<cameraIndices.size(); i++) {
 			cameraID = cameraIndices[i];
-			file.write((char*) cameraID, sizeof(cameraID));
+			file.write( (char*) & cameraID, sizeof(cameraID));
 			cameraMap[cameraID]->save();
 		}
 		file.close();
@@ -92,7 +108,7 @@ namespace HanRiverLib {
 
 	//----------
 	void CameraSet::solveIntrinsics() {
-		//#pragma omp parallel for
+		#pragma omp parallel for
 		for (int i=0; i<this->cameraIndices.size(); i++)
 			this->cameraMap[cameraIndices[i]]->solveIntrinsics();
 	}

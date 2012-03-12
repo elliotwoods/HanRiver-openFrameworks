@@ -15,6 +15,12 @@ namespace HanRiverLib {
 	public:
 		vector<ofPtr<CameraHead> > getCamerasAsVector() const;
 		const CameraHead & getCameraByID(uint16_t cameraID) const; 
+		const CameraHead & getFirstCamera() const;
+		cv::Size getImageSize() const;
+		void setCameraExtrinsics(uint16_t cameraID, const ofMatrix4x4 & transform) const;
+
+		size_t size() const;
+
 	protected:
 		map<uint16_t, ofPtr<CameraHead> > cameraMap;
 		vector<uint16_t> cameraIndices;

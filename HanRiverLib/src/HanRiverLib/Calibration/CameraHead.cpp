@@ -13,8 +13,10 @@ namespace HanRiverLib {
 	}
 
 	//----------
-	void CameraHead::init(uint16_t cameraID) {
+	void CameraHead::init(uint16_t cameraID, uint16_t width, uint16_t height) {
 		this->cameraID = cameraID;
+		this->width = width;
+		this->height = height;
 	}
 
 	//----------
@@ -23,6 +25,8 @@ namespace HanRiverLib {
 		this->camera.init(device);
 		this->hasDevice = true;
 		this->newFrame = false;
+		this->width = this->camera.getWidth();
+		this->height = this->camera.getHeight();
 	}
 
 	//----------
@@ -51,6 +55,11 @@ namespace HanRiverLib {
 
 		//calibrate
 		this->calibrateIntrinsics(imagePoints);
+	}
+
+	//----------
+	void CameraHead::setExtrinsics(const ofMatrix4x4 & transform) {
+		this->extrinsics = transform;
 	}
 
 	//----------
@@ -101,6 +110,12 @@ namespace HanRiverLib {
 		cameraMatrix = this->intrinsics.getCameraMatrix();
 		distortion = this->distortion;
 	}
+
+	//----------
+	const ofMatrix4x4 & CameraHead::getFirstBoardTransform() const {
+		return this->firstBoardTransform;
+	}
+
 	//----------
 	void CameraHead::draw(float x, float y) {
 		this->draw(x, y, this->getWidth(), this->getHeight());
@@ -145,19 +160,34 @@ namespace HanRiverLib {
 		}
 		ofPopStyle();
 
+		ofxCvGui::AssetRegister.drawText(message, 20, 60, "swisop2:10", true);
 		if (!this->hasDevice)
-			message += "\nNo camera device available";
-		ofxCvGui::AssetRegister.drawText(message, 20, 50);
+		ofxCvGui::AssetRegister.drawText("No camera device available", 20, 90, "swisop2:10", true);
 	}
 
 	//----------
 	float CameraHead::getWidth() {
-		return this->camera.getWidth();
+		return (float)this->width;
 	}
 
 	//----------
 	float CameraHead::getHeight() {
-		return this->camera.getHeight();
+		return (float)this->height;
+	}
+
+	//----------
+	float CameraHead::getWidth() const {
+		return (float)this->width;
+	}
+
+	//----------
+	float CameraHead::getHeight() const {
+		return (float)this->height;
+	}
+
+	//----------
+	cv::Size CameraHead::getImageSize() const {
+		return cv::Size(this->width, this->height);
 	}
 
 	//----------
@@ -262,12 +292,21 @@ namespace HanRiverLib {
 
 		ofxCv::Calibration calibration = GlobalBoardFinder::boardFinder;
 		calibration.imagePoints = imagePoints;
-		calibration.setImageSize(cv::Size(this->camera.getWidth(), this->camera.getHeight()));
+		calibration.setImageSize(cv::Size(this->getWidth(), this->getHeight()));
 
 		this->reprojectionError = calibration.calibrate();
 		this->intrinsics = calibration.getDistortedIntrinsics();
 		this->distortion = calibration.getDistCoeffs();
 		this->hasIntrinsics = true;
+		this->firstBoardTransform = calibration.getBoardTransformation(0);
+#pragma omp critical(ofLog)
+		{
+			ofLogNotice("CameraHead") << "Camera " << this->getCameraID() << " calibrated." << endl <<
+			"....Camera matrix:" << endl << this->intrinsics.getCameraMatrix() << endl <<
+			"....Distortion " << endl << this->distortion << endl <<
+			"....FOV: " << this->intrinsics.getFov() << endl <<
+			"....Aspect ratio: " << this->intrinsics.getAspectRatio() << endl << endl;
+		}
 	}
 
 	//----------

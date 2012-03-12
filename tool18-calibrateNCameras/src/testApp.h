@@ -19,15 +19,11 @@ public:
 	void mouseMoved( int x, int y );
 	void mousePressed( int x, int y, int button );
 
-	void addFrame();
-	void solveIntrinsics();
-	void solveExtrinsics();
-	void solveAllAndSave();
+	void rebuildGUI();
 
 	ofxCvGui::Builder gui;
-	vector<CameraHead> cameras;
-	map<int, CameraHead*> cameraMap; ///<stores same as vector but in map format
 	int captureID;
+	CameraSet cameraSet;
 };
 
 //threaded board finder

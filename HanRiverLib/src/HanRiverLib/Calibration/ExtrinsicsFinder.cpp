@@ -6,6 +6,10 @@ namespace HanRiverLib {
 		
 		this->imagePoints = &cameraSet;
 		this->camerasVector = cameraSet.getCamerasAsVector();
+		//
+		this->indicesInVector.clear();
+		for (int i=0; i<this->camerasVector.size(); i++)
+			this->indicesInVector.insert(pair<uint16_t, int>(this->camerasVector[i]->getCameraID(), i));
 
 		//route find either
 		//a) maximum number of pairs
@@ -20,6 +24,7 @@ namespace HanRiverLib {
 		this->findCalibrationRoutes();
 		this->selectExtrinsicsCalibrations();
 		this->calcExtrinsics();
+		this->integrateExtrinsics();
 	}
 
 	//----------
@@ -27,9 +32,7 @@ namespace HanRiverLib {
 		int cameraID1, cameraID2;
 		for (int i=0; i<camerasVector.size(); i++)
 			for (int j=i+1; j<camerasVector.size(); j++) {
-				cameraID1 = camerasVector[i]->getCameraID();
-				cameraID2 = camerasVector[j]->getCameraID();
-				commonImageSets[CameraPair(cameraID1, cameraID2)] = camerasVector[i]->getCommonSuccessfulFinds(*camerasVector[j]);
+				commonImageSets[CameraPair(i, j)] = camerasVector[i]->getCommonSuccessfulFinds(*camerasVector[j]);
 			}
 	}
 
@@ -52,32 +55,32 @@ namespace HanRiverLib {
 	//----------
 	void ExtrinsicsFinder::findCalibrationRoutes() {
 		//find route from first to all others
-		int firstCameraID = this->camerasVector[0]->getCameraID();
-		vector<ofPtr<CameraHead> >::const_iterator it = this->camerasVector.begin();
-		it++;
-		for (; it != this->camerasVector.end() ; it++) {
-			int destination = (**it).getCameraID();
-			ofxTSP::RouteFind routeFinder(firstCameraID, destination);
+		int firstCameraID = imagePoints->getFirstCamera().getCameraID();
+		
+		for (int i=0; i<camerasVector.size() ; i++) {
+			int destination = camerasVector[i]->getCameraID();
+			ofxTSP::RouteFind routeFinder(0, i);
 			calibrationRoutes.insert( pair<int, vector<int> >(destination, routeFinder.solve(problem)) );
-			ofLogNotice() << "Extrinsics of camera " << destination << " will be solved with route " << calibrationRoutes[destination];
+			if (calibrationRoutes[destination].size() == 0)
+				ofLogWarning() << "Extrinsics of camera " << destination << " CANNOT BE SOLVED (no route available)";
+			else
+				ofLogNotice() << "Extrinsics of camera " << destination << " will be solved with route " << calibrationRoutes[destination];
 		}
 	}
 
 	//----------
 	void ExtrinsicsFinder::selectExtrinsicsCalibrations() {
-		vector<map<CameraPair, ofMatrix4x4>::iterator > interCamExtrinsicsIterators;
-		{
-			map<int, ofxTSP::Route >::const_iterator it;
-			//go through all routes
-			for (it = calibrationRoutes.begin(); it != calibrationRoutes.end(); it++) {
-				//step through route
-				for (int i=1; i<it->second.size(); i++) {
-					CameraPair pair(it->second[i-1], it->second[i]);
-					//if this step isn't available
-					if (interCamExtrinsics.count(pair) == 0)
-						//add it to map
-						interCamExtrinsics.insert( std::pair<CameraPair, ofMatrix4x4>(pair, ofMatrix4x4()) );
-				}
+		interCamExtrinsics.clear();
+		map<uint16_t, ofxTSP::Route >::const_iterator it;
+		//go through all routes
+		for (it = calibrationRoutes.begin(); it != calibrationRoutes.end(); it++) {
+			//step through route
+			for (int i=1; i<it->second.size(); i++) {
+				CameraPair pair(camerasVector[it->second[i-1]]->getCameraID(), camerasVector[it->second[i]]->getCameraID());
+				//if this step isn't available
+				if (interCamExtrinsics.count(pair) == 0)
+					//add it to map
+					interCamExtrinsics.insert( std::pair<CameraPair, ofMatrix4x4>( pair, ofMatrix4x4() ) );
 			}
 		}
 	}
@@ -93,21 +96,51 @@ namespace HanRiverLib {
 	void ExtrinsicsFinder::calcExtrinsics(const CameraPair & cameraPair) {
 		//given a camera pair identity
 		//get image points
-		set<int> & commonImagePoints ( this->commonImageSets.at(cameraPair) );
-		vector<vector<Point2f> > imagePoints1 = imagePoints->getCameraByID(cameraPair.first).getImagePoints(commonImagePoints);
-		vector<vector<Point2f> > imagePoints2 = imagePoints->getCameraByID(cameraPair.second).getImagePoints(commonImagePoints);
+		CameraPair cameraPairInVectorIndices(this->indicesInVector[cameraPair.first], this->indicesInVector[cameraPair.second]);
+		set<int> & commonImagePoints ( this->commonImageSets.at(cameraPairInVectorIndices) );
 
 		Mat cameraMatrix1, cameraMatrix2;
 		Mat distortion1, distortion2;
 
+		Mat rotation, translation;
+		Mat essential, fundamental;
+
+		vector<vector<Point2f> > imagePoints1 = imagePoints->getCameraByID(cameraPair.first).getImagePoints(commonImagePoints);
+		vector<vector<Point2f> > imagePoints2 = imagePoints->getCameraByID(cameraPair.second).getImagePoints(commonImagePoints);
+
 		imagePoints->getCameraByID(cameraPair.first).getCalibration(cameraMatrix1, distortion1);
 		imagePoints->getCameraByID(cameraPair.second).getCalibration(cameraMatrix2, distortion2);
+		vector<vector<Point3f> > boardPoints(imagePoints1.size(), GlobalBoardFinder::objectPoints);
 
-	/*	cv::stereoCalibrate(GlobalBoardFinder::objectPoints, imagePoints1, imagePoints2,
+		cv::stereoCalibrate(boardPoints, imagePoints1, imagePoints2,
 			cameraMatrix1, distortion1,
 			cameraMatrix2, distortion2,
-			
-*/
+			imagePoints->getImageSize(),
+			rotation, translation,
+			essential, fundamental);
 
+		interCamExtrinsics[cameraPair] = ofxCv::makeMatrix(rotation, translation);
+	}
+
+	//----------
+	void ExtrinsicsFinder::integrateExtrinsics() {
+		ofMatrix4x4 offset = ofMatrix4x4(camerasVector[0]->getFirstBoardTransform()).getInverse();
+		//first camera is classed as origin
+		this->imagePoints->setCameraExtrinsics(camerasVector[0]->getCameraID(), offset);
+		
+		for (int i=1; i<camerasVector.size(); i++) {
+			ofxTSP::Route route(calibrationRoutes.at(camerasVector[i]->getCameraID()));
+			ofxTSP::Route::const_iterator it = route.begin();
+			uint16_t cameraID1, cameraID2;
+			cameraID1 = camerasVector[*it]->getCameraID();
+			it++; // ignore first camera, i.e. start at first step
+			ofMatrix4x4 transform = offset;
+			for (; it != route.end(); it++) {
+				cameraID2 = camerasVector[*it]->getCameraID();
+				transform *= interCamExtrinsics[CameraPair(cameraID1, cameraID2)];
+				cameraID1 = cameraID2;
+			}
+			this->imagePoints->setCameraExtrinsics(cameraID2, transform);
+		}
 	}
 }

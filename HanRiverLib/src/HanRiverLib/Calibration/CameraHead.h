@@ -15,13 +15,14 @@ namespace HanRiverLib {
 		CameraHead();
 		~CameraHead();
 
-		void init(uint16_t cameraID); ///<initialise without device
+		void init(uint16_t cameraID, uint16_t width, uint16_t height); ///<initialise without device
 		void init(const ofxUeyeDevice & device);  ///<initialise with device
 		void close();
 
 		void capture(int captureID);
 		void solveIntrinsics();
-	
+		void setExtrinsics(const ofMatrix4x4 & transform);
+
 		bool getHasIntrinsics() const;
 		vector<vector<Point2f> > getImagePoints(const set<int> & captureIDs) const;
 		int getCameraID() const;
@@ -29,13 +30,18 @@ namespace HanRiverLib {
 		set<int> getCommonSuccessfulFinds(const set<int> & otherSuccessfulFinds) const;
 		set<int> getCommonSuccessfulFinds(const CameraHead & other) const;
 		void getCalibration(Mat & cameraMatrix, Mat & distortion) const;
+		const ofMatrix4x4 & getFirstBoardTransform() const;
 
 		//ofBaseDraws
 		void draw(float x,float y);
 		void draw(float x,float y,float w, float h);
 		float getHeight();
 		float getWidth();
-	
+
+		float getHeight() const;
+		float getWidth() const;
+		cv::Size getImageSize() const;
+
 		//image points
 		void load();
 		void save();
@@ -52,6 +58,7 @@ namespace HanRiverLib {
 		set<int> successfulFinds;
 
 		//device
+		uint16_t width, height;
 		bool hasDevice;
 		ofxUeye camera;
 		bool newFrame;
@@ -60,8 +67,10 @@ namespace HanRiverLib {
 
 		//data
 		ofxCv::Intrinsics intrinsics;
+		ofMatrix4x4 firstBoardTransform;
 		Mat distortion;
 		float reprojectionError;
 		bool hasIntrinsics;
+		ofMatrix4x4 extrinsics;
 	};
 }

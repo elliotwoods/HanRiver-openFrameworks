@@ -15,4 +15,23 @@ namespace HanRiverLib {
 	const CameraHead & CameraSetContent::getCameraByID(uint16_t cameraID) const {
 		return *(this->cameraMap.at(cameraID));
 	}
+
+	//----------
+	const CameraHead & CameraSetContent::getFirstCamera() const {
+		return *(this->cameraMap.begin()->second);
+	}
+
+	//----------
+	cv::Size CameraSetContent::getImageSize() const {
+		return this->getFirstCamera().getImageSize();
+	}
+
+	//----------
+	void CameraSetContent::setCameraExtrinsics(uint16_t cameraID, const ofMatrix4x4 & transform) const {
+		this->cameraMap.at(cameraID)->setExtrinsics(transform);
+	}
+	//----------
+	size_t CameraSetContent::size() const {
+		return this->cameraIndices.size();
+	}
 }
