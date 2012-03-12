@@ -42,6 +42,7 @@ obj/
 [Bb]uild
 [Dd]ebug*/
 [Rr]elease*/
+RemoteDebug*/
 Ankh.NoLoad
 
 #Tooling

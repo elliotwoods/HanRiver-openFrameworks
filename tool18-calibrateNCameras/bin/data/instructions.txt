@@ -1,0 +1,7 @@
+[SPACE] = add frame
+[i] = solve intriniscs
+[e] = solve extrinisics
+[s] = solve all and save
+
+[a] = save image points
+[z] = load image points

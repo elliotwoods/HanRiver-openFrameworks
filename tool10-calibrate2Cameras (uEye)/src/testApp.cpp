@@ -1,0 +1,226 @@
+#include "testApp.h"
+
+//--------------------------------------------------------------
+void testApp::setup(){
+	
+	ofBackground(80,80,80);
+	ofSetVerticalSync(true);
+	ofEnableSmoothing();
+
+	camera[0].init(1);
+	camera[1].init(2);
+	
+	intersecter.color = ofColor(255,255,0);
+	
+	gui.init(mainScreen);
+	mainScreen.setGridWidth(1);
+
+	for (int i=0; i<2; ++i)
+		mainScreen.push(camera[i].screens);
+	
+	ofAddListener(camera[0].calibrationScreen.evtDraw3D, this, &testApp::draw3DCam);
+	ofAddListener(camera[1].calibrationScreen.evtDraw3D, this, &testApp::draw3DCam);
+	
+	ofAddListener(camera[0].evtMoveRay, this, &testApp::updateIntersects);
+	ofAddListener(camera[1].evtMoveRay, this, &testApp::updateIntersects);
+	
+	
+	timerOn = false;
+	lastCaptureTime = 0;
+
+}
+
+//--------------------------------------------------------------
+void testApp::update(){
+	for (int i=0; i<2; ++i)
+		camera[i].update();
+	
+	if (camera[0].bangAdded && camera[1].bangAdded)
+	{
+		camera[0].bangAdded = false;
+		camera[1].bangAdded = false;
+		calcTransforms();
+	}
+	
+	if (timerOn)
+		if (ofGetElapsedTimef() > (lastCaptureTime+TIMER_PERIOD) && !camera[0].doAdd && !camera[1].doAdd)
+		{
+			capture();
+			lastCaptureTime = ofGetElapsedTimef();
+		}
+}
+
+//--------------------------------------------------------------
+void testApp::draw(){
+	
+}
+
+void testApp::updateIntersects(ofRay &r) {
+	
+	ofRay r1, r2;
+	r1 = camera[0].ray;
+	r2 = camera[1].ray;
+	r2 *= matPosRotFromXtoOther[1];
+	
+	intersecter = r1.intersect(r2);
+	
+	cout << "intersect length = " << intersecter.t.length() << endl;
+	cout << "intersect midpoint = " << intersecter.s + intersecter.t*0.5 << endl;
+	
+}
+
+//--------------------------------------------------------------
+void testApp::keyPressed(int key){
+
+	if (key >= '1' && key <='9')
+		camera[key - '1'].settings();
+	
+	if (key==' ')
+	{
+		capture();
+	}
+	
+	if (key=='t')
+	{
+		timerOn ^= true;
+		lastCaptureTime = ofGetElapsedTimef();
+	}
+
+	if (key=='c')
+		clear();
+	
+	if (key=='s')
+		save();
+	
+	if (key=='l')
+		load();
+	
+}
+
+void testApp::capture() {
+	
+#pragma omp parallel for
+	for(int i=0; i<2; ++i)
+		camera[i].add();
+
+
+	//first check if we've got an asymmetry (one has captured but the other hasn't)
+	int minCalibs = min(camera[0].calibCount(), camera[1].calibCount());
+	for(int i=0; i<2; ++i)
+		camera[i].shrink(minCalibs);
+}
+
+void testApp::calcTransforms() {
+	if (camera[0].calib.isReady() && camera[1].calib.isReady())
+	{
+		Mat tra, rot;
+		
+		if (camera[0].calib.imagePoints.size() != camera[1].calib.imagePoints.size())
+			return;
+
+		try {
+			if (!camera[0].calib.getTransformation(camera[1].calib, rot, tra))
+				return;
+		
+			matPosRotFromXtoOther[0] = makeMatrix(rot, tra);
+		
+			camera[1].calib.getTransformation(camera[0].calib, rot, tra);
+			matPosRotFromXtoOther[1] = makeMatrix(rot, tra);
+		} catch (...) {
+			ofLogError() << "mismatch or something in calcTransforms";
+		}
+	}
+}
+
+string getAttribName(int iCam, int i, int j) {
+	return "Camera" + ofToString(iCam) + "Transform_" + ofToString(i) + "-" + ofToString(j);
+}
+
+void testApp::save() {
+	FileStorage fs(ofToDataPath("transforms.xml"), FileStorage::WRITE);
+	
+	for (int iCam=0; iCam<2; iCam++)
+	{
+		for (int i=0; i<4; ++i)
+			for (int j=0; j<4; ++j)
+				fs << getAttribName(iCam,i,j) << matPosRotFromXtoOther[iCam](i, j);
+		camera[iCam].save(iCam);
+	}
+}
+
+void testApp::load() {
+	FileStorage fs(ofToDataPath("transforms.xml"), FileStorage::READ);
+	
+	for (int iCam=0; iCam<2; iCam++)
+	{
+		for (int i=0; i<4; ++i)
+			for (int j=0; j<4; ++j)
+				fs[getAttribName(iCam,i,j)] >> matPosRotFromXtoOther[i](i, j);
+		camera[iCam].load(iCam);
+	}
+	
+	calcTransforms();
+}
+
+void testApp::clear() {
+	for (int i=0; i<2; ++i)
+		camera[i].calib.clean(0);
+}
+
+void testApp::draw3DCam(ofNode& n) {
+	int i;
+	if (&n == (ofNode*)&camera[0].calib)
+		i = 0;
+	else
+		i = 1;
+	
+	ofDrawAxis(10);
+	
+	ofPushMatrix();
+	ofRotate(90,1,0,0);
+	//ofDrawGrid(100);
+	ofPopMatrix();
+	
+	ofPushMatrix();
+	glMultMatrixf(matPosRotFromXtoOther[i].getPtr());
+	ofDrawAxis(10);
+	ofPopMatrix();
+}
+
+//--------------------------------------------------------------
+void testApp::keyReleased(int key){
+
+}
+
+//--------------------------------------------------------------
+void testApp::mouseMoved(int x, int y ){
+
+}
+
+//--------------------------------------------------------------
+void testApp::mouseDragged(int x, int y, int button){
+	
+}
+
+//--------------------------------------------------------------
+void testApp::mousePressed(int x, int y, int button){
+
+}
+
+//--------------------------------------------------------------
+void testApp::mouseReleased(int x, int y, int button){
+}
+
+//--------------------------------------------------------------
+void testApp::windowResized(int w, int h){
+}
+
+//--------------------------------------------------------------
+void testApp::gotMessage(ofMessage msg){
+
+}
+
+//--------------------------------------------------------------
+void testApp::dragEvent(ofDragInfo dragInfo){ 
+
+}

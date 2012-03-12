@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\testApp.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxCv\libs\ofxCv\src\Calibration.cpp">
+      <Filter>addons\ofxCv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCv\libs\ofxCv\src\ContourFinder.cpp">
+      <Filter>addons\ofxCv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCv\libs\ofxCv\src\Distance.cpp">
+      <Filter>addons\ofxCv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCv\libs\ofxCv\src\Helpers.cpp">
+      <Filter>addons\ofxCv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCv\libs\ofxCv\src\Tracker.cpp">
+      <Filter>addons\ofxCv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCv\libs\ofxCv\src\Utilities.cpp">
+      <Filter>addons\ofxCv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCv\libs\ofxCv\src\Wrappers.cpp">
+      <Filter>addons\ofxCv</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\testApp.h" />
+    <ClInclude Include="..\..\ofxCv\src\ofxCv.h">
+      <Filter>addons\ofxCv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCv\libs\ofxCv\include\ofxCv\Calibration.h">
+      <Filter>addons\ofxCv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCv\libs\ofxCv\include\ofxCv\ContourFinder.h">
+      <Filter>addons\ofxCv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCv\libs\ofxCv\include\ofxCv\Distance.h">
+      <Filter>addons\ofxCv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCv\libs\ofxCv\include\ofxCv\Helpers.h">
+      <Filter>addons\ofxCv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCv\libs\ofxCv\include\ofxCv\Tracker.h">
+      <Filter>addons\ofxCv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCv\libs\ofxCv\include\ofxCv\Utilities.h">
+      <Filter>addons\ofxCv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCv\libs\ofxCv\include\ofxCv\win32pstdint.h">
+      <Filter>addons\ofxCv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxCv\libs\ofxCv\include\ofxCv\Wrappers.h">
+      <Filter>addons\ofxCv</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="addons">
+      <UniqueIdentifier>{1c52f653-215c-4234-bad9-79227a6d7ec4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxCv">
+      <UniqueIdentifier>{a1f68417-5911-4902-8fd4-a64cea3cbc3b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

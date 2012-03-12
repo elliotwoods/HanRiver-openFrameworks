@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{61cf34a6-a514-46f7-8c22-7d8a5b9efd10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\HanRiverLib">
+      <UniqueIdentifier>{aca58de9-d00e-4537-b7a9-b0b8d6e568f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\HanRiverLib\Calibration">
+      <UniqueIdentifier>{5336cf1f-ec39-4805-b41e-d1279a8fa3a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\HanRiverLib\Devices">
+      <UniqueIdentifier>{4724f78b-e1ac-4209-a141-c3d7af4d51b3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\HanRiverLib.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HanRiverLib\Calibration\BoardFrame.h">
+      <Filter>src\HanRiverLib\Calibration</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HanRiverLib\Calibration\CameraPair.h">
+      <Filter>src\HanRiverLib\Calibration</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HanRiverLib\Calibration\ExtrinsicsFinder.h">
+      <Filter>src\HanRiverLib\Calibration</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HanRiverLib\Calibration\GlobalBoardFinder.h">
+      <Filter>src\HanRiverLib\Calibration</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HanRiverLib\Calibration\CameraHead.h">
+      <Filter>src\HanRiverLib\Calibration</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HanRiverLib\Calibration\CameraSet.h">
+      <Filter>src\HanRiverLib\Calibration</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HanRiverLib\Calibration\CameraSetContent.h">
+      <Filter>src\HanRiverLib\Calibration</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\HanRiverLib\Calibration\BoardFrame.cpp">
+      <Filter>src\HanRiverLib\Calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="src\HanRiverLib\Calibration\ExtrinsicsFinder.cpp">
+      <Filter>src\HanRiverLib\Calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="src\HanRiverLib\Calibration\CameraHead.cpp">
+      <Filter>src\HanRiverLib\Calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="src\HanRiverLib\Calibration\GlobalBoardFinder.cpp">
+      <Filter>src\HanRiverLib\Calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="src\HanRiverLib\Calibration\CameraSet.cpp">
+      <Filter>src\HanRiverLib\Calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="src\HanRiverLib\Calibration\CameraSetContent.cpp">
+      <Filter>src\HanRiverLib\Calibration</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

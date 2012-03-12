@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\..\addons\ofxGraycode\src\Dataset.cpp">
+      <Filter>ofxGraycode</Filter>
+    </ClCompile>
+    <ClCompile Include="src\testApp.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxUeye\src\ofxUeye.cpp">
+      <Filter>ofxUeye</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxUeye\src\ofxUeyeThreaded.cpp">
+      <Filter>ofxUeye</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxGraycode\src\ofxGraycode.cpp">
+      <Filter>ofxGraycode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxGraycode\src\Payload.cpp">
+      <Filter>ofxGraycode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscBundle.cpp">
+      <Filter>ofxOsc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscMessage.cpp">
+      <Filter>ofxOsc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscReceiver.cpp">
+      <Filter>ofxOsc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscSender.cpp">
+      <Filter>ofxOsc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CameraHead.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\addons\ofxGraycode\src\Dataset.h">
+      <Filter>ofxGraycode</Filter>
+    </ClInclude>
+    <ClInclude Include="src\testApp.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxUeye\src\ofxUeyeThreaded.h">
+      <Filter>ofxUeye</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxUeye\src\ofxUeye.h">
+      <Filter>ofxUeye</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxUeye\src\ofxUeyePreset_5480SL.h">
+      <Filter>ofxUeye</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGraycode\src\ofxGraycode.h">
+      <Filter>ofxGraycode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGraycode\src\Payload.h">
+      <Filter>ofxGraycode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGraycode\src\Types.h">
+      <Filter>ofxGraycode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOsc.h">
+      <Filter>ofxOsc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscArg.h">
+      <Filter>ofxOsc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscBundle.h">
+      <Filter>ofxOsc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscMessage.h">
+      <Filter>ofxOsc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscReceiver.h">
+      <Filter>ofxOsc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscSender.h">
+      <Filter>ofxOsc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\win32pstdint.h">
+      <Filter>ofxOsc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CameraHead.h">
+      <Filter>src</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="ofxGraycode">
+      <UniqueIdentifier>{76e655fd-e621-4323-92b1-ff40fc584aae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{14b070fa-3bde-4288-828f-a7b08a603b8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ofxUeye">
+      <UniqueIdentifier>{8ee37b59-6923-42c3-94dd-662f2f8bfbf0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ofxOsc">
+      <UniqueIdentifier>{099d963c-9ad6-48f6-a984-3f4d6077f7a0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\..\..\addons\ofxUeye\libs\ueye\lib\win32\uEye_api.lib">
+      <Filter>ofxUeye</Filter>
+    </Library>
+  </ItemGroup>
+</Project>
