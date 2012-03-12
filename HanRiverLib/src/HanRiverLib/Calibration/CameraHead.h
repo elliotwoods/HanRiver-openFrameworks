@@ -7,13 +7,16 @@
 
 #include "BoardFrame.h"
 #include "ofMain.h"
+#include "ofxCvGui/Assets.h"
 
 namespace HanRiverLib {
 	class CameraHead : public ofBaseDraws {
 	public:
+		CameraHead();
 		~CameraHead();
 
-		void init(const ofxUeyeDevice & device);
+		void init(uint16_t cameraID); ///<initialise without device
+		void init(const ofxUeyeDevice & device);  ///<initialise with device
 		void close();
 
 		void capture(int captureID);
@@ -43,9 +46,13 @@ namespace HanRiverLib {
 		void calibrateIntrinsics(const vector<vector<Point2f> > & imagePoints);
 		string getFilenameBase() const;
 		string getBoardFilename(int board) const;
+
+		//image points
 		map<int, ofPtr<BoardFrame> > boards;
 		set<int> successfulFinds;
 
+		//device
+		bool hasDevice;
 		ofxUeye camera;
 		bool newFrame;
 		int cameraID;

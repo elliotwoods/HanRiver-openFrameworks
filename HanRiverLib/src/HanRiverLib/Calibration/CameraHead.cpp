@@ -2,15 +2,26 @@
 
 namespace HanRiverLib {
 	//----------
+	CameraHead::CameraHead() {
+		this->hasDevice = false;
+		this->hasIntrinsics = false;
+	}
+
+	//----------
 	CameraHead::~CameraHead() {
 		this->close();
+	}
+
+	//----------
+	void CameraHead::init(uint16_t cameraID) {
+		this->cameraID = cameraID;
 	}
 
 	//----------
 	void CameraHead::init(const ofxUeyeDevice & device) {
 		this->cameraID = device.cameraID;
 		this->camera.init(device);
-		this->hasIntrinsics = false;
+		this->hasDevice = true;
 		this->newFrame = false;
 	}
 
@@ -21,9 +32,11 @@ namespace HanRiverLib {
 
 	//----------
 	void CameraHead::capture(int captureID) {
-		if (camera.capture()) {
-			boards.insert(std::pair<int, ofPtr<BoardFrame> >(captureID, new BoardFrame(camera.getPixelsRef()) ) );
-			newFrame = true;
+		if (this->hasDevice) {
+			if (camera.capture()) {
+				boards.insert(std::pair<int, ofPtr<BoardFrame> >(captureID, new BoardFrame(camera.getPixelsRef()) ) );
+				newFrame = true;
+			}
 		}
 	}
 
@@ -102,34 +115,39 @@ namespace HanRiverLib {
 
 		preview.draw(x,y,w,h);
 
+		string message = "";
 		ofPushStyle();
 		ofEnableSmoothing();
 		ofSetLineWidth(1.0f);
 		ofNoFill();
-		ofColor recent(200, 100, 100);
-		ofColor stale(100, 100, 100);
-		ofColor current;
+		ofColor current, base(200, 100, 100);
 		ofPoint posInView;
-		for (int i=0; i<boards.size(); i++) {
-			if (boards[i]->isSuccess()) {
-				current = stale;
-				current.lerp(recent, (float)(i + 1.0f) / (float)boards.size());
-				ofSetColor(current);
+		set<int>::iterator it;
+		for (it = successfulFinds.begin(); it != successfulFinds.end(); it++) {
+			if (message != "")
+				message += ", ";
+			message += ofToString(*it);
+			current = base;
+			current.setHue( ofMap(*it, 0, 30, 0, 120) );
+			ofSetColor(current);
 
-				ofBeginShape();
-				const vector<Point2f> & imagePoints(boards[i]->getImagePoints());
-				for (int j=0; j<imagePoints.size(); j++) {
-					posInView.x = imagePoints[j].x / this->getWidth() * w + x;
-					posInView.y = imagePoints[j].y / this->getHeight() * h + y;
-					ofVertex(posInView);
-					ofCircle(posInView, 5);
-				}
-				ofEndShape();
-				ofSetColor(255);
-				ofDrawBitmapString(ofToString(i), posInView);
+			ofBeginShape();
+			const vector<Point2f> & imagePoints(boards[*it]->getImagePoints());
+			for (int j=0; j<imagePoints.size(); j++) {
+				posInView.x = imagePoints[j].x / this->getWidth() * w + x;
+				posInView.y = imagePoints[j].y / this->getHeight() * h + y;
+				ofVertex(posInView);
+				ofCircle(posInView, 5);
 			}
+			ofEndShape();
+			ofSetColor(255);
+			ofDrawBitmapString(ofToString(*it), posInView);
 		}
 		ofPopStyle();
+
+		if (!this->hasDevice)
+			message += "\nNo camera device available";
+		ofxCvGui::AssetRegister.drawText(message, 20, 50);
 	}
 
 	//----------
