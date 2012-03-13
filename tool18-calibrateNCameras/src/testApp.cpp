@@ -36,8 +36,11 @@ void testApp::keyPressed(int key) {
 		cameraSet.solveIntrinsics();
 	if (key == 'e')
 		cameraSet.solveExtrinsics();
-	if (key == 's')
+	if (key == 's') {
 		cameraSet.solveAndSaveCalibration();
+		proCamSet = ProCamSet(cameraSet);
+		proCamSet.save();
+	}
 
 	if (key == 'a')
 		this->cameraSet.save();

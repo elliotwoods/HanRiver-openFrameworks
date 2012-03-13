@@ -24,6 +24,7 @@ public:
 	ofxCvGui::Builder gui;
 	int captureID;
 	CameraSet cameraSet;
+	ProCamSet proCamSet;
 };
 
 //threaded board finder

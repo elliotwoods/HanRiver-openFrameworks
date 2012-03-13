@@ -124,8 +124,11 @@ namespace HanRiverLib {
 
 	//----------
 	void ExtrinsicsFinder::integrateExtrinsics() {
-		ofMatrix4x4 offset = ofMatrix4x4(camerasVector[0]->getFirstBoardTransform()).getInverse();
-		//first camera is classed as origin
+		ofMatrix4x4 offset;
+		//offset = ofMatrix4x4(camerasVector[0]->getFirstBoardTransform()).getInverse();
+		offset.makeIdentityMatrix();
+		offset.rotate(180, 0, 1, 0);
+
 		this->imagePoints->setCameraExtrinsics(camerasVector[0]->getCameraID(), offset);
 		
 		for (int i=1; i<camerasVector.size(); i++) {

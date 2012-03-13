@@ -29,7 +29,7 @@ namespace HanRiverLib {
 		const set<int> & getSuccessfulFinds() const;
 		set<int> getCommonSuccessfulFinds(const set<int> & otherSuccessfulFinds) const;
 		set<int> getCommonSuccessfulFinds(const CameraHead & other) const;
-		void getCalibration(Mat & cameraMatrix, Mat & distortion) const;
+		void getCalibration(Mat & cameraMatrix, Mat & distortion) const; ///<should be depreciated
 		const ofMatrix4x4 & getFirstBoardTransform() const;
 
 		//ofBaseDraws
@@ -45,6 +45,11 @@ namespace HanRiverLib {
 		//image points
 		void load();
 		void save();
+
+		//calibration
+		const Intrinsics & getIntrinsics() const;
+		const Mat & getDistortion() const;
+		const ofMatrix4x4 &  getExtrinsics() const;
 	protected:
 		void waitForComplete() const;
 		void updateSuccessfulFinds();

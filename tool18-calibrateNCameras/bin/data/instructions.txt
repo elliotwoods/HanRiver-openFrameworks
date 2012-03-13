@@ -1,7 +1,8 @@
 [SPACE] = add frame
+
 [i] = solve intriniscs
 [e] = solve extrinisics
-[s] = solve all and save
+[s] = solve all and save ProCamSet
 
 [a] = save image points
 [z] = load image points

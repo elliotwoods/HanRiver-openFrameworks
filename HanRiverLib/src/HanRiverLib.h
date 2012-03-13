@@ -9,3 +9,7 @@
 #include "HanRiverLib/Calibration/CameraHead.h" /// < perhaps this should be split up into device and board finder
 
 /// Devices
+
+/// ProCam
+#include "HanRiverLib/ProCam/ProCam.h"
+#include "HanRiverLib/ProCam/ProCamSet.h"

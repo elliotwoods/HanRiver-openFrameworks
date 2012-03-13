@@ -23,6 +23,7 @@ namespace HanRiverLib {
 	void CameraHead::init(const ofxUeyeDevice & device) {
 		this->cameraID = device.cameraID;
 		this->camera.init(device);
+		ofxUeyePreset_5480Chessboard().apply(this->camera);
 		this->hasDevice = true;
 		this->newFrame = false;
 		this->width = this->camera.getWidth();
@@ -251,6 +252,21 @@ namespace HanRiverLib {
 		}
 
 		file.close();
+	}
+	
+	//----------
+	const Intrinsics & CameraHead::getIntrinsics() const {
+		return this->intrinsics;
+	}
+	
+	//----------
+	const Mat & CameraHead::getDistortion() const {
+		return this->distortion;
+	}
+
+	//----------
+	const ofMatrix4x4 & CameraHead::getExtrinsics() const {
+		return this->extrinsics;
 	}
 
 	//----------

@@ -23,6 +23,8 @@
     <ClInclude Include="src\HanRiverLib\Calibration\CameraSetContent.h" />
     <ClInclude Include="src\HanRiverLib\Calibration\ExtrinsicsFinder.h" />
     <ClInclude Include="src\HanRiverLib\Calibration\GlobalBoardFinder.h" />
+    <ClInclude Include="src\HanRiverLib\ProCam\ProCam.h" />
+    <ClInclude Include="src\HanRiverLib\ProCam\ProCamSet.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\HanRiverLib\Calibration\BoardFrame.cpp" />
@@ -31,6 +33,8 @@
     <ClCompile Include="src\HanRiverLib\Calibration\CameraSetContent.cpp" />
     <ClCompile Include="src\HanRiverLib\Calibration\ExtrinsicsFinder.cpp" />
     <ClCompile Include="src\HanRiverLib\Calibration\GlobalBoardFinder.cpp" />
+    <ClCompile Include="src\HanRiverLib\ProCam\ProCam.cpp" />
+    <ClCompile Include="src\HanRiverLib\ProCam\ProCamSet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\addons\ofxCvGui2\ofxCvGuiLib\ofxCvGuiLib.vcxproj">
@@ -74,7 +78,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\..\addons\ofxCvGui2\src;..\..\..\addons\ofxTSP\src;..\..\..\libs\cairo\include\cairo;..\..\..\libs\openFrameworks\;..\..\..\addons\ofxUeye\src;..\..\..\addons\ofxCv\libs\opencv\include;..\..\..\addons\ofxCv\libs\ofxCv\include;..\..\..\addons\ofxCv\src;..\..\..\addons\ofxUeye\libs\ueye\include;..\..\..\libs\openFrameworks\graphics;..\..\..\libs\openFrameworks\app;..\..\..\libs\openFrameworks\sound;..\..\..\libs\openFrameworks\utils;..\..\..\libs\openFrameworks\communication;..\..\..\libs\openFrameworks\video;..\..\..\libs\openFrameworks\math;..\..\..\libs\openFrameworks\types;..\..\..\libs\openFrameworks\events;..\..\..\libs\glut\include;..\..\..\libs\rtAudio\include;..\..\..\libs\quicktime\include;..\..\..\libs\freetype\include;..\..\..\libs\freetype\include\freetype2;..\..\..\libs\freeImage\include;..\..\..\libs\fmodex\include;..\..\..\libs\videoInput\include;..\..\..\libs\glew\include\;..\..\..\libs\glu\include;..\..\..\libs\poco\include;..\..\..\addons;..\..\..\libs\openFrameworks\gl;..\..\..\libs\openFrameworks\3d;..\..\..\libs\tess2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\addons\ofxRay\src;..\..\..\addons\ofxCvGui2\src;..\..\..\addons\ofxTSP\src;..\..\..\libs\cairo\include\cairo;..\..\..\libs\openFrameworks\;..\..\..\addons\ofxUeye\src;..\..\..\addons\ofxCv\libs\opencv\include;..\..\..\addons\ofxCv\libs\ofxCv\include;..\..\..\addons\ofxCv\src;..\..\..\addons\ofxUeye\libs\ueye\include;..\..\..\libs\openFrameworks\graphics;..\..\..\libs\openFrameworks\app;..\..\..\libs\openFrameworks\sound;..\..\..\libs\openFrameworks\utils;..\..\..\libs\openFrameworks\communication;..\..\..\libs\openFrameworks\video;..\..\..\libs\openFrameworks\math;..\..\..\libs\openFrameworks\types;..\..\..\libs\openFrameworks\events;..\..\..\libs\glut\include;..\..\..\libs\rtAudio\include;..\..\..\libs\quicktime\include;..\..\..\libs\freetype\include;..\..\..\libs\freetype\include\freetype2;..\..\..\libs\freeImage\include;..\..\..\libs\fmodex\include;..\..\..\libs\videoInput\include;..\..\..\libs\glew\include\;..\..\..\libs\glu\include;..\..\..\libs\poco\include;..\..\..\addons;..\..\..\libs\openFrameworks\gl;..\..\..\libs\openFrameworks\3d;..\..\..\libs\tess2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
     <Link>
