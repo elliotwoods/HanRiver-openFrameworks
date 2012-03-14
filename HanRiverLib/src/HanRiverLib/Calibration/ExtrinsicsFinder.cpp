@@ -127,20 +127,18 @@ namespace HanRiverLib {
 		ofMatrix4x4 offset;
 		//offset = ofMatrix4x4(camerasVector[0]->getFirstBoardTransform()).getInverse();
 		offset.makeIdentityMatrix();
-		offset.rotate(180, 0, 1, 0);
-
-		this->imagePoints->setCameraExtrinsics(camerasVector[0]->getCameraID(), offset);
 		
-		for (int i=1; i<camerasVector.size(); i++) {
+		for (int i=0; i<camerasVector.size(); i++) {
 			ofxTSP::Route route(calibrationRoutes.at(camerasVector[i]->getCameraID()));
 			ofxTSP::Route::const_iterator it = route.begin();
 			uint16_t cameraID1, cameraID2;
 			cameraID1 = camerasVector[*it]->getCameraID();
+			cameraID2 = camerasVector.front()->getCameraID();
 			it++; // ignore first camera, i.e. start at first step
 			ofMatrix4x4 transform = offset;
 			for (; it != route.end(); it++) {
 				cameraID2 = camerasVector[*it]->getCameraID();
-				transform *= interCamExtrinsics[CameraPair(cameraID1, cameraID2)];
+				transform.preMult(interCamExtrinsics[CameraPair(cameraID1, cameraID2)]);
 				cameraID1 = cameraID2;
 			}
 			this->imagePoints->setCameraExtrinsics(cameraID2, transform);

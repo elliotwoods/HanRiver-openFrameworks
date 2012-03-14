@@ -17,6 +17,8 @@ namespace HanRiverLib {
 
 		void save(string filename="");
 		void load(string filename="");
+
+		void enforceXZPlane(); ///<rearranges cameras so they all approximately lie in xz plane
 	protected:
 		void customDraw();
 	};

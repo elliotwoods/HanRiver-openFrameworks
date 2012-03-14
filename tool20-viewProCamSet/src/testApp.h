@@ -13,4 +13,6 @@ public:
 
 	ofxCvGui::Builder gui;
 	HanRiverLib::ProCamSet scene;
+
+
 };

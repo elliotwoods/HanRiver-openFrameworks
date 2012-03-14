@@ -76,6 +76,36 @@ namespace HanRiverLib {
 	}
 
 	//---------
+	void ProCamSet::enforceXZPlane() {
+		//move so camera 1 is at origin
+		this->move( -this->begin()->second.getPosition() );
+
+		//move last camera so it's in +x direction
+		ProCamSet::iterator it = this->end();
+		it--;
+		ofVec3f lastCamera = it->second.getPosition() * this->getGlobalTransformMatrix();
+		ofQuaternion toXAxis;
+		toXAxis.makeRotate( lastCamera.normalized(), ofVec3f(1,0,0) );
+		this->rotate(toXAxis);
+
+		//find biggest outlier in Y and rotate to move it into xz plane
+		ofVec3f biggestY(0,0,0);
+		ofVec3f current;
+		for (it = this->begin(); it != this->end(); it++) {
+			current = it->second.getPosition() * this->getGlobalTransformMatrix();
+			if (abs(current.y) > abs(biggestY.y))
+				biggestY = current;
+		}
+		if (biggestY.y != 0.0f) {
+			//rotate on X axis
+			biggestY.x = 0.0f;
+			biggestY.normalize();
+			toXAxis.makeRotate( biggestY, ofVec3f(0,0,biggestY.z > 0 ? 1.0f : -1.0f) );
+			this->rotate(toXAxis);
+		}
+	}
+
+	//---------
 	void ProCamSet::customDraw() {
 		ProCamSet::const_iterator it;
 		bool isProjector;
