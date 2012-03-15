@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\testApp.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrabCam\src\ofxGrabCam.cpp">
+      <Filter>ofxGrabCam</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Positions.cpp" />
+    <ClCompile Include="src\Layer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\testApp.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrabCam\src\ofxGrabCam.h">
+      <Filter>ofxGrabCam</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Positions.h" />
+    <ClInclude Include="src\Layer.h" />
+    <ClInclude Include="src\defines.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="ofxGrabCam">
+      <UniqueIdentifier>{d3b0e758-1aa4-4c18-a054-5eaf6656fefa}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\data\Instructions.txt" />
+  </ItemGroup>
+</Project>

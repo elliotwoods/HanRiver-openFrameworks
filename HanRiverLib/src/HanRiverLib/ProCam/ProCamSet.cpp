@@ -120,6 +120,7 @@ namespace HanRiverLib {
 			ofTranslate( it->second.getGlobalPosition() );
 			ofSetDrawBitmapMode(OF_BITMAPMODE_MODEL_BILLBOARD);
 			ofDrawBitmapString(isProjector ? "Projector " : "Camera " + ofToString( (int) index), 0, 0, 0);
+			ofPopMatrix();
 			ofPopStyle();
 		}
 	}
