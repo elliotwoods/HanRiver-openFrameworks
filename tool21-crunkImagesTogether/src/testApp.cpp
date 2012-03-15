@@ -51,7 +51,7 @@ void testApp::draw(){
 	stringstream status;
 	status << "Frame = " << this->frame << " / " << this->frameCount << "\n";
 	status << "Playing [" << (this->playing ? "x" : " ") << "]";
-	ofxCvGui::AssetRegister.drawText(status.str(), 20, 200, "", true);
+	ofxCvGui::AssetRegister.drawText(status.str(), 20, 300, "", true);
 }
 
 //--------------------------------------------------------------
@@ -95,14 +95,15 @@ void testApp::loadLayers() {
 		ofDirectory::createDirectory(this->contentPath + "/output", false);
 
 	this->frameCount = this->layers.front().count();
+	this->frame = 0;
 	this->loaded.clear();
 }
 
 //--------------------------------------------------------------
 void testApp::loadFrame() {
-	vector<Layer>::iterator it;
-	for (it = layers.begin(); it != layers.end(); it++)
-		it->setFrame(frame);
+#pragma omp parallel for
+	for (int i=0; i<layers.size(); i++)
+		layers[i].setFrame(this->frame);
 }
 
 //--------------------------------------------------------------

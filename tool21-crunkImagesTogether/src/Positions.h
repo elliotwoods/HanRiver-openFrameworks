@@ -13,8 +13,15 @@ public:
 
 protected:
 	void customDraw();
+	void createReflection();
+	void drawMesh();
+	void setTexCd(int index, const ofMatrix4x4 & viewProj);
+	void drawReflection();
+
 	void loadMesh();
 	void createBounds();
 
 	ofMesh mesh;
+	ofFbo reflected;
+	ofMesh bottomPlane;
 };

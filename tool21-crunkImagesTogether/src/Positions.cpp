@@ -13,11 +13,45 @@ void Positions::load() {
 	}
 	this->createBounds();
 	this->loadMesh();
+
 	fbo.allocate(map.getWidth(), map.getHeight());
+
+	this->reflected.allocate(1204, 768);
+	bottomPlane.addVertex( ofVec3f(-2.0f, -1.0f , -1.0f) ); //tl
+	bottomPlane.addVertex( ofVec3f(+2.0f, -1.0f , -1.0f) ); //tr
+	bottomPlane.addVertex( ofVec3f(-2.0f, -1.0f , +1.0f) ); //bl
+	bottomPlane.addVertex( ofVec3f(+2.0f, -1.0f , +1.0f) ); //br
+	bottomPlane.addTexCoords(vector<ofVec2f>(4));
+	bottomPlane.addTriangle(0, 1, 2);
+	bottomPlane.addTriangle(1, 3, 2);
 }
 
 //---------
 void Positions::customDraw() {
+	this->createReflection();
+	this->drawMesh();
+	this->drawReflection();
+}
+
+//---------
+void Positions::createReflection() {
+	this->reflected.begin(false);
+	ofClear(0.0f, 255.0f);
+	ofSetColor(255.0f);
+
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glTranslatef(0.0f, -1.0f, 0.0f);
+	glScalef(1.0f, -1.0f, 1.0f);
+	this->drawMesh();
+	glPopMatrix();
+	glMatrixMode(GL_MODELVIEW);
+	
+	this->reflected.end();
+}
+
+//---------
+void Positions::drawMesh() {
 	if (this->map.isAllocated() && this->map.isUsingTexture()) {
 		this->map.bind();
 		this->mesh.draw();
@@ -26,8 +60,45 @@ void Positions::customDraw() {
 		this->mesh.draw();
 }
 
-#define WIDTH 0.02f
-#define HEIGHT 0.05f
+//---------
+void Positions::setTexCd(int index, const ofMatrix4x4 & viewProj) {
+	ofVec4f texcd;
+	texcd = this->bottomPlane.getVertex(index) * viewProj;
+	texcd /= texcd.w;
+	texcd.y *= -1;
+	texcd += ofVec2f(1.0f, 1.0f);
+	texcd *= ofVec2f(LAYER_WIDTH / 2.0f, LAYER_HEIGHT / 2.0f);
+	this->bottomPlane.setTexCoord(index, texcd);
+	cout << index << " = " << texcd << endl;
+}
+
+//---------
+void Positions::drawReflection() {
+	//fuck it, just draw without 
+	ofPushMatrix();
+	ofTranslate(0.0f, -1.0f, 0.0f);
+	ofRotate(90.0f, 1.0f, 0.0f, 0.0f);
+	ofPushStyle();
+	ofSetColor(100);
+	this->reflected.draw(-2,1, 4, -2);
+	ofPopStyle();
+	ofPopMatrix();
+	/*
+	ofMatrix4x4 proj, view;
+	glGetFloatv( GL_PROJECTION_MATRIX, proj.getPtr() );
+	glGetFloatv( GL_MODELVIEW_MATRIX, view.getPtr() );
+	view.postMult(proj);
+
+	for (int i=0; i<4; i++)
+		setTexCd(i, view);
+
+	ofPushMatrix();
+	this->reflected.getTextureReference().bind();
+	this->bottomPlane.draw();
+	this->reflected.getTextureReference().unbind();
+	ofPopMatrix();
+	*/
+}
 
 //---------
 ofVec2f ttl(ofRectangle &rect) {
@@ -46,6 +117,8 @@ ofVec2f tbr(ofRectangle &rect) {
 	return ofVec2f(rect.x + rect.width, rect.y + rect.height);
 }
 //---------
+#define WIDTH 0.02f
+#define HEIGHT 0.05f
 void Positions::loadMesh() {
 	this->mesh.clear();
 

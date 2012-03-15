@@ -2,15 +2,17 @@
 Layer::Layer(const Positions & positions, int index) :
 	positions(positions) {
 	this->index = index;
+	this->pixels.allocate(LAYER_WIDTH, LAYER_HEIGHT, OF_IMAGE_COLOR_ALPHA);
+	this->allocate(this->pixels);
 }
 
 //---------
 void Layer::load(string path) {
 	fileIndices.clear();
+	dir.allowExt("png");
 	dir.listDir(path);
 	for (int i=0; i < dir.size(); i++) {
-		if ( ofToLower( ofFilePath::getFileExt( dir.getPath(i) ) ) == "png" )
-			fileIndices.push_back(i);
+		fileIndices.push_back(i);
 	}
 
 #pragma omp critical(ofLog)
@@ -23,7 +25,16 @@ void Layer::load(string path) {
 
 //---------
 void Layer::setFrame(int frame) {
-	this->loadImage( dir.getFile(fileIndices[frame]) );
+	ofFile & file (dir.getFile(fileIndices[frame]));
+	if ( file.is_open() )
+		ofLoadImage(this->pixels, file);
+	else
+		ofLoadImage( this->pixels, file.getAbsolutePath() );
+}
+
+//---------
+void Layer::update() {
+	this->loadData(pixels);
 }
 
 //---------
