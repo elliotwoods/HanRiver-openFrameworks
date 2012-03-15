@@ -4,11 +4,11 @@
 void testApp::setup(){
 	ofSetFrameRate(30.0f);
 	gui.init();
-	ofBackground(20);
 	gui.addInstructions();
 	
 	ofPtr<ofxCvGui::Panels::Node> nodePanel = gui.add(positions, "3D");
 	nodePanel->setGridColor( ofColor(40) );
+	nodePanel->setGridLabelsEnabled( false );
 
 	gui.add(positions.map, "Output");
 	

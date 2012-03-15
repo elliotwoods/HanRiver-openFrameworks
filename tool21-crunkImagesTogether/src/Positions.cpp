@@ -24,6 +24,13 @@ void Positions::load() {
 	bottomPlane.addTexCoords(vector<ofVec2f>(4));
 	bottomPlane.addTriangle(0, 1, 2);
 	bottomPlane.addTriangle(1, 3, 2);
+
+	backPlane.addVertex( ofVec3f(-3.0f, 3.0f, -1.5f) );
+	backPlane.addVertex( ofVec3f(+3.0f, 3.0f, -1.5f) );
+	backPlane.addVertex( ofVec3f(-3.0f, -1.2f, -1.5f) );
+	backPlane.addVertex( ofVec3f(+3.0f, -1.2f, -1.5f) );
+	backPlane.addTriangle(0, 1, 2);
+	backPlane.addTriangle(1, 3, 2);
 }
 
 //---------
@@ -31,6 +38,7 @@ void Positions::customDraw() {
 	this->createReflection();
 	this->drawMesh();
 	this->drawReflection();
+	this->drawBack();
 }
 
 //---------
@@ -41,8 +49,8 @@ void Positions::createReflection() {
 
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
-	glTranslatef(0.0f, -1.0f, 0.0f);
 	glScalef(1.0f, -1.0f, 1.0f);
+	glTranslatef(0.0f, -1.0f, 0.0f);
 	this->drawMesh();
 	glPopMatrix();
 	glMatrixMode(GL_MODELVIEW);
@@ -143,6 +151,13 @@ void Positions::loadMesh() {
 	}
 }
 
+//---------
+void Positions::drawBack() {
+	ofPushStyle();
+	ofSetColor(30.0f);
+	this->backPlane.draw();
+	ofPopStyle();
+}
 //---------
 void Positions::createBounds() {
 	int count = this->size();

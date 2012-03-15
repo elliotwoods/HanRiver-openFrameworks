@@ -17,11 +17,12 @@ protected:
 	void drawMesh();
 	void setTexCd(int index, const ofMatrix4x4 & viewProj);
 	void drawReflection();
-
 	void loadMesh();
+	void drawBack();
 	void createBounds();
 
 	ofMesh mesh;
 	ofFbo reflected;
 	ofMesh bottomPlane;
+	ofMesh backPlane;
 };
