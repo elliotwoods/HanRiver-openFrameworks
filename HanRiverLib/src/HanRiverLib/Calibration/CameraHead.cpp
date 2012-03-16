@@ -38,6 +38,8 @@ namespace HanRiverLib {
 	//----------
 	void CameraHead::capture(int captureID) {
 		if (this->hasDevice) {
+			//flush a frame
+			camera.capture();
 			if (camera.capture()) {
 				boards.insert(std::pair<int, ofPtr<BoardFrame> >(captureID, new BoardFrame(camera.getPixelsRef()) ) );
 				newFrame = true;
@@ -118,6 +120,15 @@ namespace HanRiverLib {
 	}
 
 	//----------
+	uint16_t CameraHead::getMaxIndex() const {
+		int maxIndex = 0;
+		map<int, ofPtr<BoardFrame> >::const_iterator it;
+		for (it = boards.begin(); it != boards.end(); it++)
+			maxIndex = max(it->first, maxIndex);
+		return (uint16_t) maxIndex;
+	}
+
+	//----------
 	void CameraHead::draw(float x, float y) {
 		this->draw(x, y, this->getWidth(), this->getHeight());
 	}
@@ -144,7 +155,7 @@ namespace HanRiverLib {
 				message += ", ";
 			message += ofToString(*it);
 			current = base;
-			current.setHue( ofMap(*it, 0, 30, 0, 120) );
+			current.setHue( ofMap(*it, 0, 250, 0, 360) );
 			ofSetColor(current);
 
 			ofBeginShape();

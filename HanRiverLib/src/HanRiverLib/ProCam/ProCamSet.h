@@ -19,6 +19,7 @@ namespace HanRiverLib {
 		void load(string filename="");
 
 		void enforceXZPlane(); ///<rearranges cameras so they all approximately lie in xz plane
+		void bakeTransform(); ///<Apply ProCamSet's transform to each procam
 	protected:
 		void customDraw();
 	};

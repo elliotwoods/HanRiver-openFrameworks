@@ -13,3 +13,7 @@
 /// ProCam
 #include "HanRiverLib/ProCam/ProCam.h"
 #include "HanRiverLib/ProCam/ProCamSet.h"
+
+/// Correlation
+#include "HanRiverLib/Correlation/RayIntersect.h"
+#include "HanRiverLib/Correlation/ProjectorPixelSet.h"

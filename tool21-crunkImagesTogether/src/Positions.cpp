@@ -29,8 +29,12 @@ void Positions::load() {
 	backPlane.addVertex( ofVec3f(+3.0f, 3.0f, -1.5f) );
 	backPlane.addVertex( ofVec3f(-3.0f, -1.2f, -1.5f) );
 	backPlane.addVertex( ofVec3f(+3.0f, -1.2f, -1.5f) );
+	backPlane.addVertex( ofVec3f(-3.0f, -1.2f, +1.5f) );
+	backPlane.addVertex( ofVec3f(+3.0f, -1.2f, +1.5f) );
 	backPlane.addTriangle(0, 1, 2);
 	backPlane.addTriangle(1, 3, 2);
+	backPlane.addTriangle(2, 3, 4);
+	backPlane.addTriangle(4, 3, 5);
 }
 
 //---------

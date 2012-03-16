@@ -1,5 +1,4 @@
 #include "ProCamSet.h"
-
 namespace HanRiverLib {
 	//---------
 	ProCamSet::ProCamSet(const CameraSetContent & cameraSet) {
@@ -22,7 +21,6 @@ namespace HanRiverLib {
 		uint16_t index;
 		uint16_t count = this->size();
 		ofMatrix4x4 view, projection;
-		const float * distortion;
 		uint16_t width, height;
 
 		ofstream file(ofToDataPath(filename), ios::binary);
@@ -34,14 +32,14 @@ namespace HanRiverLib {
 			height = it->second.getHeight();
 			view = it->second.getGlobalTransformMatrix();
 			projection = it->second.getProjectionMatrix();
-			distortion = it->second.getDistortionPtr();
 
 			file.write( (char*) & index, sizeof(index) );
 			file.write( (char*) & width, sizeof(width) );
 			file.write( (char*) & height, sizeof(height) );
 			file.write( (char*) & view, sizeof(view) );
 			file.write( (char*) & projection, sizeof(projection) );
-			file.write( (char*) distortion, sizeof(float) * 5 );
+			file.write( (char*) it->second.cameraMatrix.data, sizeof(double) * 9 );
+			file.write( (char*) it->second.distortion.data, sizeof(double) * 5 );
 		}
 
 		file.close();
@@ -55,9 +53,9 @@ namespace HanRiverLib {
 		uint16_t count = this->size();
 		uint16_t index;
 		ofMatrix4x4 view, projection;
-		float distortion[5];
 		uint16_t width, height;
-
+		Mat cameraMatrix(3, 3, CV_64F);
+		Mat distortion(5, 1, CV_64F);
 		ifstream file(ofToDataPath(filename), ios::binary);
 		file.read( (char*) & count, sizeof(count) );
 		this->clear();
@@ -67,9 +65,10 @@ namespace HanRiverLib {
 			file.read( (char*) & height, sizeof(height) );
 			file.read( (char*) & view, sizeof(view) );
 			file.read( (char*) & projection, sizeof(projection) );
-			file.read( (char*) distortion, sizeof(float) * 5 );
+			file.read( (char*) cameraMatrix.data, sizeof(double) * 5 );
+			file.read( (char*) distortion.data, sizeof(double) * 9 );
 			
-			this->insert(pair<uint16_t, ProCam>( index, ProCam(view, projection, width, height, distortion) ) );
+			this->insert(pair<uint16_t, ProCam>( index, ProCam(view, projection, width, height, cameraMatrix, distortion) ) );
 		}
 
 		file.close();
@@ -103,6 +102,18 @@ namespace HanRiverLib {
 			toXAxis.makeRotate( biggestY, ofVec3f(0,0,biggestY.z > 0 ? 1.0f : -1.0f) );
 			this->rotate(toXAxis);
 		}
+	}
+
+	//---------
+	void ProCamSet::bakeTransform() {
+		ofMatrix4x4 global = this->getGlobalTransformMatrix();
+		ofMatrix4x4 local;
+		for (ProCamSet::iterator it = this->begin(); it != this->end() ; it++ ) {
+			local = it->second.getGlobalTransformMatrix();
+			local.postMult(global);
+			it->second.setTransformMatrix(local);
+		}
+		this->setTransformMatrix( ofMatrix4x4() );
 	}
 
 	//---------

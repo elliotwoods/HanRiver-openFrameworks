@@ -16,6 +16,12 @@
     <Filter Include="src\HanRiverLib\ProCam">
       <UniqueIdentifier>{1ce596d1-d6e0-4a44-b2a0-d0c44e238dbe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\HanRiverLib\Correlation">
+      <UniqueIdentifier>{b9a4be9f-4a13-4d3a-b6a0-52c3db24d127}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\HanRiverLib\Common">
+      <UniqueIdentifier>{51106484-0e1a-4c6a-896b-1fcf53d61726}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\HanRiverLib.h">
@@ -48,6 +54,24 @@
     <ClInclude Include="src\HanRiverLib\ProCam\ProCamSet.h">
       <Filter>src\HanRiverLib\ProCam</Filter>
     </ClInclude>
+    <ClInclude Include="src\HanRiverLib\Correlation\ProjectorPixelSet.h">
+      <Filter>src\HanRiverLib\Correlation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HanRiverLib\Common\ProCamID.h">
+      <Filter>src\HanRiverLib\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HanRiverLib\Correlation\RayIntersect.h">
+      <Filter>src\HanRiverLib\Correlation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HanRiverLib\Common\ProPixelID.h">
+      <Filter>src\HanRiverLib\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HanRiverLib\Common\ID.h">
+      <Filter>src\HanRiverLib\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HanRiverLib\Common\ProCamPPixelID.h">
+      <Filter>src\HanRiverLib\Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\HanRiverLib\Calibration\BoardFrame.cpp">
@@ -73,6 +97,21 @@
     </ClCompile>
     <ClCompile Include="src\HanRiverLib\ProCam\ProCamSet.cpp">
       <Filter>src\HanRiverLib\ProCam</Filter>
+    </ClCompile>
+    <ClCompile Include="src\HanRiverLib\Correlation\ProjectorPixelSet.cpp">
+      <Filter>src\HanRiverLib\Correlation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\HanRiverLib\Common\ProCamID.cpp">
+      <Filter>src\HanRiverLib\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="src\HanRiverLib\Correlation\RayIntersect.cpp">
+      <Filter>src\HanRiverLib\Correlation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\HanRiverLib\Common\ProPixelID.cpp">
+      <Filter>src\HanRiverLib\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="src\HanRiverLib\Common\ProCamPPixelID.cpp">
+      <Filter>src\HanRiverLib\Common</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -30,8 +30,18 @@ namespace HanRiverLib {
 	void CameraSetContent::setCameraExtrinsics(uint16_t cameraID, const ofMatrix4x4 & transform) const {
 		this->cameraMap.at(cameraID)->setExtrinsics(transform);
 	}
+
 	//----------
 	size_t CameraSetContent::size() const {
 		return this->cameraIndices.size();
+	}
+
+	//----------
+	uint16_t CameraSetContent::getMaxIndex() const {
+		uint16_t maxIndex = 0;
+		CameraSetConstIterator it;
+		for (it = this->cameraMap.begin(); it != this->cameraMap.end(); it++)
+			maxIndex = max( maxIndex, it->second->getMaxIndex() );
+		return maxIndex;
 	}
 }

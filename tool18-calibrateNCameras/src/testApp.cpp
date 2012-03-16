@@ -47,8 +47,10 @@ void testApp::keyPressed(int key) {
 	if (key == 'z') {
 		this->cameraSet.load();
 		this->rebuildGUI();
+		this->captureID = this->cameraSet.getMaxIndex() + 1;
 	}
 }
+
 
 //-------------
 void testApp::mouseMoved(int x, int y) {

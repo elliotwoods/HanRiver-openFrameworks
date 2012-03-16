@@ -20,6 +20,7 @@ namespace HanRiverLib {
 		void setCameraExtrinsics(uint16_t cameraID, const ofMatrix4x4 & transform) const;
 
 		size_t size() const;
+		uint16_t getMaxIndex() const;
 
 	protected:
 		map<uint16_t, ofPtr<CameraHead> > cameraMap;

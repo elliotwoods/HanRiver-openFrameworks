@@ -1,6 +1,7 @@
 #pragma once
 #include <map>
 #include <set>
+#include <stdint.h>
 
 #include "ofxUeye.h"
 #include "ofxUeyePreset_5480ChessBoard.h"
@@ -31,6 +32,7 @@ namespace HanRiverLib {
 		set<int> getCommonSuccessfulFinds(const CameraHead & other) const;
 		void getCalibration(Mat & cameraMatrix, Mat & distortion) const; ///<should be depreciated
 		const ofMatrix4x4 & getFirstBoardTransform() const;
+		uint16_t getMaxIndex() const;
 
 		//ofBaseDraws
 		void draw(float x,float y);
@@ -45,7 +47,7 @@ namespace HanRiverLib {
 		//image points
 		void load();
 		void save();
-
+		
 		//calibration
 		const Intrinsics & getIntrinsics() const;
 		const Mat & getDistortion() const;

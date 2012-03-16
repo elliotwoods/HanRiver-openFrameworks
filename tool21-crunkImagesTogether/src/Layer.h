@@ -14,6 +14,9 @@ public:
 	void createMesh(const Positions & positions);
 	void drawBits();
 
+	float getLayerZ() const;
+	static float thickness;
+
 	ofPixels pixels;
 
 	ofDirectory dir;

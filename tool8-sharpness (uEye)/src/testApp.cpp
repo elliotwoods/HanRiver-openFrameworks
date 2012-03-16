@@ -47,7 +47,7 @@ void testApp::update(){
 
 	*position = this->sharpness;
 
-	pop.setSpeed(2.0f * (*position - 5) / (10 - 5));
+	pop.setSpeed(2.0f * (*position - 5.0f) / (10.0f - 5.0f));
 	pop.play();
 }
 

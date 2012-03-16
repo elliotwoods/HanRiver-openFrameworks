@@ -1,4 +1,8 @@
 #include "Layer.h"
+
+float Layer::thickness = 0.125;
+
+//----------
 Layer::Layer(const Positions & positions, int index) :
 	positions(positions) {
 	this->index = index;
@@ -68,15 +72,17 @@ void br(ofMesh & mesh, const ofVec2f & tl, const ofRectangle & bounds) {
 
 //---------
 void Layer::createMesh(const Positions & positions) {
+	this->mesh.clear();
 	ofRectangle bounds;
 	ofVec3f position;
 	ofVec2f texCd;
 	int layer;
+	float difference;
 	for (int i=0; i<positions.size(); i++) {
 		position = positions[i];
-		layer = ofMap(position.z, -1 , 1 - 0.125, 0, 15, true);
 
-		if (layer == this->index) {
+		difference = abs(position.z - this->getLayerZ());
+		if (difference < thickness) {
 			texCd.x = ofMap(position.x, -2, 2, 0, (this->getWidth() - FACE_RES_X), true);
 			texCd.y = ofMap(-position.y, -1, 1, 0, (this->getHeight() - FACE_RES_Y), true);
 			bounds = positions.subImageBounds[i];
@@ -99,4 +105,9 @@ void Layer::drawBits() {
 	this->bind();
 	this->mesh.draw();
 	this->unbind();
+}
+
+//---------
+float Layer::getLayerZ() const {
+	return ofMap((float) this->index + 0.5f, 0.0f, 16.0f, -1.0f, 1.0f);
 }
