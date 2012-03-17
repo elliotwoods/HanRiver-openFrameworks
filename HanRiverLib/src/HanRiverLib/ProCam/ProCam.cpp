@@ -8,7 +8,8 @@ namespace HanRiverLib {
 
 	//---------
 	ProCam::ProCam(const Intrinsics & intrinsics, const Mat distortion, const ofMatrix4x4 & extrinsics, const cv::Size & imageSize) {
-		ofMatrix4x4 projection = intrinsics.getProjectionMatrix(0.01, 6.0f);
+		ofMatrix4x4 projection;// = intrinsics.getProjectionMatrix(0.01, 6.0f);
+		projection.makePerspectiveMatrix(intrinsics.getFov().y, intrinsics.getFov().x / intrinsics.getFov().y, 0.01, 10.0f);
 		cout << "Camera matrix : " << endl;
 		cout << projection << endl << endl;
 		this->setProjection(projection);
@@ -37,14 +38,6 @@ namespace HanRiverLib {
 		Mat matSrc = Mat(1, 1, CV_32FC2, &cameraXY.x);
 		Mat matDst = Mat(1, 1, CV_32FC2, &dst.x);
 		undistortPoints(matSrc, matDst, Mat(this->cameraMatrix), Mat(this->distortion));
-	
-		dst.x = dst.x * this->cameraMatrix.at<double>(0, 0) + this->cameraMatrix.at<double>(2, 0);
-		dst.y = dst.y * this->cameraMatrix.at<double>(1, 1) + this->cameraMatrix.at<double>(2, 1);
-
-		dst *= 2.0f;
-		dst.x = dst.x - 1.0f;
-		dst.y = 1.0f - dst.y;
-
 		return dst;
 	}
 }

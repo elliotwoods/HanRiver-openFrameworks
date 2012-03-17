@@ -9,12 +9,13 @@
 #include <stdint.h>
 #include <map>
 
-//#define PREVIEW_CAM
+#define PREVIEW_CAM
 namespace HanRiverLib {
 	//----------
 	class ProjectorPixelSet : public std::map<PPID, RayIntersect>, public ofNode {
 	public:
 		void add(const ProCamID & proCamID, const ProCamSet & proCamSet, const ofxGraycode::DataSet & dataSet);
+		void clear();
 		void findCameraPoints();
 
 	protected:

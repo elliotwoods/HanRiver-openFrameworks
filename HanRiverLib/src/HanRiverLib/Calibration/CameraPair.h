@@ -14,6 +14,7 @@ namespace HanRiverLib {
 		uint32_t asInt32() const {
 			return ( (uint32_t)first << 16 ) + ( (uint32_t)second );
 		}
+
 		const uint16_t first;
 		const uint16_t second;
 	};

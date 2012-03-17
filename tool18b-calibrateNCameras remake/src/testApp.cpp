@@ -11,7 +11,6 @@ void testApp::setup() {
 
 	//black backed chessboard from studio
 	GlobalBoardFinder::init(0.04, 9, 6);
-
 	this->cameraSet.openDevices( ofxUeye::listDevices() );
 	
 #ifdef HAVE_GUI

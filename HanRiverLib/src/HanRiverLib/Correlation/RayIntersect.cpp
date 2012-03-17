@@ -4,6 +4,12 @@ using namespace ofxRay;
 
 namespace HanRiverLib {
 	//---------
+	void RayIntersect::draw() const {
+		for (RayIntersect::const_iterator it = this->begin(); it != this->end(); it++)
+			it->second.draw();
+	}
+
+	//---------
 	ofVec3f RayIntersect::getCrossover() {
 		float distance = std::numeric_limits<float>::infinity();
 		ofVec3f center;

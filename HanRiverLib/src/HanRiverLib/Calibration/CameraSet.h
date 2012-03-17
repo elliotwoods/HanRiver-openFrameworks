@@ -9,7 +9,7 @@ namespace HanRiverLib {
 	public:
 		~CameraSet();
 
-		void openAllDevices();
+		void openDevices(const vector<ofxUeyeDevice> & devices);
 		void closeDevices();
 
 		void capture(int captureID);

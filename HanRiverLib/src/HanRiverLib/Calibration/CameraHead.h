@@ -3,8 +3,11 @@
 #include <set>
 #include <stdint.h>
 
+#define HAS_UEYE
+#ifdef HAS_UEYE
 #include "ofxUeye.h"
 #include "ofxUeyePreset_5480ChessBoard.h"
+#endif
 
 #include "BoardFrame.h"
 #include "ofMain.h"
@@ -67,7 +70,9 @@ namespace HanRiverLib {
 		//device
 		uint16_t width, height;
 		bool hasDevice;
+#ifdef HAS_UEYE
 		ofxUeye camera;
+#endif
 		bool newFrame;
 		int cameraID;
 		ofTexture preview;

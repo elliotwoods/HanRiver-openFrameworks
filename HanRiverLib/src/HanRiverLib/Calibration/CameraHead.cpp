@@ -310,6 +310,7 @@ namespace HanRiverLib {
 
 	//----------
 	void CameraHead::calibrateIntrinsics(const vector<vector<Point2f> > & imagePoints) {
+#ifdef HAS_BOARD_FINDER
 		if (imagePoints.size() < 3) {
 	#pragma omp critical(ofLog)
 			ofLogError("CameraHead") << "We have insufficient captures (" << imagePoints.size() << ") to calculate intrinsics for camera " << this->cameraID;
@@ -321,7 +322,11 @@ namespace HanRiverLib {
 		calibration.imagePoints = imagePoints;
 		calibration.setImageSize(cv::Size(this->getWidth(), this->getHeight()));
 
-		this->reprojectionError = calibration.calibrate();
+		if (!calibration.calibrate()) {
+			ofLogError("HanRiverLib::CameraHead") << "Failed to calibrate camera intrinsics";
+			return;
+		}
+		this->reprojectionError = calibration.getReprojectionError();
 		this->intrinsics = calibration.getDistortedIntrinsics();
 		this->distortion = calibration.getDistCoeffs();
 		this->hasIntrinsics = true;
@@ -332,8 +337,10 @@ namespace HanRiverLib {
 			"....Camera matrix:" << endl << this->intrinsics.getCameraMatrix() << endl <<
 			"....Distortion " << endl << this->distortion << endl <<
 			"....FOV: " << this->intrinsics.getFov() << endl <<
-			"....Aspect ratio: " << this->intrinsics.getAspectRatio() << endl << endl;
+			"....Aspect ratio: " << this->intrinsics.getAspectRatio() << endl <<
+			"....Reprojection error: " << this->reprojectionError << endl << endl;
 		}
+#endif
 	}
 
 	//----------

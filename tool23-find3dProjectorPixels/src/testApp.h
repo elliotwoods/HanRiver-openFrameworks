@@ -14,6 +14,7 @@ public:
 	void update();
 	void draw();
 	void keyPressed(int key);
+	void loadProCamSet(string filename = "");
 	void loadFolder();
 
 	ofxCvGui::Builder gui;

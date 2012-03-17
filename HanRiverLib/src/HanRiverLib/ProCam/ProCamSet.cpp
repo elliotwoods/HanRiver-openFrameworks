@@ -65,8 +65,8 @@ namespace HanRiverLib {
 			file.read( (char*) & height, sizeof(height) );
 			file.read( (char*) & view, sizeof(view) );
 			file.read( (char*) & projection, sizeof(projection) );
-			file.read( (char*) cameraMatrix.data, sizeof(double) * 5 );
-			file.read( (char*) distortion.data, sizeof(double) * 9 );
+			file.read( (char*) cameraMatrix.data, sizeof(double) * 9 );
+			file.read( (char*) distortion.data, sizeof(double) * 5 );
 			
 			this->insert(pair<uint16_t, ProCam>( index, ProCam(view, projection, width, height, cameraMatrix, distortion) ) );
 		}

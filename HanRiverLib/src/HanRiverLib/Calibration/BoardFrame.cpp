@@ -31,6 +31,7 @@ namespace HanRiverLib {
 
 	//----------
 	void BoardFrame::threadedFunction() {
+#ifdef HAS_BOARD_FINDER
 #pragma omp critical(ofLog)
 		ofLogNotice() << "BoardFrame [" << this << "] began board find";
 		this->success = GlobalBoardFinder::boardFinder.findBoard(toCv(pixels), this->imagePoints);
@@ -38,6 +39,7 @@ namespace HanRiverLib {
 		this->complete = true;
 #pragma omp critical(ofLog)
 		ofLogNotice() << "BoardFrame [" << this << "] completed board find [success=" << this->success << "]";
+#endif
 	}
 
 	//----------

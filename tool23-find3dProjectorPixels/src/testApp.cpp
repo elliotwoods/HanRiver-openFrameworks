@@ -32,7 +32,10 @@ void testApp::setup() {
 	panel->setCursorEnabled(true);
 	panel->push(this->pointSet);
 	panel->push(*(new Bounds())); //push this on last as it's got alpha
-	this->keyPressed(' ');
+	this->loadProCamSet("procamset");
+
+	CameraSet cameraSet;
+	cameraSet.openDevices(ofxUeye::listDevices());
 }
 
 //-------------
@@ -45,17 +48,8 @@ void testApp::draw() {
 
 //-------------
 void testApp::keyPressed(int key) {
-	if (key == ' ') {
-		proCamSet.resetTransform();
-		if (ofFile::doesFileExist("procamset"))
-			proCamSet.load("procamset");
-		else
-			proCamSet.load();
-
-		proCamSet.enforceXZPlane();
-		proCamSet.rotate(180.0f, 1.0f, 0.0f, 0.0f);
-		proCamSet.bakeTransform();
-	}
+	if (key == ' ')
+		this->loadProCamSet();
 
 	if (key == 'a') {
 		ofxGraycode::DataSet dataSet;
@@ -72,6 +66,19 @@ void testApp::keyPressed(int key) {
 }
 
 //-------------
+void testApp::loadProCamSet(string filename) {
+	ofLogNotice() << "loadProCamSet " << filename;
+	proCamSet.resetTransform();
+	if (filename != "" && ofFile::doesFileExist(filename))
+		proCamSet.load(filename);
+	else
+		proCamSet.load();
+
+	proCamSet.enforceXZPlane();
+	proCamSet.rotate(180.0f, 1.0f, 0.0f, 0.0f);
+	proCamSet.bakeTransform();
+}
+//-------------
 void testApp::loadFolder() {
 	string path = ofSystemLoadDialog("Select folder", true).getPath();
 
@@ -84,6 +91,7 @@ void testApp::loadFolder() {
 	listDataSets.allowExt("DataSet");
 	listDataSets.listDir(path);
 	for (int i=0; i<listDataSets.size(); i++) {
+		ofLogNotice() << "Loading graycode dataset " << ofFilePath::getBaseName( listDataSets.getPath(i) );
 		ofxGraycode::DataSet dataSet;
 		dataSet.load( listDataSets.getPath(i) );
 		HanRiverLib::ProCamID id( dataSet.getFilename() );

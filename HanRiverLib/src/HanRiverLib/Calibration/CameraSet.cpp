@@ -7,8 +7,7 @@ namespace HanRiverLib {
 	}
 
 	//----------
-	void CameraSet::openAllDevices() {
-		vector<ofxUeyeDevice> devices = ofxUeye::listDevices();
+	void CameraSet::openDevices(const vector<ofxUeyeDevice> & devices) {
 		CameraHead * newCamera;
 		uint16_t cameraID;
 		for (int i=0; i<devices.size(); i++) {
@@ -108,9 +107,14 @@ namespace HanRiverLib {
 
 	//----------
 	void CameraSet::solveIntrinsics() {
-		#pragma omp parallel for
-		for (int i=0; i<this->cameraIndices.size(); i++)
+		int size = this->cameraIndices.size() ;
+		ofLogNotice("HanRiverLib::CameraSet") <<"Solving intrinsics for " << size << " cameras";
+#pragma omp parallel for
+		for (int i=0; i<size; i++) {
+#pragma omp critical(ofLog)
+			ofLogNotice("HanRiverLib::CameraSet") << "Solving intrinsics for camera " << this->cameraMap[cameraIndices[i]]->getCameraID();
 			this->cameraMap[cameraIndices[i]]->solveIntrinsics();
+		}
 	}
 
 	//----------
@@ -131,7 +135,8 @@ namespace HanRiverLib {
 
 	//----------
 	void CameraSet::solveAndSaveCalibration() {
-		this->solveIntrinsics();
+		if ( !this->getAllHaveIntrinsics() )
+			this->solveIntrinsics();
 		this->solveExtrinsics();
 		/**
 		do some saving

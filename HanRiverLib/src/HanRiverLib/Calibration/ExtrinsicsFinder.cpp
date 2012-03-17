@@ -60,7 +60,7 @@ namespace HanRiverLib {
 		for (int i=0; i<camerasVector.size() ; i++) {
 			int destination = camerasVector[i]->getCameraID();
 			ofxTSP::RouteFind routeFinder(0, i);
-			calibrationRoutes.insert( pair<int, vector<int> >(destination, routeFinder.solve(problem)) );
+			calibrationRoutes.insert( pair<int, ofxTSP::Route >(destination, routeFinder.solve(problem)) );
 			if (calibrationRoutes[destination].size() == 0)
 				ofLogWarning() << "Extrinsics of camera " << destination << " CANNOT BE SOLVED (no route available)";
 			else
@@ -94,6 +94,7 @@ namespace HanRiverLib {
 
 	//----------
 	void ExtrinsicsFinder::calcExtrinsics(const CameraPair & cameraPair) {
+#ifdef HAS_BOARD_FINDER
 		//given a camera pair identity
 		//get image points
 		CameraPair cameraPairInVectorIndices(this->indicesInVector[cameraPair.first], this->indicesInVector[cameraPair.second]);
@@ -112,14 +113,18 @@ namespace HanRiverLib {
 		imagePoints->getCameraByID(cameraPair.second).getCalibration(cameraMatrix2, distortion2);
 		vector<vector<Point3f> > boardPoints(imagePoints1.size(), GlobalBoardFinder::objectPoints);
 
-		cv::stereoCalibrate(boardPoints, imagePoints1, imagePoints2,
+		double error = cv::stereoCalibrate(boardPoints, imagePoints1, imagePoints2,
 			cameraMatrix1, distortion1,
 			cameraMatrix2, distortion2,
 			imagePoints->getImageSize(),
 			rotation, translation,
 			essential, fundamental);
 
+#pragma omp critical(ofLog)
+		ofLogNotice("HanRiverLib::ExtrinsicsFinder") << "Found extrinsics between cameras " << cameraPair.first << " and " << cameraPair.second << ". error = " << error;
+
 		interCamExtrinsics[cameraPair] = ofxCv::makeMatrix(rotation, translation);
+#endif
 	}
 
 	//----------
@@ -138,7 +143,7 @@ namespace HanRiverLib {
 			ofMatrix4x4 transform = offset;
 			for (; it != route.end(); it++) {
 				cameraID2 = camerasVector[*it]->getCameraID();
-				transform.preMult(interCamExtrinsics[CameraPair(cameraID1, cameraID2)].getInverse());
+				transform.preMult(interCamExtrinsics[CameraPair(cameraID1, cameraID2)]);
 				cameraID1 = cameraID2;
 			}
 			transform.preMultRotate( ofQuaternion(180, ofVec3f(0,1,0)) );
