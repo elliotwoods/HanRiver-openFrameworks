@@ -1,3 +1,0 @@
-[SPACE] = add frame
-[s] = solve extrinsics and save
-[a] = save pixels

@@ -14,6 +14,6 @@ namespace HanRiverLib {
 	class RayIntersect : public map<CamID, ofxRay::Ray> {
 	public:
 		void draw() const;
-		ofVec3f getCrossover();
+		ofVec3f getCrossover() const;
 	};
 }

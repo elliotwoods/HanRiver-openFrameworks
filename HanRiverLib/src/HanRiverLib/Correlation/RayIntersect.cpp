@@ -10,7 +10,7 @@ namespace HanRiverLib {
 	}
 
 	//---------
-	ofVec3f RayIntersect::getCrossover() {
+	ofVec3f RayIntersect::getCrossover() const {
 		float distance = std::numeric_limits<float>::infinity();
 		ofVec3f center;
 		RayIntersect:const_iterator it1, it2;
@@ -19,7 +19,9 @@ namespace HanRiverLib {
 			it2 = it1;
 			it2++;
 			for (; it2 != this->end(); it2++) {
-				intersect = it1->second.intersect(it2->second);
+				const ofxRay::Ray & first(it1->second);
+				const ofxRay::Ray & second(it2->second);
+				intersect = first.intersect(second);
 				if (intersect.getLength() < distance) {
 					distance = intersect.getLength();
 					center = intersect.getMidpoint();

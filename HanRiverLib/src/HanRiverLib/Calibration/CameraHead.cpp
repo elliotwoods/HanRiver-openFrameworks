@@ -36,7 +36,9 @@ namespace HanRiverLib {
 	}
 
 	//----------
-	void CameraHead::capture(int captureID) {
+	void CameraHead::capture(int captureID)
+	{
+#ifdef HAS_UEYE
 		if (this->hasDevice) {
 			//flush a frame
 			camera.capture();
@@ -45,6 +47,7 @@ namespace HanRiverLib {
 				newFrame = true;
 			}
 		}
+#endif
 	}
 
 	//----------

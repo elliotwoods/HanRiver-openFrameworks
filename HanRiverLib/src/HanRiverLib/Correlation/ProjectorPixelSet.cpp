@@ -18,10 +18,12 @@ namespace HanRiverLib {
 		for ( map<uint32_t, DataSet::const_iterator>::iterator it = mapping.begin(); it != mapping.end(); it++ ) {
 			id.projectorPixel = (*it->second).projector;
 			cameraXY = camera.undistort( (*it->second).getCameraXY() );
-			camRay.t = camera.getOrientationQuat() *  ofVec3f(-cameraXY.x, cameraXY.y, -1.0f) + camera.getPosition();
+			camRay.t = camera.getOrientationQuat() *  ofVec3f(-cameraXY.x, cameraXY.y, -1.0f);
+			if (camRay.t.z > 0)
+				ofLogError() << "camRay.t.z < 0";
 			this->operator[](id).insert( pair<CamID, ofxRay::Ray> (proCamID.camera,  camRay ) );
 #ifdef PREVIEW_CAM
-			foundCamera.addVertex( camRay.t );
+			foundCamera.addVertex( camRay.t + camRay.s);
 			ofFloatColor col(200,100,100);
 			col.setHue( ofMap(proCamID.projector, 0, 6, 0, 360) );
 			foundCamera.addColor( col );
@@ -35,11 +37,13 @@ namespace HanRiverLib {
 		this->points.clear();
 		this->foundCamera.clear();
 	}
+
 	//---------
 	void ProjectorPixelSet::findCameraPoints() {
 		this->points.clear();
 		ProjectorPixelSet::iterator it;
 		ofFloatColor color(200,100,100);
+		ofVec3f position;
 		for (it = this->begin(); it != this->end() ; it++) {
 			if (it->second.size() > 1) {
 				points.addVertex( it->second.getCrossover() );
