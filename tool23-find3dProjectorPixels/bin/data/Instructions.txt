@@ -1,0 +1,6 @@
+[SPACE] = load ProCamSet
+
+[a] = add graycode
+[c] = clear data
+[i] = find camera points
+[z] = add folder and find camera points
