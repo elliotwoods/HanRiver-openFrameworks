@@ -38,8 +38,7 @@ namespace HanRiverLib {
 			file.write( (char*) & height, sizeof(height) );
 			file.write( (char*) & view, sizeof(view) );
 			file.write( (char*) & projection, sizeof(projection) );
-			file.write( (char*) it->second.cameraMatrix.data, sizeof(double) * 9 );
-			file.write( (char*) it->second.distortion.data, sizeof(double) * 5 );
+			it->second.intrinsics.saveTo(file);
 		}
 
 		file.close();
@@ -54,8 +53,7 @@ namespace HanRiverLib {
 		uint16_t index;
 		ofMatrix4x4 view, projection;
 		uint16_t width, height;
-		Mat cameraMatrix(3, 3, CV_64F);
-		Mat distortion(5, 1, CV_64F);
+		CVIntrinsics intrinsics;
 		ifstream file(ofToDataPath(filename), ios::binary);
 		file.read( (char*) & count, sizeof(count) );
 		this->clear();
@@ -65,10 +63,9 @@ namespace HanRiverLib {
 			file.read( (char*) & height, sizeof(height) );
 			file.read( (char*) & view, sizeof(view) );
 			file.read( (char*) & projection, sizeof(projection) );
-			file.read( (char*) cameraMatrix.data, sizeof(double) * 9 );
-			file.read( (char*) distortion.data, sizeof(double) * 5 );
+			intrinsics.loadFrom(file);
 			
-			this->insert(pair<uint16_t, ProCam>( index, ProCam(view, projection, width, height, cameraMatrix, distortion) ) );
+			this->insert(pair<uint16_t, ProCam>( index, ProCam(view, projection, width, height, intrinsics) ) );
 		}
 
 		file.close();

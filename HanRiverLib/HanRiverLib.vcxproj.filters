@@ -72,6 +72,9 @@
     <ClInclude Include="src\HanRiverLib\Common\ProCamPPixelID.h">
       <Filter>src\HanRiverLib\Common</Filter>
     </ClInclude>
+    <ClInclude Include="src\HanRiverLib\Calibration\CVIntrinsics.h">
+      <Filter>src\HanRiverLib\Calibration</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\HanRiverLib\Calibration\BoardFrame.cpp">
@@ -112,6 +115,9 @@
     </ClCompile>
     <ClCompile Include="src\HanRiverLib\Common\ProCamPPixelID.cpp">
       <Filter>src\HanRiverLib\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="src\HanRiverLib\Calibration\CVIntrinsics.cpp">
+      <Filter>src\HanRiverLib\Calibration</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

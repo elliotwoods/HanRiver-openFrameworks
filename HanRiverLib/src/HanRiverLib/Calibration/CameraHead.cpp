@@ -114,7 +114,7 @@ namespace HanRiverLib {
 	//----------
 	void CameraHead::getCalibration(Mat & cameraMatrix, Mat & distortion) const {
 		cameraMatrix = this->intrinsics.getCameraMatrix();
-		distortion = this->distortion;
+		distortion = this->intrinsics2.distortion;
 	}
 
 	//----------
@@ -269,15 +269,10 @@ namespace HanRiverLib {
 	}
 	
 	//----------
-	const Intrinsics & CameraHead::getIntrinsics() const {
-		return this->intrinsics;
+	const CVIntrinsics & CameraHead::getIntrinsics() const {
+		return this->intrinsics2;
 	}
 	
-	//----------
-	const Mat & CameraHead::getDistortion() const {
-		return this->distortion;
-	}
-
 	//----------
 	const ofMatrix4x4 & CameraHead::getExtrinsics() const {
 		return this->extrinsics;
@@ -331,14 +326,15 @@ namespace HanRiverLib {
 		}
 		this->reprojectionError = calibration.getReprojectionError();
 		this->intrinsics = calibration.getDistortedIntrinsics();
-		this->distortion = calibration.getDistCoeffs();
+		this->intrinsics2 = CVIntrinsics(calibration);
 		this->hasIntrinsics = true;
 		this->firstBoardTransform = calibration.getBoardTransformation(0);
 #pragma omp critical(ofLog)
 		{
 			ofLogNotice("CameraHead") << "Camera " << this->getCameraID() << " calibrated." << endl <<
-			"....Camera matrix:" << endl << this->intrinsics.getCameraMatrix() << endl <<
-			"....Distortion " << endl << this->distortion << endl <<
+			"....Camera matrix:" << endl << this->intrinsics2.cameraMatrix << endl <<
+			"....Undistorted camera matrix:" << endl << this->intrinsics2.undistortedCameraMatrix << endl <<
+			"....Distortion " << endl << this->intrinsics2.distortion << endl <<
 			"....FOV: " << this->intrinsics.getFov() << endl <<
 			"....Aspect ratio: " << this->intrinsics.getAspectRatio() << endl <<
 			"....Reprojection error: " << this->reprojectionError << endl << endl;

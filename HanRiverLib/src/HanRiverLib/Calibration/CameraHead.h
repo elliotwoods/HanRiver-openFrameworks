@@ -10,6 +10,8 @@
 #endif
 
 #include "BoardFrame.h"
+#include "CVIntrinsics.h"
+
 #include "ofMain.h"
 #include "ofxCvGui/Assets.h"
 
@@ -52,8 +54,7 @@ namespace HanRiverLib {
 		void save();
 		
 		//calibration
-		const Intrinsics & getIntrinsics() const;
-		const Mat & getDistortion() const;
+		const CVIntrinsics & getIntrinsics() const;
 		const ofMatrix4x4 &  getExtrinsics() const;
 	protected:
 		void waitForComplete() const;
@@ -79,8 +80,8 @@ namespace HanRiverLib {
 
 		//data
 		ofxCv::Intrinsics intrinsics;
+		CVIntrinsics intrinsics2;
 		ofMatrix4x4 firstBoardTransform;
-		Mat distortion;
 		float reprojectionError;
 		bool hasIntrinsics;
 		ofMatrix4x4 extrinsics;

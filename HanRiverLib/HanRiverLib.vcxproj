@@ -21,6 +21,7 @@
     <ClInclude Include="src\HanRiverLib\Calibration\CameraPair.h" />
     <ClInclude Include="src\HanRiverLib\Calibration\CameraSet.h" />
     <ClInclude Include="src\HanRiverLib\Calibration\CameraSetContent.h" />
+    <ClInclude Include="src\HanRiverLib\Calibration\CVIntrinsics.h" />
     <ClInclude Include="src\HanRiverLib\Calibration\ExtrinsicsFinder.h" />
     <ClInclude Include="src\HanRiverLib\Calibration\GlobalBoardFinder.h" />
     <ClInclude Include="src\HanRiverLib\Common\ID.h" />
@@ -37,6 +38,7 @@
     <ClCompile Include="src\HanRiverLib\Calibration\CameraHead.cpp" />
     <ClCompile Include="src\HanRiverLib\Calibration\CameraSet.cpp" />
     <ClCompile Include="src\HanRiverLib\Calibration\CameraSetContent.cpp" />
+    <ClCompile Include="src\HanRiverLib\Calibration\CVIntrinsics.cpp" />
     <ClCompile Include="src\HanRiverLib\Calibration\ExtrinsicsFinder.cpp" />
     <ClCompile Include="src\HanRiverLib\Calibration\GlobalBoardFinder.cpp" />
     <ClCompile Include="src\HanRiverLib\Common\ProCamID.cpp" />
