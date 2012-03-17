@@ -32,10 +32,8 @@ void testApp::setup() {
 	panel->setCursorEnabled(true);
 	panel->push(this->pointSet);
 	panel->push(*(new Bounds())); //push this on last as it's got alpha
+	this->camera = & panel->getCamera();
 	this->loadProCamSet("procamset");
-
-	CameraSet cameraSet;
-	cameraSet.openDevices(ofxUeye::listDevices());
 }
 
 //-------------
@@ -51,11 +49,20 @@ void testApp::keyPressed(int key) {
 	if (key == ' ')
 		this->loadProCamSet();
 
-	if (key == 'a') {
+	if (key == 'a' || key == 'b') {
 		ofxGraycode::DataSet dataSet;
 		dataSet.load();
-		HanRiverLib::ProCamID id( dataSet.getFilename() );
-		this->pointSet.add(id, this->proCamSet, dataSet);
+		if (dataSet.getHasData()) {
+			HanRiverLib::ProCamID id( dataSet.getFilename() );
+			// if we already have 2 cameras for this projector
+			// and the camera that we are adding hasn't already had a calibration bump
+			// then we 
+			if (key == 'a')
+				this->pointSet.add(id, this->proCamSet, dataSet);
+			else
+				//Here we use the existing 3d points to calibrate the new object
+				this->pointSet.calibrateAndAdd(id, this->proCamSet, dataSet);
+		}
 	}
 	if (key == 'c')
 		this->pointSet.clear();
@@ -63,6 +70,14 @@ void testApp::keyPressed(int key) {
 		this->pointSet.findCameraPoints();
 	if (key == 'z')
 		this->loadFolder();
+	if (key >= '1' && key <= '5') {
+		ProCamSet::const_iterator it = this->proCamSet.find(key - '1' + 1);
+		if ( it != this->proCamSet.end() ) {
+			this->camera->setPosition( it->second.getPosition() );
+			this->camera->setOrientation( ofQuaternion(180, ofVec3f(0, 1, 0) ) * it->second.getOrientationQuat() );
+			this->camera->setFov( it->second.intrinsics.fov.y );
+		}
+	}
 }
 
 //-------------
@@ -75,7 +90,7 @@ void testApp::loadProCamSet(string filename) {
 		proCamSet.load();
 
 	proCamSet.enforceXZPlane();
-	proCamSet.rotate(180.0f, 1.0f, 0.0f, 0.0f);
+	//proCamSet.rotate(180.0f, 1.0f, 0.0f, 0.0f);
 	proCamSet.bakeTransform();
 }
 //-------------

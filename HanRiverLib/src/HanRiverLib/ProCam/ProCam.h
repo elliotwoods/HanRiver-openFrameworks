@@ -1,7 +1,10 @@
 #pragma once
 
+#include <set>
+
 #include "ofxRay.h"
 #include "ofxCv.h"
+
 #include "../Calibration/CVIntrinsics.h"
 #include "../Calibration/CameraHead.h"
 #include "../Common/ID.h"
@@ -19,6 +22,9 @@ namespace HanRiverLib {
 
 		ofVec2f undistort(ofVec2f & cameraXY) const;
 
+		int getCalibratedCameraCount() const;
 		CVIntrinsics intrinsics;
+
+		set<uint16_t> calibratedObjects;
 	};
 }

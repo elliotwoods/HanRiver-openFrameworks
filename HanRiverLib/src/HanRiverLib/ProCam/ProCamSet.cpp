@@ -90,13 +90,13 @@ namespace HanRiverLib {
 		for (it = this->begin(); it != this->end(); it++) {
 			current = it->second.getPosition() * this->getGlobalTransformMatrix();
 			if (abs(current.y) > abs(biggestY.y))
-				biggestY = current;
+				biggestY = current; //this should generally be camera 3
 		}
 		if (biggestY.y != 0.0f) {
 			//rotate on X axis
 			biggestY.x = 0.0f;
 			biggestY.normalize();
-			toXAxis.makeRotate( biggestY, ofVec3f(0,0,biggestY.z > 0 ? 1.0f : -1.0f) );
+			toXAxis.makeRotate( biggestY, ofVec3f(0,0,1) );
 			this->rotate(toXAxis);
 		}
 	}

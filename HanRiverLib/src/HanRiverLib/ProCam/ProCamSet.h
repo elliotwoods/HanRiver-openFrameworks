@@ -4,6 +4,7 @@
 
 #include <stdint.h>
 #include <map>
+#include <set>
 
 namespace HanRiverLib {
 	///Index in the map is cameraID.
@@ -20,6 +21,9 @@ namespace HanRiverLib {
 
 		void enforceXZPlane(); ///<rearranges cameras so they all approximately lie in xz plane
 		void bakeTransform(); ///<Apply ProCamSet's transform to each procam
+
+		int getCalibratedCameraCount();
+
 	protected:
 		void customDraw();
 	};

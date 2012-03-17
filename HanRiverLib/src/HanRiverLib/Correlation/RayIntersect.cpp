@@ -19,6 +19,8 @@ namespace HanRiverLib {
 			it2 = it1;
 			it2++;
 			for (; it2 != this->end(); it2++) {
+				if (it1->first == it2->first)
+					continue; //CamID's are the same
 				const ofxRay::Ray & first(it1->second);
 				const ofxRay::Ray & second(it2->second);
 				intersect = first.intersect(second);

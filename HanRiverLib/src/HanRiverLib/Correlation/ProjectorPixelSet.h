@@ -14,9 +14,15 @@ namespace HanRiverLib {
 	//----------
 	class ProjectorPixelSet : public std::map<PPID, RayIntersect>, public ofNode {
 	public:
+		//add graycode
 		void add(const ProCamID & proCamID, const ProCamSet & proCamSet, const ofxGraycode::DataSet & dataSet);
+
+		//calibrate camera based on existing correspondences
+		void calibrateAndAdd(const ProCamID & proCamID, ProCamSet & proCamSet, const ofxGraycode::DataSet & dataSet);
+		
 		void clear();
 		void findCameraPoints();
+		void saveRaw(string filename = "");
 
 	protected:
 		void customDraw();

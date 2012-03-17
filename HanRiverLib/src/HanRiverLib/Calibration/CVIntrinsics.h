@@ -7,7 +7,7 @@ using namespace cv;
 
 namespace HanRiverLib {
 	struct CVIntrinsics {
-		CVIntrinsics() { };
+		CVIntrinsics();
 		CVIntrinsics(ofxCv::Calibration calibration);
 
 		void saveTo(ofstream & file) const;

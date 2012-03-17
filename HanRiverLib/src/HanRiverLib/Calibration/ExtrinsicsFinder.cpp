@@ -143,10 +143,10 @@ namespace HanRiverLib {
 			ofMatrix4x4 transform = offset;
 			for (; it != route.end(); it++) {
 				cameraID2 = camerasVector[*it]->getCameraID();
-				transform.preMult(interCamExtrinsics[CameraPair(cameraID1, cameraID2)]);
+				transform.preMult(interCamExtrinsics[CameraPair(cameraID1, cameraID2)].getInverse());
 				cameraID1 = cameraID2;
 			}
-			transform.preMultRotate( ofQuaternion(180, ofVec3f(0,1,0)) );
+			transform.preMultScale( ofVec3f (1.0f, 1.0f, -1.0f) );
 			this->imagePoints->setCameraExtrinsics(cameraID2, transform);
 		}
 	}

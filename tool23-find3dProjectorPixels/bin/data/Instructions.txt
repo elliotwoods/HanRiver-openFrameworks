@@ -1,6 +1,12 @@
 [SPACE] = load ProCamSet
 
 [a] = add graycode
+[b] = calibrate and add
+
 [c] = clear data
 [i] = find camera points
 [z] = add folder and find camera points
+
+[s] = save current xyz points
+
+[1,2,3,4,5] = set current view to camera

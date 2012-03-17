@@ -18,6 +18,8 @@ public:
 	void loadFolder();
 
 	ofxCvGui::Builder gui;
+	ofxGrabCam * camera;
 	ProCamSet proCamSet;
 	ProjectorPixelSet pointSet;
+
 };
