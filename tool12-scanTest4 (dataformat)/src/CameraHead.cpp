@@ -57,8 +57,10 @@ void CameraHead::setProjectorID(int projector) {
 	if (!this->initialised)
 		return;
 
-	if (decoders.count(this->projector) > 0)
+	if (decoders.count(this->projector) > 0) {
 		this->decoders[this->projector].clearCaptures();
+	}
+
 
 	this->projector = projector;
 	if (decoders.count(projector) == 0) {
@@ -90,15 +92,20 @@ Decoder& CameraHead::getDecoder() {
 }
 
 //-----------
-void CameraHead::capture() {
+bool CameraHead::capture() {
 	if (!this->initialised)
-		return;
+		return false;
 
 #pragma omp critical(ofLog)
 	ofLogNotice() << "Camera " << this->getCameraID() << " capturing frame " << this->getDecoder().getFrame();
-	ofSleepMillis(20); //delay for projector
+	ofSleepMillis(40); //delay for projector
+	this->camera.getFreshFrame(); //flush a frame
 	this->getDecoder() << camera.getFreshFrameCopy(); //take copy
 	this->camera.setThreadPaused(this->getDecoder().getFrame() != 0 && this->getDecoder().getFrame() < this->getDecoder().getFrameCount());
+	if ( this->getDecoder().hasData() )
+		return true;
+	else
+		return false;
 }
 
 //-----------
@@ -132,8 +139,13 @@ void CameraHead::load() {
 void CameraHead::save() {
 	map<int, Decoder>::iterator it;
 	for (it = decoders.begin(); it != decoders.end(); it++) {
+#pragma omp critical(stringerror)
 		it->second.saveDataSet("c" + ofToString(this->getCameraID()) + "-p" + ofToString(it->first) + ".DataSet");
-		it->second.getDataSet().saveCorrespondences("c" + ofToString(this->getCameraID()) + "-p" + ofToString(it->first) + ".correspondences");
+		//it->second.getDataSet().saveCorrespondences("c" + ofToString(this->getCameraID()) + "-p" + ofToString(it->first) + ".correspondences");
 	}
 }
 
+//-----------
+void CameraHead::saveCurrent() {
+	this->getDecoder().saveDataSet("c" + ofToString( this->getCameraID() ) + "-p" + ofToString( this->getProjectorID() ) + ".DataSet");
+}

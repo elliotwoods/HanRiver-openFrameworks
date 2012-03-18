@@ -214,6 +214,34 @@ namespace HanRiverLib {
 	}
 
 	//---------
+	void ProjectorPixelSet::saveBigMap(string filename) {
+		if (filename == "")
+			filename = ofSystemSaveDialog("bigmap.exr", "Save big map").getPath();
+		if (filename == "") {
+			ofLogWarning("ProjectorPixelSet") << "No file selected for big map";
+			return;
+		}
+
+		const uint32_t width = 1280;
+		const uint32_t height = 800;
+		const uint32_t size = width * height;
+		const uint32_t count = 5;
+
+		ofFloatPixels bigMap;
+		bigMap.allocate(width, height * count, OF_IMAGE_COLOR);
+		uint32_t i, x, y;
+		for (ProjectorPixelSet::iterator it = this->begin(); it != this->end(); it++) {
+			i = it->first.projectorPixel + it->first.projector * size;
+			x = i % width;
+			y = i / width;
+
+			ofVec3f & xyz(* (ofVec3f*) (bigMap.getPixels() + 3 * i) );
+			xyz = it->second.getCrossover();
+		}
+		ofSaveImage(bigMap, filename);
+	}
+
+	//---------
 	void ProjectorPixelSet::customDraw() {
 #ifdef PREVIEW_CAM
 		foundCamera.drawVertices();

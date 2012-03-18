@@ -104,9 +104,14 @@ void testApp::processInput(){
 		}
 	
 		if (msg.getAddress() == "/capture") {
+			bool complete = true;
 			#pragma omp parallel for
 			for (int i=0; i<cameras.size(); i++)
-				cameras[i]->capture();
+				complete &= cameras[i]->capture();
+			if (complete) {
+				for (int i=0; i<cameras.size(); i++)
+					cameras[i]->saveCurrent();
+			}
 
 			if (cameras[0]->getDecoder().getFrame() < payload.getFrameCount()) {
 				ofxOscMessage msgCaptured;

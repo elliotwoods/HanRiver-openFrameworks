@@ -78,6 +78,10 @@ void testApp::keyPressed(int key) {
 			this->camera->setFov( it->second.intrinsics.fov.y );
 		}
 	}
+	if (key == 's')
+		this->pointSet.saveRaw();
+	if (key == 't')
+		this->pointSet.saveBigMap();
 }
 
 //-------------
@@ -95,8 +99,9 @@ void testApp::loadProCamSet(string filename) {
 }
 //-------------
 void testApp::loadFolder() {
-	string path = ofSystemLoadDialog("Select folder", true).getPath();
-
+	//string path = ofSystemLoadDialog("Select folder", true).getPath();
+	string path = ofToDataPath("", true);
+	//string path = "..\\data";
 	if (! ofDirectory::doesDirectoryExist(path) || path == "") {
 		ofLogError() << "No folder selected " << path;
 		return;

@@ -23,6 +23,7 @@ namespace HanRiverLib {
 		void clear();
 		void findCameraPoints();
 		void saveRaw(string filename = "");
+		void saveBigMap(string filename = "");
 
 	protected:
 		void customDraw();

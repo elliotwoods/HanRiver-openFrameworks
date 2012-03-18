@@ -5,8 +5,9 @@
 
 [c] = clear data
 [i] = find camera points
-[z] = add folder and find camera points
+[z] = add *.DataSet from this app's data folder
 
-[s] = save current xyz points
+[s] = save current xyz points raw
+[t] = save current xyz point as big map
 
 [1,2,3,4,5] = set current view to camera

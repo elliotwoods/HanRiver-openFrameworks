@@ -28,12 +28,13 @@ public:
 	ofxUeyeThreaded& getCamera();
 	Decoder& getDecoder();
 
-	void capture();
+	bool capture(); //returns true on complete
 	void clear();
 	void moveThreshold(int distance);
 
 	void load();
 	void save();
+	void saveCurrent();
 
 protected:
 	ofxUeyeThreaded camera;
