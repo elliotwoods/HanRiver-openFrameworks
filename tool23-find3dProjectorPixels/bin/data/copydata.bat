@@ -1,0 +1,1 @@
+copy "..\..\..\tool12-scanTest4 (dataformat)\bin\data\*.DataSet" .\
