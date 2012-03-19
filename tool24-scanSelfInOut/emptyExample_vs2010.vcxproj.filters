@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\testApp.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrabCam\src\ofxGrabCam.cpp">
+      <Filter>ofxGrabCam</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\win32pstdint.h" />
+    <ClInclude Include="src\testApp.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrabCam\src\ofxGrabCam.h">
+      <Filter>ofxGrabCam</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\..\..\addons\ofxUeye\libs\ueye\lib\win32\uEye_api.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="ofxGrabCam">
+      <UniqueIdentifier>{4002d054-9de2-4aa2-bd96-97f7d6228f6f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

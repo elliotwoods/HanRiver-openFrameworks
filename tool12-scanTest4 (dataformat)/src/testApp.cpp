@@ -111,9 +111,7 @@ void testApp::processInput(){
 			if (complete) {
 				for (int i=0; i<cameras.size(); i++)
 					cameras[i]->saveCurrent();
-			}
-
-			if (cameras[0]->getDecoder().getFrame() < payload.getFrameCount()) {
+			} else	if (cameras[0]->getDecoder().getFrame() < payload.getFrameCount()) {
 				ofxOscMessage msgCaptured;
 				msgCaptured.setAddress("/requestnext");
 				tx.sendMessage(msgCaptured);

@@ -24,7 +24,7 @@ namespace HanRiverLib {
 		void findCameraPoints();
 		void saveRaw(string filename = "");
 		void saveBigMap(string filename = "");
-
+		void saveCompressedMap(string filename = "");
 	protected:
 		void customDraw();
 

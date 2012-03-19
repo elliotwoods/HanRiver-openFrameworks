@@ -82,6 +82,8 @@ void testApp::keyPressed(int key) {
 		this->pointSet.saveRaw();
 	if (key == 't')
 		this->pointSet.saveBigMap();
+	if (key == 'u')
+		this->pointSet.saveCompressedMap();
 }
 
 //-------------

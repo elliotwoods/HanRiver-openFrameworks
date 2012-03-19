@@ -230,7 +230,7 @@ namespace HanRiverLib {
 		ofFloatPixels bigMap;
 		bigMap.allocate(width, height * count, OF_IMAGE_COLOR);
 		uint32_t i, x, y;
-		for (ProjectorPixelSet::iterator it = this->begin(); it != this->end(); it++) {
+		for (ProjectorPixelSet::const_iterator it = this->begin(); it != this->end(); it++) {
 			i = it->first.projectorPixel + it->first.projector * size;
 			x = i % width;
 			y = i / width;
@@ -239,6 +239,24 @@ namespace HanRiverLib {
 			xyz = it->second.getCrossover();
 		}
 		ofSaveImage(bigMap, filename);
+	}
+
+	//---------
+	void ProjectorPixelSet::saveCompressedMap(string filename) {
+		if (filename == "")
+			filename = ofSystemSaveDialog("bigmap.exr", "Save compressed map").getPath();
+		if (filename == "") {
+			ofLogWarning("ProjectorPixelSet") << "No file selected for compressed map";
+			return;
+		}
+
+		int size = this->points.getNumVertices();
+		int width = 1 << (int) ceil(log(sqrt((float) this->size())) / log(2.0f));
+		int height = 1 << (int) ceil(log((float) this->size() / (float) width) / log(2.0f));
+		ofFloatPixels compressedMap;
+		compressedMap.allocate(width, height, OF_IMAGE_COLOR);
+		memcpy(compressedMap.getPixels(), this->points.getVerticesPointer(), sizeof(ofVec3f) * size);
+		ofSaveImage(compressedMap, filename);
 	}
 
 	//---------
