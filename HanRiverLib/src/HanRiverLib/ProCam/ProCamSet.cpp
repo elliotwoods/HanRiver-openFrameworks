@@ -48,6 +48,11 @@ namespace HanRiverLib {
 	void ProCamSet::load(string filename) {
 		if (filename=="")
 			filename = ofSystemLoadDialog("Load ProCamSet").getPath();
+		
+		if ( ! ofFile::doesFileExist(filename) ) {
+			ofLogError("HanRiverLib::ProCamSet") << "ProCamSet cannot find file " << filename;
+			return;
+		}
 
 		uint16_t count = this->size();
 		uint16_t index;

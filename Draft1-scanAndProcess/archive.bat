@@ -1,0 +1,3 @@
+del "C:\openFrameworks\apps\HanRiver-openFrameworks\Draft1-scanAndProcess\data.zip"
+"c:\Program Files\7-Zip\7z.exe" -mmt a "C:\openFrameworks\apps\HanRiver-openFrameworks\Draft1-scanAndProcess\data.zip" "C:\openFrameworks\apps\HanRiver-openFrameworks\Draft1-scanAndProcess\data\"
+c:\msysgit\msysgit\bin\scp.exe "\openFrameworks\apps\HanRiver-openFrameworks\Draft1-scanAndProcess\data.zip" ginza@lions.dreamhost.com:~/scan_log/%date:~0,2%-%date:~3,2%-%date:~8,2%_%time:~0,2%.%time:~3,2%.zip

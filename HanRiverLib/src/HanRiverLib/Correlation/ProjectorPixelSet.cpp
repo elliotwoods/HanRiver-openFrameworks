@@ -21,12 +21,16 @@ namespace HanRiverLib {
 			camRay.s = ofVec3f(0,0,0);
 			camRay.t = -ofVec3f(-cameraXY.x, -cameraXY.y, +1.0f);
 			camRay *= camera.getGlobalTransformMatrix();
+#pragma omp critical
 			this->operator[](id).insert( pair<CamID, ofxRay::Ray> (proCamID.camera,  camRay ) );
 #ifdef PREVIEW_CAM
 			ofColor col(200,100,100);
 			col.setHue( ofMap( (float) proCamID.projector, 0, 6, 0, 360) );
-			foundCamera.addColor( col );
-			foundCamera.addVertex( camRay.s + camRay.t );
+#pragma omp critical(addVertex)
+			{
+				foundCamera.addColor( col );
+				foundCamera.addVertex( camRay.s + camRay.t );
+			}
 #endif
 		}
 	}
@@ -238,6 +242,7 @@ namespace HanRiverLib {
 			ofVec3f & xyz(* (ofVec3f*) (bigMap.getPixels() + 3 * i) );
 			xyz = it->second.getCrossover();
 		}
+		ofLogNotice("HanRiverLib::ProjectorPixelSet") << "Saving bigmap to " << filename;
 		ofSaveImage(bigMap, filename);
 	}
 
