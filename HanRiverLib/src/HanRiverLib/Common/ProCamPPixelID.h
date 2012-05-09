@@ -1,12 +1,12 @@
 #pragma once
-#include "ProCamID.h"
+#include "ProCamPairID.h"
 #include "ID.h"
 
 #include <stdint.h>
 
 namespace HanRiverLib {
 	struct ProCamPPixelID {
-		ProCamID pcid;
+		ProCamPairID pcid;
 		PixelID projectorPixel;
 		bool operator<(const ProCamPPixelID & other) const;
 	};

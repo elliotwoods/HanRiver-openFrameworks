@@ -53,7 +53,7 @@ void testApp::keyPressed(int key) {
 		ofxGraycode::DataSet dataSet;
 		dataSet.load();
 		if (dataSet.getHasData()) {
-			HanRiverLib::ProCamID id( dataSet.getFilename() );
+			HanRiverLib::ProCamPairID id( dataSet.getFilename() );
 			// if we already have 2 cameras for this projector
 			// and the camera that we are adding hasn't already had a calibration bump
 			// then we 
@@ -84,6 +84,8 @@ void testApp::keyPressed(int key) {
 		this->pointSet.saveBigMap();
 	if (key == 'u')
 		this->pointSet.saveCompressedMap();
+	if (key == 'v')
+		this->pointSet.saveCorrespondenceTable();
 }
 
 //-------------
@@ -116,7 +118,7 @@ void testApp::loadFolder() {
 		ofLogNotice() << "Loading graycode dataset " << ofFilePath::getBaseName( listDataSets.getPath(i) );
 		ofxGraycode::DataSet dataSet;
 		dataSet.load( listDataSets.getPath(i) );
-		HanRiverLib::ProCamID id( dataSet.getFilename() );
+		HanRiverLib::ProCamPairID id( dataSet.getFilename() );
 		this->pointSet.add(id, this->proCamSet, dataSet);
 	}
 

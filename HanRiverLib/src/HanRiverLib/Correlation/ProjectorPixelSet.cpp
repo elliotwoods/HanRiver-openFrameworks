@@ -4,28 +4,28 @@ using namespace ofxGraycode;
 
 namespace HanRiverLib {
 	//---------
-	void ProjectorPixelSet::add(const ProCamID & proCamID, const ProCamSet & proCamSet, const DataSet & dataSet) {
+	void ProjectorPixelSet::add(const ProCamPairID & proCamPairID, const ProCamSet & proCamSet, const DataSet & dataSet) {
 
-		ofLogNotice("HanRiverLib::ProjectorPixelSet") << "Adding graycode data from camera " << (int) proCamID.camera << " to projector " << (int) proCamID.projector;
+		ofLogNotice("HanRiverLib::ProjectorPixelSet") << "Adding graycode data from camera " << (int) proCamPairID.camera << " to projector " << (int) proCamPairID.projector;
 		
 		PPID id;
-		id.projector = proCamID.projector;
-		const ProCam & camera ( proCamSet.at(proCamID.camera) );
+		id.proCam = proCamPairID.projector;
+		const ProCam & camera ( proCamSet.at(proCamPairID.camera) );
 		ofVec2f cameraXY;
 		ofxRay::Ray camRay;
 
 		map<uint32_t, DataSet::const_iterator> mapping = dataSet.getMapping();
 		for ( map<uint32_t, DataSet::const_iterator>::iterator it = mapping.begin(); it != mapping.end(); it++ ) {
-			id.projectorPixel = (*it->second).projector;
+			id.pixelID = (*it->second).projector;
 			cameraXY = camera.undistort( (*it->second).getCameraXY() );
 			camRay.s = ofVec3f(0,0,0);
 			camRay.t = -ofVec3f(-cameraXY.x, -cameraXY.y, +1.0f);
 			camRay *= camera.getGlobalTransformMatrix();
 #pragma omp critical
-			this->operator[](id).insert( pair<CamID, ofxRay::Ray> (proCamID.camera,  camRay ) );
+			this->operator[](id).insert( pair<CamPixelIDXY, ofxRay::Ray> (CamPixelIDXY(proCamPairID.camera, cameraXY),  camRay ) );
 #ifdef PREVIEW_CAM
 			ofColor col(200,100,100);
-			col.setHue( ofMap( (float) proCamID.projector, 0, 6, 0, 360) );
+			col.setHue( ofMap( (float) proCamPairID.projector, 0, 6, 0, 360) );
 #pragma omp critical(addVertex)
 			{
 				foundCamera.addColor( col );
@@ -36,26 +36,26 @@ namespace HanRiverLib {
 	}
 
 	//---------
-	void ProjectorPixelSet::calibrateAndAdd(const ProCamID & proCamID, ProCamSet & proCamSet, const DataSet & dataSet) {
+	void ProjectorPixelSet::calibrateAndAdd(const ProCamPairID & proCamPairID, ProCamSet & proCamSet, const DataSet & dataSet) {
 		//find common points
 		//make 2d camera -> 3d projector pixel correspondences
 		//use calibratecamera to find intrinsics + extrinsics of this new camera
 		//update ProCamSet
 		//perform add
-		ofLogNotice("HanRiverLib::ProjectorPixelSet") << "Calibrating camera " << (int) proCamID.camera << " from pixels in projector " << (int) proCamID.projector;
+		ofLogNotice("HanRiverLib::ProjectorPixelSet") << "Calibrating camera " << (int) proCamPairID.camera << " from pixels in projector " << (int) proCamPairID.projector;
 
 		vector<Point2f> imagePoints;
 		vector<Point3f> objectPoints;
 
 		PPID id;
-		id.projector = proCamID.projector;
-		ProCam * camera = & proCamSet.at(proCamID.camera);
+		id.proCam = proCamPairID.projector;
+		ProCam * camera = & proCamSet.at(proCamPairID.camera);
 
 		////
 		//find common points
 		map<uint32_t, DataSet::const_iterator> mapping = dataSet.getMapping();
 		for ( map<uint32_t, DataSet::const_iterator>::iterator it = mapping.begin(); it != mapping.end(); it++ ) {
-			id.projectorPixel = it->first;
+			id.pixelID = it->first;
 			if (this->count(id) == 0)
 				continue;
 			ofVec2f imagePoint = (*it->second).getCameraXY();
@@ -93,7 +93,7 @@ namespace HanRiverLib {
 
 		////
 		//add
-		this->add(proCamID, proCamSet, dataSet);
+		this->add(proCamPairID, proCamSet, dataSet);
 		//
 		////
 	}
@@ -194,7 +194,7 @@ namespace HanRiverLib {
 		for (it = this->begin(); it != this->end() ; it++) {
 			if (it->second.size() > 1) {
 				points.addVertex( it->second.getCrossover() );
-				color.setHue( ofMap(it->first.projector, 0, 6, 0, 360) );
+				color.setHue( ofMap(it->first.proCam, 0, 6, 0, 360) );
 				points.addColor(color);
 			}
 		}
@@ -235,7 +235,7 @@ namespace HanRiverLib {
 		bigMap.allocate(width, height * count, OF_IMAGE_COLOR);
 		uint32_t i, x, y;
 		for (ProjectorPixelSet::const_iterator it = this->begin(); it != this->end(); it++) {
-			i = it->first.projectorPixel + it->first.projector * size;
+			i = it->first.pixelID + it->first.proCam * size;
 			x = i % width;
 			y = i / width;
 
@@ -262,6 +262,49 @@ namespace HanRiverLib {
 		compressedMap.allocate(width, height, OF_IMAGE_COLOR);
 		memcpy(compressedMap.getPixels(), this->points.getVerticesPointer(), sizeof(ofVec3f) * size);
 		ofSaveImage(compressedMap, filename);
+	}
+
+	
+	//---------
+	void ProjectorPixelSet::saveCorrespondenceTable(string filename) {
+		if (filename == "")
+			filename = ofSystemSaveDialog("correspondences", "Save correspondence table").getPath();
+		if (filename == "") {
+			ofLogWarning("ProjectorPixelSet") << "No file selected for correspondences";
+			return;
+		}
+
+		ofstream file(ofToDataPath(filename));
+		
+		ProjectorPixelSet::const_iterator it1;
+		RayIntersect::const_iterator it2;
+
+		int count = 0;
+		const int reduction = 1;
+
+		for (it1 = this->begin(); it1 != this->end(); it1++) {
+			for (it2 = it1->second.begin(); it2 != it1->second.end(); it2++) {
+				count++;
+
+				if (count % reduction != 0)
+					continue;
+				
+				file << (int) it1->first.proCam << "\t"; //projector ID
+				file << (int) it2->first.camera << "\t"; //camera ID
+
+				file << (it1->first.pixelID % 1280) << "\t";
+				file << (it1->first.pixelID / 1280) << "\t";
+
+				file << it2->first.xy.x << "\t";
+				file << it2->first.xy.y << "\t";
+				
+				file << endl;
+
+			}
+		}
+
+		file.close();
+		ofLogNotice("HanRiverLib") << count << " correspondences found, of which 1 /" << reduction << " have been output into correspondences table (approximately " << (count / reduction) << ")";
 	}
 
 	//---------

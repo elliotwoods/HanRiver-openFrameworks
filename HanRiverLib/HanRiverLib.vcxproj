@@ -25,9 +25,9 @@
     <ClInclude Include="src\HanRiverLib\Calibration\ExtrinsicsFinder.h" />
     <ClInclude Include="src\HanRiverLib\Calibration\GlobalBoardFinder.h" />
     <ClInclude Include="src\HanRiverLib\Common\ID.h" />
-    <ClInclude Include="src\HanRiverLib\Common\ProCamID.h" />
+    <ClInclude Include="src\HanRiverLib\Common\ProCamPairID.h" />
     <ClInclude Include="src\HanRiverLib\Common\ProCamPPixelID.h" />
-    <ClInclude Include="src\HanRiverLib\Common\ProPixelID.h" />
+    <ClInclude Include="src\HanRiverLib\Common\ProCamPixelID.h" />
     <ClInclude Include="src\HanRiverLib\Correlation\RayIntersect.h" />
     <ClInclude Include="src\HanRiverLib\Correlation\ProjectorPixelSet.h" />
     <ClInclude Include="src\HanRiverLib\ProCam\ProCam.h" />
@@ -41,9 +41,9 @@
     <ClCompile Include="src\HanRiverLib\Calibration\CVIntrinsics.cpp" />
     <ClCompile Include="src\HanRiverLib\Calibration\ExtrinsicsFinder.cpp" />
     <ClCompile Include="src\HanRiverLib\Calibration\GlobalBoardFinder.cpp" />
-    <ClCompile Include="src\HanRiverLib\Common\ProCamID.cpp" />
+    <ClCompile Include="src\HanRiverLib\Common\ProCamPairID.cpp" />
     <ClCompile Include="src\HanRiverLib\Common\ProCamPPixelID.cpp" />
-    <ClCompile Include="src\HanRiverLib\Common\ProPixelID.cpp" />
+    <ClCompile Include="src\HanRiverLib\Common\ProCamPixelID.cpp" />
     <ClCompile Include="src\HanRiverLib\Correlation\ProjectorPixelSet.cpp" />
     <ClCompile Include="src\HanRiverLib\Correlation\RayIntersect.cpp" />
     <ClCompile Include="src\HanRiverLib\ProCam\ProCam.cpp" />
@@ -64,18 +64,15 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>Intel C++ Compiler XE 12.1</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>Intel C++ Compiler XE 12.1</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='RemoteDebug|Win32'">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>Intel C++ Compiler XE 12.1</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">

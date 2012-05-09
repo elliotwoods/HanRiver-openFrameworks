@@ -207,10 +207,13 @@ namespace HanRiverLib {
 
 	//----------
 	void CameraHead::load() {
-		//look for files which define the 
+		//cX file defines boards
+
+		//load a set of boards into board frames
 		ifstream file;
 		file.open(ofToDataPath(this->getFilenameBase()), ios::binary);
 
+		//check file opened ok
 		if (!file.is_open() || file.bad()) {
 #pragma omp critical(ofLog)
 			ofLogNotice("CameraHead") << "Camera " << cameraID << " cannot load";
@@ -218,8 +221,12 @@ namespace HanRiverLib {
 			return;
 		}
 
+		//clear out the register of finds and the boards
 		this->successfulFinds.clear();
 		this->boards.clear();
+
+		//for each find, we have a file numbered cXbY
+		//load for all Y
 		uint16_t count;
 		int find;
 		file.read((char*)&count, sizeof(count));
@@ -228,11 +235,10 @@ namespace HanRiverLib {
 			this->successfulFinds.insert(find);
 		}
 
+		//trigger boards to load the image points
 		set<int>::const_iterator it;
 		for (it = this->successfulFinds.begin(); it != this->successfulFinds.end(); it++) {
-			this->boards.insert( pair<int, ofPtr<BoardFrame> > (
-				*it,
-				new BoardFrame( this->getBoardFilename(*it) ) ) );
+			this->boards.insert( pair<int, ofPtr<BoardFrame> > ( *it, new BoardFrame( this->getBoardFilename(*it) ) ) );
 		}
 
 		file.close();

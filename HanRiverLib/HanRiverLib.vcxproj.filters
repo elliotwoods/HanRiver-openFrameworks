@@ -57,14 +57,8 @@
     <ClInclude Include="src\HanRiverLib\Correlation\ProjectorPixelSet.h">
       <Filter>src\HanRiverLib\Correlation</Filter>
     </ClInclude>
-    <ClInclude Include="src\HanRiverLib\Common\ProCamID.h">
-      <Filter>src\HanRiverLib\Common</Filter>
-    </ClInclude>
     <ClInclude Include="src\HanRiverLib\Correlation\RayIntersect.h">
       <Filter>src\HanRiverLib\Correlation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\HanRiverLib\Common\ProPixelID.h">
-      <Filter>src\HanRiverLib\Common</Filter>
     </ClInclude>
     <ClInclude Include="src\HanRiverLib\Common\ID.h">
       <Filter>src\HanRiverLib\Common</Filter>
@@ -74,6 +68,12 @@
     </ClInclude>
     <ClInclude Include="src\HanRiverLib\Calibration\CVIntrinsics.h">
       <Filter>src\HanRiverLib\Calibration</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HanRiverLib\Common\ProCamPixelID.h">
+      <Filter>src\HanRiverLib\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HanRiverLib\Common\ProCamPairID.h">
+      <Filter>src\HanRiverLib\Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -104,20 +104,20 @@
     <ClCompile Include="src\HanRiverLib\Correlation\ProjectorPixelSet.cpp">
       <Filter>src\HanRiverLib\Correlation</Filter>
     </ClCompile>
-    <ClCompile Include="src\HanRiverLib\Common\ProCamID.cpp">
-      <Filter>src\HanRiverLib\Common</Filter>
-    </ClCompile>
     <ClCompile Include="src\HanRiverLib\Correlation\RayIntersect.cpp">
       <Filter>src\HanRiverLib\Correlation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\HanRiverLib\Common\ProPixelID.cpp">
-      <Filter>src\HanRiverLib\Common</Filter>
     </ClCompile>
     <ClCompile Include="src\HanRiverLib\Common\ProCamPPixelID.cpp">
       <Filter>src\HanRiverLib\Common</Filter>
     </ClCompile>
     <ClCompile Include="src\HanRiverLib\Calibration\CVIntrinsics.cpp">
       <Filter>src\HanRiverLib\Calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="src\HanRiverLib\Common\ProCamPixelID.cpp">
+      <Filter>src\HanRiverLib\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="src\HanRiverLib\Common\ProCamPairID.cpp">
+      <Filter>src\HanRiverLib\Common</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

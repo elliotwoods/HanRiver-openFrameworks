@@ -1,8 +1,8 @@
-#include "ProCamID.h"
+#include "ProCamPairID.h"
 
 namespace HanRiverLib {
 	//---------
-	ProCamID::ProCamID(const string & filename) {
+	ProCamPairID::ProCamPairID(const string & filename) {
 		string trunk = ofFilePath::getBaseName(filename);
 		/**<WARNING>
 		Here we presume filename format from scanTest3,4,5
@@ -15,14 +15,14 @@ namespace HanRiverLib {
 		/**</WARNING>**/
 	}
 	//---------
-	bool ProCamID::operator<(const ProCamID & other) const {
+	bool ProCamPairID::operator<(const ProCamPairID & other) const {
 		if (this->projector != other.projector)
 			return this->projector < other.projector;
 		return this->camera < other.camera;
 	}
 
 	//---------
-	bool ProCamID::operator==(const ProCamID & other) const {
+	bool ProCamPairID::operator==(const ProCamPairID & other) const {
 		return *(uint16_t*)this == *(uint16_t*) & other;
 	}
 }

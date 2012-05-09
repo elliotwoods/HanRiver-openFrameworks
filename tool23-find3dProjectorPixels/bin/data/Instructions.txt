@@ -10,5 +10,6 @@
 [s] = save current xyz points raw
 [t] = save current xyz points as big map
 [u] = save current xyz points as compressed map
+[v] = save correspondences
 
 [1,2,3,4,5] = set current view to camera
